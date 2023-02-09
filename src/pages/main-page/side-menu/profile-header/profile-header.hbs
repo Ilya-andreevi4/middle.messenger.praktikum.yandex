@@ -1,0 +1,25 @@
+<header class="profile-header">
+  <div class="user-info profile-header__user-info">
+    {{> components/avatar/avatar src="static/media/avatar-1.jpg" className="profile-header"}}
+    <div class="user-title profile-header__user-title">
+      <h2 class="user-name profile-header__user-name">
+        {{user-name}}
+        <span>
+          <img
+            src="static/media/arrow-down.svg"
+            class="arrow profile-header__arrow profile-header__arrow_down"
+            alt="arrow"
+          />
+        </span>
+      </h2>
+      <p class="user-status profile-header__user-status {{user-status}}">
+        {{user-status}}
+      </p>
+    </div>
+  </div>
+  <img
+    src="static/media/settings.svg"
+    class="icon profile-header__icon"
+    alt="settings"
+  />
+</header>
