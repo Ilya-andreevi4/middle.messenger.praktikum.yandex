@@ -1,0 +1,54 @@
+.chat-main {
+  width: calc(100vw - 288px);
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chat-main_active{
+  align-items: flex-start;
+}
+
+.chat-header__avatar{
+  width: 64px;
+}
+
+.chat-header__icon {
+  align-self: center;
+  justify-content: end;
+  margin-right: 8px;
+}
+
+.message-list {
+  width: 100%;
+  list-style: none;
+}
+
+.text.chat-main__text{
+  opacity: 80%;
+}
+
+.date-line {
+  position: relative;
+  margin-bottom: 16px;
+}
+.date-line:before {
+  content: "";
+  display: block;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);;
+  right: 16px;
+  left: calc(50% + 40px);
+  top: 50%;
+  position: absolute;
+}
+.date-line:after {
+  content: "";
+  display: block;
+  height: 2px;background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+  right: calc(50% + 40px);
+  left: 16px;
+  top: 50%;
+  position: absolute;
+}
