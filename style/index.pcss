@@ -3,6 +3,7 @@
 @import "../src/components/button/button.pcss";
 @import "../src/components/avatar/avatar.pcss";
 @import "../src/components/message/message.pcss";
+@import "../src/components/modal/modal.pcss";
 @import "../src/components/pop-list-item/pop-list-item.pcss";
 @import "../src/components/friends-info/friends-info.pcss";
 @import "../src/pages/main-page/side-menu/profile-header/profile-header.pcss";
@@ -13,6 +14,8 @@
 @import "../src/pages/main-page/side-menu/side-menu.pcss";
 @import "../src/pages/main-page/chat-menu/chat-menu.pcss";
 @import "../src/pages/error-page/error-page.pcss";
+@import "../src/pages/entry-page/entry-page.pcss";
+@import "../src/pages/profile-page/profile-page.pcss";
 
 *,
 *::before,
@@ -38,6 +41,18 @@ a {
   font-weight: lighter;
 }
 
+.text.text_uploaded{
+  opacity: 60%;
+  margin-bottom: 20px;
+}
+.text.text_error{
+  font-size: 11px;
+  color: rgb(220, 47, 85);
+  position: absolute;
+  bottom: 20px;
+  margin: 0px auto;
+}
+
 .popper {
   display: flex;
   background: #413C37;
@@ -47,12 +62,32 @@ a {
 
 input {
   background: none;
+  text-decoration: none;
   outline: none;
   border: none;
   color: white;
+  width: 100%;
 }
 
-.main-page {
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  color: rgba(255, 255, 255, 0.9);
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: linear-gradient(234.11deg, #32383C 0%, rgba(90, 90, 90, 1) 100%);
+}
+
+.main-container__main-page {
   display: flex;
   font-size: 20px;
   margin: auto;

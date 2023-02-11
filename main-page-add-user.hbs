@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Add User</title>
+    <link rel="stylesheet" href="style/index.pcss"/>
+    <script type="module" href="src/components/modal/modal.js"></script>
+  </head>
+  <body>
+    <div class="main-container main-container__main-page">
+      {{> components/nav/nav }}
+      {{> pages/main-page/side-menu/side-menu }}
+      {{> pages/main-page/chat-menu/chat-menu }}
+      {{#modal isPopup=true}}
+        <h1 class="title add-user__title"> Add User </h1>
+        <div class="input-container modal__input-container">
+          <input id="login" type="text" class="input modal__input" placeholder=" ">
+          <label for="login" class="placeholder">Login</label>
+        </div>
+
+        {{> components/button/button className="add-user-modal" href="/" label="Invite" }}
+      {{/modal}}
+    </div>
+  </body>
+</html>
