@@ -1,8 +1,8 @@
-
-<div id="friends-container">
-
-  <div class="chats-header">
-    <h3 class="title chats-header__title">Friends</h3>
+<main id="friends-container">
+  <header class="chats-header">
+    <h3 class="title chats-header__title">
+      Friends
+    </h3>
     <div class="chats-header__input-box">
       <input class="input chats-header__input" type="text" name="search" id="search" placeholder="Search...">
       {{> components/icon/icon
@@ -16,13 +16,13 @@
       src="static/media/user-add.svg"
       alt="Add user"
     }}
-  </div>
-
+  </header>
   <ul class="chats-list">
     <li class="chat-info chats-list__chat-info">
         {{> components/avatar/avatar
           className="friends"
-          src="static/media/avatar-2.jpg" }}
+          src="static/media/avatar-2.jpg"
+        }}
         {{> components/friends-info/friends-info
           firstName="Ryan"
           lastName="Gosling"
@@ -58,29 +58,17 @@
           time="15:41"
         }}
     </li>
-
-
-    {{#each friends }}
-      <li class="chat-info chats-list__chat-info">
-        {{> components/avatar/avatar className="friends" src=this.avatar }}
-        <div class="user-title chats-list__user-title">
-          <h2 class="user-name chats-list__user-name">
-            {{print_person}}
-          </h2>
-          <p class="last-message chats-list__last-message">
-            {{ this.last-message }}
-          </p>
-        </div>
-      </li>
-    {{/each}}
-
-
   </ul>
-
-  <div class="chats-header chats-header__groups">
-    <h3 class="title chats-header__title">Groups</h3>
-    {{> components/icon/icon className="chats-header" src="static/media/group-icon.svg" alt="Add user" }}
-  </div>
+  <header class="chats-header chats-header__groups">
+    <h3 class="title chats-header__title">
+      Groups
+    </h3>
+    {{> components/icon/icon
+      className="chats-header"
+      src="static/media/group-icon.svg"
+      alt="Add user"
+    }}
+  </header>
   <ul class="chats-list">
     <li class="chat-info chats-list__chat-info">
         {{> components/avatar/avatar
@@ -110,5 +98,4 @@
         }}
     </li>
   </ul>
-
-</div>
+</main>

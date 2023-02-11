@@ -1,7 +1,9 @@
-<header class="chat-header {{#if isActive }}chat-header_{{isActive}}{{/if}}">
+<header class="chat-header {{#if isActive }} chat-header_{{ isActive }} {{/if}}">
   <div class="user-info chat-header__user-info">
-    {{> components/avatar/avatar src="static/media/avatar-4.jpg" className="chat-header" }}
-
+    {{> components/avatar/avatar
+      src="static/media/avatar-4.jpg"
+      className="chat-header"
+    }}
     <div class="user-title chat-header__user-title">
       <h2 class="user-name chat-header__user-name">
         {{ user-name }}

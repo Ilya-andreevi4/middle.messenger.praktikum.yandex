@@ -7,6 +7,10 @@
   </p>
 </div>
 <div class="status-chat {{ classNames }}__status-chat">
-  <span class="{{ classNames }}__number-messages {{#if isNewMessage }} number-messages {{else}} number-messages_none {{/if}}">{{isNewMessage}}</span>
-  <span class="time-messages {{ classNames }}__time-messages">{{ time }}</span>
+  <span class="{{ classNames }}__number-messages {{#if isNewMessage }} number-messages {{else}} number-messages_none {{/if}}">
+    {{ isNewMessage }}
+  </span>
+  <span class="time-messages {{ classNames }}__time-messages">
+    {{ time }}
+  </span>
 </div>

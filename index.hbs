@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -8,6 +7,10 @@
     <script type="module" href="src/components/modal/modal.js"></script>
   </head>
   <body>
-    {{> main-page}}
+    <main class="main-container main-container__main-page">
+      {{> components/nav/nav }}
+      {{> pages/main-page/side-menu/side-menu }}
+      {{> pages/main-page/chat-menu/chat-menu }}
+    </main>
   </body>
 </html>

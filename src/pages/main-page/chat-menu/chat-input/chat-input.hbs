@@ -1,4 +1,4 @@
-<footer class="chat-footer {{#if isActive}}chat-footer_{{isActive}}{{/if}}">
+<footer class="chat-footer {{#if isActive }} chat-footer_{{ isActive }} {{/if}}">
   <ul class="popper popper-add-files chat-footer__popper-add-files">
     {{> components/pop-list-item/pop-list-item
       icon="static/media/media.svg"
@@ -15,10 +15,8 @@
       title="Location"
       className="popper-add-files"
     }}
-
   </ul>
-  {{> components/button/button className="attachment chat-footer"}}
+  {{> components/button/button className="attachment chat-footer" }}
   <input class="chat-input chat-footer__chat-input" type="text" name="message" id="message" placeholder="Message...">
-
-  {{> components/button/button className="send chat-footer"}}
+  {{> components/button/button className="send chat-footer" }}
 </footer>
