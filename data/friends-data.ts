@@ -1,22 +1,22 @@
 import { IFriends } from "../interfaces/IFriends";
 
-const friendsData: IFriends = {
+export const friendsData: IFriends = {
   people: [
     {
       avatar: "static/media/avatar-2.jpg",
-      name: "Ryan",
+      firstName: "Ryan",
       lastName: "Gosling",
       lastMessage: "Image...",
     },
     {
       avatar: "static/media/avatar-3.jpg",
-      name: "Marie",
+      firstName: "Marie",
       lastName: "Laforet",
       lastMessage: "Ok",
     },
     {
       avatar: "static/media/avatar-4.jpg",
-      name: "Johnny",
+      firstName: "Johnny",
       lastName: "Cash",
       lastMessage: "Amazing!",
     },
@@ -29,22 +29,22 @@ const friendsData: IFriends = {
       users: [
         {
           avatar: "static/media/avatar-1.jpg",
-          name: "Ilya",
+          firstName: "Ilya",
           lastName: "Orekhov",
         },
         {
           avatar: "static/media/avatar-2.jpg",
-          name: "Ryan",
+          firstName: "Ryan",
           lastName: "Gosling",
         },
         {
           avatar: "static/media/avatar-3.jpg",
-          name: "Marie",
+          firstName: "Marie",
           lastName: "Laforet",
         },
         {
           avatar: "static/media/avatar-4.jpg",
-          name: "Johnny",
+          firstName: "Johnny",
           lastName: "Cash",
         },
       ],
@@ -56,21 +56,20 @@ const friendsData: IFriends = {
       users: [
         {
           avatar: "static/media/avatar-1.jpg",
-          name: "Ilya",
+          firstName: "Ilya",
           lastName: "Orekhov",
         },
         {
           avatar: "static/media/avatar-2.jpg",
-          name: "Ryan",
+          firstName: "Ryan",
           lastName: "Gosling",
         },
         {
           avatar: "static/media/avatar-4.jpg",
-          name: "Johnny",
+          firstName: "Johnny",
           lastName: "Cash",
         },
       ],
     },
   ],
 };
-export default friendsData;

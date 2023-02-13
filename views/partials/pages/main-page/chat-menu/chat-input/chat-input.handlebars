@@ -1,0 +1,22 @@
+<footer class="chat-footer {{#if isActive }} chat-footer_{{ isActive }} {{/if}}">
+  <ul class="popper popper-add-files chat-footer__popper-add-files">
+    {{> components/pop-list-item/pop-list-item
+      icon="media/media.svg"
+      title="Media"
+      className="popper-add-files"
+    }}
+    {{> components/pop-list-item/pop-list-item
+      icon="media/file-add.svg"
+      title="File"
+      className="popper-add-files"
+    }}
+    {{> components/pop-list-item/pop-list-item
+      icon="media/location.svg"
+      title="Location"
+      className="popper-add-files"
+    }}
+  </ul>
+  {{> components/button/button className="attachment chat-footer" }}
+  <input class="chat-input chat-footer__chat-input" type="text" name="message" id="message" placeholder="Message...">
+  {{> components/button/button className="send chat-footer" }}
+</footer>

@@ -1,0 +1,20 @@
+<main class="main-container main-container__main-page">
+  {{> pages/main-page/side-menu/side-menu }}
+  {{> pages/main-page/chat-menu/chat-menu }}
+  {{#modal isPopup=true }}
+    <h1 class="title add-user__title">
+      Add User
+    </h1>
+    <div class="input-container modal__input-container">
+      <input id="login" type="text" class="input modal__input" placeholder=" ">
+      <label for="login" class="placeholder">
+        Login
+      </label>
+    </div>
+    {{> components/button/button
+      className="add-user-modal"
+      href="/"
+      label="Invite"
+    }}
+  {{/modal}}
+</main>

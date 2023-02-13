@@ -1,0 +1,12 @@
+.side-menu {
+  position: absolute;
+  top:0px;
+  left:0px;
+  width: 288px;
+  height: 100vh;
+  display: flex;
+  z-index: 1000;
+  flex-direction: column;
+  background: rgb(39,43,45);
+  background: linear-gradient(135deg, rgba(39,43,45,1) 0%, rgba(50,56,60,1) 100%);
+}

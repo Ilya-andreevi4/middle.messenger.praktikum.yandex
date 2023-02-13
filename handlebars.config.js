@@ -1,4 +1,5 @@
 module.exports = {
-  data: "src/data/**",
-  partials:"src",
-}
+  layouts: "views/layouts",
+  partials: "views/partials",
+  defaultLayout: "mainLayot.handlebars",
+};

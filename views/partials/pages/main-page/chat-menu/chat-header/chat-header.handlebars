@@ -1,0 +1,17 @@
+<header class="chat-header {{#if isActive }} chat-header_{{ isActive }} {{/if}}">
+  <div class="user-info chat-header__user-info">
+    {{> components/avatar/avatar
+      src="media/avatar-4.jpg"
+      className="chat-header"
+    }}
+    <div class="user-title chat-header__user-title">
+      <h2 class="user-name chat-header__user-name">
+        {{ user-name }}
+      </h2>
+      <p class="user-status chat-header__user-status {{ user-status }}">
+        {{ user-status }}
+      </p>
+    </div>
+  </div>
+  <img src="media/more.svg" class="icon chat-header__icon" alt="more" />
+</header>

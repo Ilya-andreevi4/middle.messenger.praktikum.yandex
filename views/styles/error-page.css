@@ -1,0 +1,16 @@
+
+.error-page__title {
+  font-size: 40px;
+  font-weight: 400;
+  margin-bottom: 40px;
+}
+
+.error-page__text {
+  font-size: 20px;
+  margin-bottom: 64px;
+}
+
+.error-page__link {
+  font-size: 11px;
+  color: #0BB7DF;
+}
