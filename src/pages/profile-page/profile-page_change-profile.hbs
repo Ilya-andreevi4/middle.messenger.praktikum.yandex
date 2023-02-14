@@ -1,0 +1,55 @@
+{{#> main style="../../../style/index.pcss" }}
+  <form action="./profile-page.html" class="form profile-page__form">
+    <div class="avatar-box profile-page__avatar-box" onclick="location.href='/src/pages/profile-page/profile-page_change-avatar.html'">
+      <img src="/static/media/union.svg" alt="avatar" class="avatar profile-page__avatar">
+      <div class="avatar-box_hover-background">
+        <h2 class="title avatar-box__title">
+          Change avatar
+        </h2>
+      </div>
+    </div>
+    <div class="input-container profile-page__input-container">
+      <p class="text profile-page__input-lable">
+        Mail
+      </p>
+      <input id="email" type="email" class="input profile-page__input" placeholder="pochta@yandex.ru">
+    </div>
+    <div class="input-container profile-page__input-container">
+      <p class="text profile-page__input-lable">
+        Login
+      </p>
+      <input id="login" type="text" class="input profile-page__input" placeholder="ivanivanov">
+    </div>
+    <div class="input-container profile-page__input-container">
+      <p class="text profile-page__input-lable">
+        Name
+      </p>
+      <input id="first_name" type="text" class="input profile-page__input" placeholder="Ivan">
+    </div>
+    <div class="input-container profile-page__input-container">
+      <p class="text profile-page__input-lable">
+        Second name
+      </p>
+      <input id="second_name" type="text" class="input profile-page__input" placeholder="Ivanov">
+    </div>
+    <div class="input-container profile-page__input-container">
+      <p class="text profile-page__input-lable">
+        Chat name
+      </p>
+      <input type="text" id="display_name" name="display_name" placeholder="Ivan" class="input profile-page__input">
+    </div>
+    <div class="input-container profile-page__input-container profile-page__input-container_last">
+      <p class="text profile-page__input-lable">
+        Phone
+      </p>
+      <input type="tel" id="phone" name="phone" placeholder="+7 (909) 967 30 30" class="input profile-page__input" minlength="10" maxlength="14">
+    </div>
+      {{> components/button/button label="Save" }}
+  </form>
+  <div class="side-panel">
+    {{> components/button/button
+      className="side-panel"
+      href="/"
+    }}
+  </div>
+{{/main}}
