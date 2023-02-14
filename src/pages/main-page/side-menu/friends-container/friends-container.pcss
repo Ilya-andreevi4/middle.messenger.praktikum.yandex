@@ -5,14 +5,13 @@
   flex-direction: column;
   align-items: stretch;
   justify-content: space-between;
-  background: rgb(39, 43, 45);
   background: linear-gradient(135deg, rgb(39, 43, 45) 0%, rgb(50, 56, 60) 100%);
 }
 
 .chats-header {
   height: 34px;
-  background: linear-gradient(270deg, rgba(164, 164, 164, 0.7) 0%, #A4A4A4 30.73%, #A4A4A4 69.27%, rgba(164, 164, 164, 0.7) 100%);
-  color: rgba(172, 243, 255, 0.9);
+  background: $lighter-bg;
+  color: $accent-blue;
   display: flex;
   justify-content: start;
   align-items: center;
@@ -37,6 +36,7 @@
   width: 24px;
   height: 24px;
 }
+
 .chats-header__groups .icon {
   width: 26px;
 }
@@ -46,7 +46,7 @@
   align-items: center;
   justify-content: space-between;
   background-color: rgba(0, 0, 0, 0.1);
-  color: rgba(255, 255, 255, 0.4);
+  color: $transparent-white;
   min-width: 135px;
   height: 24px;
   margin-left: 16px;
@@ -54,7 +54,7 @@
 }
 
 .chats-header__input {
-  color: rgba(255, 255, 255, 0.8);
+  color: $transparent-white;
   min-width: 78px;
   width: fit-content;
   padding-left: 16px;
@@ -63,7 +63,7 @@
 .chats-header__input::placeholder {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
-  color: rgba(255, 255, 255, 0.4);
+  color: $transparent-white;
 }
 
 .chats-header__input-box .chats-header__icon {
@@ -79,6 +79,7 @@
 .chats-list__user-title {
   padding: 0px;
 }
+
 .chats-list__user-name {
   font-weight: 500;
   opacity: 80%;
@@ -98,7 +99,7 @@
 .chats-list__chat-info_active {
   color: white;
   background: rgba(0, 0, 0, 0.15);
-  border-left: 4px solid #0BB7DF;
+  border-left: 4px solid $accent-blue;
 }
 
 .chats-list__chat-info_active .avatar {
@@ -107,18 +108,18 @@
 .chats-list__chat-info_active .time-messages,
 .chats-list__chat-info_active .last-message,
 .chats-list__chat-info_active .friends-name {
-  color: rgba(255, 255, 255, 0.9);
+  color: $white;
   opacity: 1;
 }
 
 .last-message {
   font-size: 16px;
-  color: rgba(255, 255, 255, 0.6);
+  color: $transparent-white;
 }
 
 .status-chat {
   font-size: 16px;
-  color: white;
+  color: $white;
   display: flex;
   margin-left: 24px;
   flex-direction: column;
@@ -133,9 +134,9 @@
   height: 24px;
   font-weight: bold;
   border-radius: 50px;
-  background-color: #FF7F05;
+  background-color: $orange;
 }
 
 .time-messages {
-  color: rgba(255, 255, 255, 0.4);
+  color: $transparent-white;
 }

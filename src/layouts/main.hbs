@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>My project</title>
+    <link rel="stylesheet" href="{{#if style }}{{style}}{{else}}style/index.pcss{{/if}}"/>
+
+  </head>
+  <body>
+    <main class="container">
+      {{> components/nav/nav }}
+      {{> @partial-block }}
+    </main>
+  </body>
+</html>

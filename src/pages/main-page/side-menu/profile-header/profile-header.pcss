@@ -4,12 +4,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgb(11, 217, 251);
-  background: linear-gradient(
-    90deg,
-    rgb(11, 217, 251) 0%,
-    rgb(14, 59, 121) 100%
-  );
+  background: $accent-blue;
+  background: linear-gradient(90deg, $accent-blue 0%, rgb(14, 59, 121) 100%);
 }
 
 .user-info {
@@ -20,7 +16,7 @@
 }
 
 .user-title {
-  color: white;
+  color: $white;
   text-align: left;
   padding: 0px 16px;
 }
@@ -40,12 +36,11 @@
 }
 
 .online {
-  color: #3be200;
+  color: $green;
 }
 
 .offline {
-  color: white;
-  opacity: 0.6;
+  color: $transparent-white;
 }
 
 .arrow {

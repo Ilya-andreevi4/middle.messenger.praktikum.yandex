@@ -1,17 +1,11 @@
-.container {
-  position:fixed;
+.container.container__modal {
+  position: fixed;
   top: 0;
   left: 0;
-  height: 100vh;
-  width: 100%;
   background: none;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 
-.container.container_darker{
+.container.container_darker {
   z-index: 8500;
   background: rgba(0, 0, 0, 0.4);
 }
@@ -20,17 +14,17 @@
   padding: 50px 30px 0px 30px;
   display: flex;
   position: relative;
-  color: rgba(255, 255, 255, 0.9);
+  color: $white;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   height: fit-content;
   width: 340px;
-  background: linear-gradient(174.5deg, #272B2D 0%, #32383C 100%);
+  background: $darker-bg;
   box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.25);
 }
 
-.modal .title{
+.modal .title {
   font-size: 20px;
   font-weight: 400;
 }
@@ -39,14 +33,14 @@
   margin-bottom: 50px;
 }
 .add-user__title_error {
-  color: rgb(220, 47, 85);
+  color: $warning-red;
 }
 
-input.modal__input {
+.modal__input {
   position: relative;
   height: 32px;
   margin-bottom: 20px;
-  border-bottom: 1 solid rgba(11, 183, 223, 1);
+  border-bottom: 1px solid $accent-blue;
 }
 
 .input-container {
@@ -55,12 +49,12 @@ input.modal__input {
   width: 100%;
 }
 
-.modal__input-container{
+.modal__input-container {
   margin-bottom: 32px;
 }
 
 .placeholder {
-  color: rgba(255, 255, 255, 0.9);
+  color: $white;
   left: 0px;
   line-height: 13px;
   pointer-events: none;
@@ -70,17 +64,17 @@ input.modal__input {
   top: 10px;
 }
 
-input.modal__input:focus ~ .placeholder,
-input.modal__input:not(:placeholder-shown) ~ .placeholder {
+.modal__input:focus ~ .placeholder,
+.modal__input:not(:placeholder-shown) ~ .placeholder {
   transform: translateY(-30px) scale(0.75);
 }
 
-input.modal__input:focus:not(:placeholder-shown) ~ .placeholder {
-  color: #808097;
+.modal__input:focus:not(:placeholder-shown) ~ .placeholder {
+  color: $transparent-white;
 }
 
-input.modal__input:focus ~ .placeholder {
-  color: #dc2f55;
+.modal__input:focus ~ .placeholder {
+  color: $warning-red;
 }
 
 .modal__button {
@@ -94,7 +88,7 @@ input.modal__input:focus ~ .placeholder {
 
 .modal__link {
   font-size: 11px;
-  color: #0BB7DF;
+  color: $accent-blue;
   margin-bottom: 30px;
 }
 
@@ -114,7 +108,7 @@ input.modal__input:focus ~ .placeholder {
   margin-bottom: 16px;
 }
 
-input.input.modal__input#file {
+.input.modal__input#file {
   background: none;
   width: 1px;
   height: 1px;
@@ -122,22 +116,22 @@ input.input.modal__input#file {
   opacity: 0;
 }
 
-input.input.modal__input#file + label {
-  color: #0BB7DF;
+.input.modal__input#file + .label {
+  color: $accent-blue;
   padding: 8px 0px;
   position: relative;
   font-weight: 700;
   font-size: 16px;
   line-height: 13px;
   width: 130px;
-  border-bottom: 1px solid rgb(11, 217, 251);
-  top:0px;
+  border-bottom: 1px solid $accent-blue;
+  top: 0px;
   left: 0px;
 }
 
-input.input.modal__input#file + label.uploaded {
+.input.modal__input#file + .label.label_uploaded {
   position: relative;
-  top:0px;
+  top: 0px;
   left: 0px;
   display: flex;
   justify-content: flex-end;
@@ -145,7 +139,7 @@ input.input.modal__input#file + label.uploaded {
   flex-direction: row;
   gap: 6px;
   padding: 0px;
-  color: rgba(255, 255, 255, 0.6);
+  color: $transparent-white;
   font-weight: 700;
   font-size: 16px;
   line-height: 13px;
@@ -153,6 +147,6 @@ input.input.modal__input#file + label.uploaded {
   border: none;
 }
 
-input.input.modal__input#file + label:hover {
+.input.modal__input#file + .label:hover {
   cursor: pointer;
 }

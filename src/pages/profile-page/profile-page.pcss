@@ -12,7 +12,7 @@ form.profile-page__form {
   position: relative;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(174.5deg, #272B2D 0%, #32383C 100%);
+  background: $darker-bg;
   border: 1px solid #000000;
   box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.25);
 }
@@ -26,7 +26,7 @@ form.profile-page__form {
   height: 100%;
 }
 
-.avatar-box:hover> .avatar-box_hover-background {
+.avatar-box:hover > .avatar-box_hover-background {
   cursor: pointer;
   display: flex;
   justify-content: center;
@@ -68,11 +68,11 @@ form.profile-page__form {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #EAEAEA;
+  border-bottom: 1px solid #eaeaea;
 }
 
 .profile-page__input-container_last {
-  border-bottom:none;
+  border-bottom: none;
   margin-bottom: 56px;
 }
 
@@ -87,43 +87,57 @@ form.profile-page__form {
 
 .profile-page__link {
   font-size: 13px;
-  color: #0BB7DF;
+  color: $accent-blue;
 }
 
 .profile-page__link_red {
-  color: #DC2F55;
+  color: $warning-red;
   font-weight: bold;
 }
 
 .side-panel {
   position: absolute;
+  background: $darker-bg;
   top: 0;
   left: 0;
   width: 64px;
   height: 100%;
-  background: linear-gradient(174.5deg, #272B2D 0%, #32383C 100%);
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.side-panel__button {
+.side-panel .side-panel__button {
   border: none;
   margin: 0;
   width: 100%;
   height: 100%;
   box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.25);
-  background-image: url("/static/media/arrow-back.svg");
+  background: $darker-bg;
+  background-image: url("../static/media/arrow-back.svg");
   background-size: 28px;
   background-repeat: no-repeat;
   background-position: center;
 }
 
-.side-panel__button:hover {
-  cursor: pointer;
-  box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.20);
-  background-image: url("/static/media/arrow-back.svg");
+.side-panel .side-panel__button:hover {
+  background: linear-gradient(
+    174.5deg,
+    rgb(40, 45, 45) 0%,
+    rgb(55, 60, 60) 100%
+  );
+  background-image: url("../static/media/arrow-back.svg");
   background-size: 32px;
   background-repeat: no-repeat;
   background-position: center;
+}
+
+.side-panel__button:hover .side-panel {
+  cursor: pointer;
+  box-shadow: 0px 0px 8px 1px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(
+    174.5deg,
+    rgb(40, 45, 45) 0%,
+    rgb(55, 60, 60) 100%
+  );
 }
