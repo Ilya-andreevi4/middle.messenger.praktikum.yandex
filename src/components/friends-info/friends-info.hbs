@@ -1,0 +1,16 @@
+<div class="friends-info {{ classNames }}__friends-info {{#if isActive }} friends-info_isActive {{/if}}">
+  <h2 class="friends-name {{ classNames }}__friends-name">
+    {{ firstName }} {{ lastName }}
+  </h2>
+  <p class="last-message {{ classNames }}__last-message">
+    {{ lastMessage }}
+  </p>
+</div>
+<div class="status-chat {{ classNames }}__status-chat">
+  <span class="{{ classNames }}__number-messages {{#if isNewMessage }} number-messages {{else}} number-messages_none {{/if}}">
+    {{ isNewMessage }}
+  </span>
+  <span class="time-messages {{ classNames }}__time-messages">
+    {{ time }}
+  </span>
+</div>
