@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "parcel build index.hbs",
-    "start": "node server.js"
+    "start": "parcel build index.hbs && node server/server.js"
   },
   "author": "Ilya Orekhov",
   "license": "ISC",
