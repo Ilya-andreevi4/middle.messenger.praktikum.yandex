@@ -32,10 +32,6 @@ export const AvatarsExports = {
   AvatarBox,
 };
 
-export const MediaExports = {
-  ChatPhoto,
-};
-
 export const IconsExports = {
   ArrowBackIcon,
   ArrowDownIcon,
@@ -52,4 +48,8 @@ export const IconsExports = {
   SettingsIcon,
   UnionIcon,
   UserIcon,
+};
+
+export const MediaExports = {
+  ChatPhoto,
 };

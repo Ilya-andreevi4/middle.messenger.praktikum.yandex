@@ -1,19 +1,15 @@
 import { ChatInfo } from "./components/chat-info";
 import { Message } from "./components/message";
 import { PopListItem } from "./components/pop-list-item";
-import { MainPage } from "./pages/main-page/index";
-import { registerComponent } from "./utils/registerComponent";
+import { Modal } from "./layouts/modal";
+import { registerComponent } from "./utils/register-component";
+import { renderDom } from "./utils/render-dom";
 
 registerComponent("ChatInfo", ChatInfo);
 registerComponent("Message", Message);
 registerComponent("PopListItem", PopListItem);
+registerComponent("Modal", Modal);
 
 window.addEventListener("DOMContentLoaded", () => {
-  const root = document.querySelector("#app")!;
-
-  const mainPage = new MainPage();
-
-  root.append(mainPage.getContent()!);
-
-  mainPage.dispatchComponentDidMount();
+  renderDom("main");
 });

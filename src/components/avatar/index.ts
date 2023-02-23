@@ -1,5 +1,5 @@
 import Block from "../../utils/Block";
-import { AvatarsExports } from "../../utils/MediaExports";
+import { AvatarsExports } from "../../utils/media-exports";
 import template from "./avatar.hbs";
 
 interface AvatarProps {

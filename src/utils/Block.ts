@@ -131,6 +131,7 @@ class Block {
   protected compile(template: (context: any) => string, context: any) {
     const contextAndStubs = { ...context, children: this.children };
 
+    // if (typeof this.children !== typeof Block) {
     Object.entries(this.children).forEach(([name, component]) => {
       if (Array.isArray(component)) {
         contextAndStubs[name] = component.map(
@@ -140,11 +141,11 @@ class Block {
         contextAndStubs[name] = `<div data-id="${component.id}"></div>`;
       }
     });
+    // }
 
     const html = template(contextAndStubs);
     const temp = document.createElement("template");
     temp.innerHTML = html;
-
     Object.entries(this.children).forEach(([_, component]) => {
       if (Array.isArray(component)) {
         component.forEach((child) => {

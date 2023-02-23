@@ -1,11 +1,11 @@
 import Block from "../../../../utils/Block";
-import { chatsData } from "../../../../utils/data/chats-data";
-import { IGroup, IUser } from "../../../../utils/interfaces/IUser";
+import { messagesData } from "../../../../utils/data";
+import { IChat } from "../../../../utils/Interfaces";
 import template from "./chat-main.hbs";
 
 interface ChatMainProps {
   isActive: boolean;
-  activeChat: IUser | IGroup | undefined;
+  activeChat: IChat | undefined;
 }
 export class ChatMain extends Block {
   constructor(props: ChatMainProps) {
@@ -14,7 +14,7 @@ export class ChatMain extends Block {
 
   init() {
     if (this.props.activeChat) {
-      const currentChat = chatsData.find((chat) => {
+      const currentChat = messagesData.find((chat) => {
         if (chat.authorID === this.props.activeChat.id) {
           return chat;
         }

@@ -1,21 +1,22 @@
-import { IPeople } from "../../../../utils/interfaces/IUser";
+import { IChat } from "../../../../utils/Interfaces";
 import Block from "../../../../utils/Block";
 import template from "./friends-container.hbs";
-import { IconsExports } from "../../../../utils/MediaExports";
+import { IconsExports } from "../../../../utils/media-exports";
 import { Icon } from "../../../../components/icon";
 
 interface FriendsContainerProps {
-  people: IPeople;
+  chats: IChat[];
 }
 
 export class FriendsContainer extends Block {
   constructor(props: FriendsContainerProps) {
     super(props);
+    this.props.friends = props.chats.filter((chat) => !chat.isGroup);
+    this.props.groups = props.chats.filter((chat) => chat.isGroup);
+    // Иконки хедеров для чатов
   }
 
   init() {
-    this.props.friends = this.props.people.friends;
-    this.props.groups = this.props.people.groups;
     this.children.searchIcon = new Icon({
       src: IconsExports.SearchIcon,
       className: "chats-header",
@@ -42,7 +43,45 @@ export class FriendsContainer extends Block {
     });
   }
 
+  // TODO: Выбор чата с помощью клика
+  handleClick(ChatId: number) {
+    console.log("Click on chat #", ChatId);
+
+    // Находим текущий чат
+    // const activeChatIndex = chatsData.findIndex((chat) => chat.isActive);
+
+    // let prevChat;
+    // // Закрываем текущий чат
+    // if (activeChatIndex >= 0) {
+    //   prevChat = {
+    //     ...chatsData[activeChatIndex],
+    //     isActive: false,
+    //   };
+    //   chatsData[activeChatIndex] = prevChat;
+    // } else {
+    //   console.error("Chat is not defined");
+    // }
+
+    // // Если нажат открытый чат, то закрываем его
+    // if (prevChat?.id === ChatId) {
+    //   // this.props.chats.setProps(chatsData);
+    //   // В ином случае => открываем выбранный чат.
+    // } else if (chatsData.some((c) => c.id === ChatId)) {
+    //   const currentFriendId = chatsData.findIndex((c) => c.id === ChatId);
+    //   chatsData[currentFriendId] = {
+    //     ...chatsData[currentFriendId],
+    //     isActive: true,
+    //   };
+    // }
+    // // this.props.chats.setProps(chatsData);
+    // // this.props.friends.setProps(friendsData.friends);
+    // // this.props.group.setProps(friendsData.groups);
+  }
+
   render() {
-    return this.compile(template, this.props);
+    return this.compile(template, {
+      ...this.props,
+      handleClick: this.handleClick,
+    });
   }
 }

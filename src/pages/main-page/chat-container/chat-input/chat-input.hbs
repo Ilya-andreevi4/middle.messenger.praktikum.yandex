@@ -1,13 +1,13 @@
 <footer class="chat-footer {{#if isActive }} chat-footer_active {{/if}}">
-  <ul class="popper popper-add-files chat-footer__popper-add-files">
-    {{#each popItems}}
-      {{{PopListItem icon=icon title=title className=className}}}
-    {{/each}}
-  </ul>
+  {{#if popIsOpen }}
+    <ul class="popper popper-add-files chat-footer__popper-add-files">
+      {{#each popItems}}
+        {{{PopListItem icon=icon title=title className=className}}}
+      {{/each}}
+    </ul>
+  {{/if}}
 
   {{{attachButton}}}
-  {{!-- {{> components/button/button className="attachment chat-footer" }} --}}
   <input class="chat-input chat-footer__chat-input" type="text" name="message" id="message" placeholder="Message...">
   {{{sendButton}}}
-  {{!-- {{> components/button/button className="send chat-footer" }} --}}
 </footer>

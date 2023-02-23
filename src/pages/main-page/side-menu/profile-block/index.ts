@@ -1,9 +1,10 @@
 import { Avatar } from "../../../../components/avatar";
 import Block from "../../../../utils/Block";
 import template from "./profile-block.hbs";
-import { AvatarsExports, IconsExports } from "../../../../utils/MediaExports";
+import { AvatarsExports, IconsExports } from "../../../../utils/media-exports";
 import { Icon } from "../../../../components/icon";
-import { userStatus } from "../../../../utils/interfaces/IUser";
+import { userStatus } from "../../../../utils/Interfaces";
+import { renderDom } from "../../../../utils/render-dom";
 
 interface ProfileBlockProps {
   avatarSrc: string;
@@ -25,7 +26,9 @@ export class ProfileBlock extends Block {
       className: "profile-block",
       alt: "settings",
       events: {
-        click: () => {},
+        click: () => {
+          renderDom("profile");
+        },
       },
     });
 
@@ -33,7 +36,9 @@ export class ProfileBlock extends Block {
       src: AvatarsExports.Avatar_1,
       className: "profile-header",
       events: {
-        click: () => {},
+        click: () => {
+          renderDom("profile");
+        },
       },
     });
   }

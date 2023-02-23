@@ -1,7 +1,7 @@
 import { Avatar } from "../../../../components/avatar";
 import { Icon } from "../../../../components/icon";
 import Block from "../../../../utils/Block";
-import { IconsExports } from "../../../../utils/MediaExports";
+import { IconsExports } from "../../../../utils/media-exports";
 import template from "./chat-header.hbs";
 
 interface ChatHeaderProps {

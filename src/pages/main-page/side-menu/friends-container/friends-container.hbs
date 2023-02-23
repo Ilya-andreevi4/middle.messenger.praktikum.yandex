@@ -21,13 +21,13 @@
       {{{ChatInfo
         id=id
         avatarSrc=avatar
-        firstName=firstName
-        lastName=lastName
+        title=title
         lastMessage=lastMessage
         className="chats-list"
         numberNewMessages=numberNewMessages
         time=time
         isActive=isActive
+        onClick=../handleClick
       }}}
     {{/each}}
   </ul>
@@ -42,13 +42,15 @@
   <ul class="chats-list">
     {{#each groups}}
       {{{ChatInfo
-        avatarSrc=this.avatar
-        firstName=this.title
-        lastMessage=this.lastMessage
+        id=id
+        avatarSrc=avatar
+        title=title
+        lastMessage=lastMessage
         className="chats-list"
-        numberNewMessages=this.numberNewMessages
-        time=this.time
+        numberNewMessages=numberNewMessages
+        time=time
         isActive=isActive
+        onClick=../handleClick
       }}}
     {{/each}}
   </ul>

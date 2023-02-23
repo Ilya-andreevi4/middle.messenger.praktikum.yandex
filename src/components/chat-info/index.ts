@@ -4,13 +4,13 @@ import template from "./chat-info.hbs";
 
 interface ChatInfoProps {
   id: number;
-  firstName: string;
-  lastName: string;
+  title: string;
   lastMessage?: string;
   avatarSrc: string;
   className: string;
   time?: string;
   isActive?: boolean;
+  onClick: (id: number) => void;
   events: {
     click: () => void;
   };
@@ -19,7 +19,7 @@ interface ChatInfoProps {
 
 export class ChatInfo extends Block {
   constructor(props: ChatInfoProps) {
-    super(props);
+    super({ ...props, events: { click: () => props.onClick(props.id) } });
   }
   protected init(): void {
     this.children.avatar = new Avatar({
@@ -30,6 +30,7 @@ export class ChatInfo extends Block {
       src: this.props.avatarSrc,
     });
   }
+
   render() {
     return this.compile(template, this.props);
   }

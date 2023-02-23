@@ -4,6 +4,7 @@
 @import "../components/button/button.pcss";
 @import "../components/avatar/avatar.pcss";
 @import "../components/message/message.pcss";
+@import "../components/form/form.pcss";
 @import "../layouts/modal/modal.pcss";
 @import "../components/pop-list-item/pop-list-item.pcss";
 @import "../components/chat-info/chat-info.pcss";
@@ -14,7 +15,6 @@
 @import "../pages/main-page/chat-container/chat-header/chat-header.pcss";
 @import "../pages/main-page/chat-container/chat-main/chat-main.pcss";
 @import "../pages/main-page/chat-container/chat-input/chat-input.pcss";
-@import "../pages/error-page/error-page.pcss";
 @import "../pages/entry-page/entry-page.pcss";
 @import "../pages/profile-page/profile-page.pcss";
 
@@ -89,4 +89,20 @@ form {
   align-items: center;
   flex-direction: column;
   background: $grey-bg;
+}
+
+.error-page__title {
+  font-size: 40px;
+  font-weight: 400;
+  margin-bottom: 40px;
+}
+
+.error-page__text {
+  font-size: 20px;
+  margin-bottom: 64px;
+}
+
+.error-page__link {
+  font-size: 11px;
+  color: $accent-blue;
 }

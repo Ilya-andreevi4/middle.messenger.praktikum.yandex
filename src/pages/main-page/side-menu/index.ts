@@ -1,9 +1,9 @@
-import { friendsData } from "../../../utils/data/friends-data";
+import { chatsData } from "../../../utils/data";
 import Block from "../../../utils/Block";
 import { FriendsContainer } from "./friends-container";
 import { ProfileBlock } from "./profile-block";
 import template from "./side-menu.hbs";
-import { userData } from "../../../utils/data/user-data";
+import { userData } from "../../../utils/data";
 
 export class SideMenu extends Block {
   constructor() {
@@ -17,7 +17,7 @@ export class SideMenu extends Block {
       userStatus: "online",
     });
     this.children.friendsContainer = new FriendsContainer({
-      people: friendsData,
+      chats: chatsData,
     });
   }
 

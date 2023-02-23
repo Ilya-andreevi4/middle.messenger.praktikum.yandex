@@ -10,7 +10,9 @@ export class MainPage extends Block {
 
   init() {
     this.children.sideMenu = new SideMenu();
-    this.children.chatContainer = new ChatContainer();
+    this.children.chatContainer = new ChatContainer({
+      isActive: false,
+    });
   }
 
   render() {

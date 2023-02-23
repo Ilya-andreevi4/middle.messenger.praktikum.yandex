@@ -1,10 +1,11 @@
 import { Button } from "../../../../components/button";
 import Block from "../../../../utils/Block";
-import { IconsExports } from "../../../../utils/MediaExports";
+import { IconsExports } from "../../../../utils/media-exports";
 import template from "./chat-input.hbs";
 
 interface ChatInputProps {
   isActive: boolean;
+  popIsOpen: boolean;
 }
 export class ChatInput extends Block {
   constructor(props: ChatInputProps) {
@@ -12,6 +13,7 @@ export class ChatInput extends Block {
   }
 
   init() {
+    this.props.popIsOpen = false;
     this.props.popItems = [
       {
         icon: IconsExports.MediaIcon,
@@ -34,7 +36,9 @@ export class ChatInput extends Block {
       className: "attachment chat-footer",
       label: "",
       events: {
-        click: () => {},
+        click: () => {
+          this.props.popIsOpen = !this.props.popIsOpen;
+        },
       },
     });
     this.children.sendButton = new Button({

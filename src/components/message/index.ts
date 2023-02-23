@@ -1,7 +1,7 @@
 import { Icon } from "../icon";
 import Block from "../../utils/Block";
 import template from "./message.hbs";
-import { IconsExports } from "../../utils/MediaExports";
+import { IconsExports } from "../../utils/media-exports";
 
 interface MessageProps {
   from: string;
