@@ -1,0 +1,92 @@
+@import "../components/icon/icon.pcss";
+@import "./color-vars.pcss";
+@import "../components/nav/nav.pcss";
+@import "../components/button/button.pcss";
+@import "../components/avatar/avatar.pcss";
+@import "../components/message/message.pcss";
+@import "../layouts/modal/modal.pcss";
+@import "../components/pop-list-item/pop-list-item.pcss";
+@import "../components/chat-info/chat-info.pcss";
+@import "../pages/main-page/side-menu/side-menu.pcss";
+@import "../pages/main-page/side-menu/profile-block/profile-block.pcss";
+@import "../pages/main-page/side-menu/friends-container/friends-container.pcss";
+@import "../pages/main-page/chat-container/chat-container.pcss";
+@import "../pages/main-page/chat-container/chat-header/chat-header.pcss";
+@import "../pages/main-page/chat-container/chat-main/chat-main.pcss";
+@import "../pages/main-page/chat-container/chat-input/chat-input.pcss";
+@import "../pages/error-page/error-page.pcss";
+@import "../pages/entry-page/entry-page.pcss";
+@import "../pages/profile-page/profile-page.pcss";
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
+  text-shadow: 0 0 4 rgba(0, 0, 0, 0.25);
+  color: $white;
+}
+
+ul,
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+.text {
+  font-size: 16px;
+  color: $white;
+  font-weight: lighter;
+}
+
+.text.text_uploaded {
+  opacity: 60%;
+  margin-bottom: 20px;
+}
+
+.text.text_error {
+  font-size: 11px;
+  color: $warning-red;
+  position: absolute;
+  bottom: 20px;
+  margin: 0px auto;
+}
+
+.popper {
+  display: flex;
+  background: $lighter-bg;
+  border: 2px solid #000000;
+  box-shadow: 2px -5px 10px rgba(0, 0, 0, 0.25),
+    inset 0px 0px 16px 1px rgba(0, 0, 0, 0.25);
+}
+
+input {
+  background: none;
+  text-decoration: none;
+  outline: none;
+  border: none;
+  color: $white;
+  width: 100%;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: $grey-bg;
+}

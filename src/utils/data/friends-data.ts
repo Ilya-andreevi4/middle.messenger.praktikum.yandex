@@ -1,0 +1,110 @@
+import { AvatarsExports } from "../MediaExports";
+import { IPeople } from "../interfaces/IUser";
+
+export const friendsData: IPeople = {
+  friends: [
+    {
+      id: 0,
+      avatar: AvatarsExports.Avatar_2,
+      firstName: "Ryan",
+      lastName: "Gosling",
+      lastMessage: "Image...",
+      numberNewMessages: 2,
+      time: "14:03",
+      isActive: false,
+      status: "online",
+    },
+    {
+      id: 1,
+      avatar: AvatarsExports.Avatar_3,
+      firstName: "Marie",
+      lastName: "Laforet",
+      lastMessage: "Ok",
+      time: "sun 13:33",
+      isActive: false,
+      status: "offline",
+    },
+    {
+      id: 2,
+      avatar: AvatarsExports.Avatar_4,
+      firstName: "Johnny",
+      lastName: "Cash",
+      lastMessage: "Amazing!",
+      time: "15:41",
+      isActive: true,
+      status: "online",
+    },
+  ],
+  groups: [
+    {
+      id: 3,
+      title: "Project's chat",
+      avatar: AvatarsExports.Avatar_6,
+      lastMessage: "Got it.",
+      numberNewMessages: 12,
+      time: "14:03",
+      isActive: false,
+      users: [
+        {
+          id: 4,
+          avatar: "/src/static/media/avatar-1.jpg",
+          firstName: "Ilya",
+          lastName: "Orekhov",
+          status: "online",
+        },
+        {
+          id: 5,
+          avatar: "/src/static/media/avatar-2.jpg",
+          firstName: "Ryan",
+          lastName: "Gosling",
+          status: "online",
+        },
+        {
+          id: 6,
+          avatar: "/src/static/media/avatar-3.jpg",
+          firstName: "Marie",
+          lastName: "Laforet",
+          status: "offline",
+        },
+        {
+          id: 7,
+          avatar: "/src/static/media/avatar-4.jpg",
+          firstName: "Johnny",
+          lastName: "Cash",
+          status: "online",
+        },
+      ],
+    },
+    {
+      id: 8,
+      title: "Marie's Birthday",
+      avatar: AvatarsExports.Avatar_5,
+      lastMessage: "Video...",
+      time: "14:44",
+      isActive: false,
+      users: [
+        {
+          id: 9,
+          avatar: "/src/static/media/avatar-1.jpg",
+          firstName: "Ilya",
+          lastName: "Orekhov",
+          status: "online",
+        },
+        {
+          id: 10,
+          avatar: "/src/static/media/avatar-2.jpg",
+          firstName: "Ryan",
+          lastName: "Gosling",
+          status: "online",
+        },
+        {
+          id: 11,
+          avatar: "/src/static/media/avatar-4.jpg",
+          firstName: "Johnny",
+          lastName: "Cash",
+          status: "online",
+        },
+      ],
+    },
+  ],
+};
