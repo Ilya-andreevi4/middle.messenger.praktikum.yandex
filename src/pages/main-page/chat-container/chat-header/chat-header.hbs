@@ -11,5 +11,7 @@
     </div>
   </div>
   {{{moreIcon}}}
-  {{!-- <img src="static/media/more.svg" class="icon chat-header__icon" alt="more" /> --}}
+{{#if isModalOpen}}
+  {{{inviteModal}}}
+  {{/if}}
 </header>

@@ -4,14 +4,14 @@ import template from "./pop-list-item.hbs";
 
 interface PopListItemProps {
   title: string;
-  icon?: string;
+  icon: string;
   events: {
     click: () => void;
   };
   className: string;
 }
 
-export class PopListItem extends Block {
+export class PopListItem extends Block<PopListItemProps> {
   constructor(props: PopListItemProps) {
     super(props);
   }

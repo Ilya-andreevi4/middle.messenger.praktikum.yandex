@@ -1,3 +1,4 @@
+import { Message } from "../../../../components/message";
 import Block from "../../../../utils/Block";
 import { messagesData } from "../../../../utils/data";
 import { IChat } from "../../../../utils/Interfaces";
@@ -20,7 +21,19 @@ export class ChatMain extends Block {
         }
       });
       if (currentChat) {
-        this.props.messages = currentChat.messages;
+        this.children.messages = currentChat.messages.map((message) => {
+          return new Message({
+            className: "message-list",
+            from: message.from,
+            text: message.text,
+            time: message.time,
+            image: message.image,
+            my: message.my,
+            events: {
+              click: () => {},
+            },
+          });
+        });
       }
     }
   }

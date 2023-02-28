@@ -1,0 +1,12 @@
+<input
+  id={{id}}
+  type="{{type}}"
+  class="input {{className}}__input"
+  {{#each attributes}}
+    {{key}}="{{value}}"
+  {{/each}}
+  {{#if required}}
+    required
+  {{/if}}
+  placeholder=" "
+/>

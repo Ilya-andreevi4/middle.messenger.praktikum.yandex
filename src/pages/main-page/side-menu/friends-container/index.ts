@@ -3,20 +3,32 @@ import Block from "../../../../utils/Block";
 import template from "./friends-container.hbs";
 import { IconsExports } from "../../../../utils/media-exports";
 import { Icon } from "../../../../components/icon";
+import { Field } from "../../../../components/field";
+import { ChatInfo } from "../../../../components/chat-info";
+import { chatsData } from "../../../../utils/data";
 
 interface FriendsContainerProps {
-  chats: IChat[];
+  activeChatId: number | undefined;
+  handleChangeChat: (e: Event, id: number) => void;
+  events: {
+    click: () => void;
+  };
 }
-
-export class FriendsContainer extends Block {
+export class FriendsContainer extends Block<FriendsContainerProps> {
   constructor(props: FriendsContainerProps) {
     super(props);
-    this.props.friends = props.chats.filter((chat) => !chat.isGroup);
-    this.props.groups = props.chats.filter((chat) => chat.isGroup);
-    // Иконки хедеров для чатов
   }
 
   init() {
+    this.children.friends = [] as ChatInfo[];
+    this.children.groups = [] as ChatInfo[];
+    this.children.input = new Field({
+      id: "search",
+      className: "chats-header",
+      type: "text",
+      required: false,
+      label: "Search...",
+    });
     this.children.searchIcon = new Icon({
       src: IconsExports.SearchIcon,
       className: "chats-header",
@@ -41,47 +53,53 @@ export class FriendsContainer extends Block {
         click: () => {},
       },
     });
-  }
 
-  // TODO: Выбор чата с помощью клика
-  handleClick(ChatId: number) {
-    console.log("Click on chat #", ChatId);
-
-    // Находим текущий чат
-    // const activeChatIndex = chatsData.findIndex((chat) => chat.isActive);
-
-    // let prevChat;
-    // // Закрываем текущий чат
-    // if (activeChatIndex >= 0) {
-    //   prevChat = {
-    //     ...chatsData[activeChatIndex],
-    //     isActive: false,
-    //   };
-    //   chatsData[activeChatIndex] = prevChat;
-    // } else {
-    //   console.error("Chat is not defined");
-    // }
-
-    // // Если нажат открытый чат, то закрываем его
-    // if (prevChat?.id === ChatId) {
-    //   // this.props.chats.setProps(chatsData);
-    //   // В ином случае => открываем выбранный чат.
-    // } else if (chatsData.some((c) => c.id === ChatId)) {
-    //   const currentFriendId = chatsData.findIndex((c) => c.id === ChatId);
-    //   chatsData[currentFriendId] = {
-    //     ...chatsData[currentFriendId],
-    //     isActive: true,
-    //   };
-    // }
-    // // this.props.chats.setProps(chatsData);
-    // // this.props.friends.setProps(friendsData.friends);
-    // // this.props.group.setProps(friendsData.groups);
+    chatsData.forEach((chat: IChat) => {
+      if (!chat.isGroup) {
+        (this.children.friends as ChatInfo[]).push(
+          new ChatInfo({
+            id: chat.id,
+            avatarSrc: chat.avatar,
+            title: chat.title,
+            lastMessage: chat.lastMessage,
+            className: "chats-list",
+            numberNewMessages: chat.numberNewMessages,
+            time: chat.time,
+            isActive: chat.id === this.props.activeChatId,
+            isGroup: chat.isGroup,
+            events: {
+              click: (e) => {
+                e.preventDefault();
+                this.props.handleChangeChat(e, chat.id);
+              },
+            },
+          })
+        );
+      } else {
+        (this.children.groups as ChatInfo[]).push(
+          new ChatInfo({
+            id: chat.id,
+            avatarSrc: chat.avatar,
+            title: chat.title,
+            lastMessage: chat.lastMessage,
+            className: "chats-list",
+            numberNewMessages: chat.numberNewMessages,
+            time: chat.time,
+            isActive: chat.id === this.props.activeChatId,
+            isGroup: chat.isGroup,
+            events: {
+              click: (e) => {
+                e.preventDefault();
+                this.props.handleChangeChat(e, chat.id);
+              },
+            },
+          })
+        );
+      }
+    });
   }
 
   render() {
-    return this.compile(template, {
-      ...this.props,
-      handleClick: this.handleClick,
-    });
+    return this.compile(template, this.props);
   }
 }

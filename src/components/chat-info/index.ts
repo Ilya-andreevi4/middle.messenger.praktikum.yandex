@@ -10,17 +10,20 @@ interface ChatInfoProps {
   className: string;
   time?: string;
   isActive?: boolean;
-  onClick: (id: number) => void;
+  activeChatID?: number;
+  isGroup?: boolean;
   events: {
-    click: () => void;
+    click: (e: Event, id: number) => void;
   };
   numberNewMessages?: number;
 }
 
-export class ChatInfo extends Block {
+export class ChatInfo extends Block<ChatInfoProps> {
   constructor(props: ChatInfoProps) {
-    super({ ...props, events: { click: () => props.onClick(props.id) } });
+    super(props);
+    this.props = { ...props };
   }
+
   protected init(): void {
     this.children.avatar = new Avatar({
       className: "friends",

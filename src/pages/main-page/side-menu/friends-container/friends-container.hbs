@@ -4,13 +4,7 @@
       Friends
     </h3>
     <div class="chats-header__input-box">
-      <input
-        class="input chats-header__input"
-        type="text"
-        name="search"
-        id="search"
-        placeholder="Search..."
-      />
+      {{{input}}}
       {{{searchIcon}}}
     </div>
     {{{userIcon}}}
@@ -18,17 +12,7 @@
 
   <ul class="chats-list">
     {{#each friends}}
-      {{{ChatInfo
-        id=id
-        avatarSrc=avatar
-        title=title
-        lastMessage=lastMessage
-        className="chats-list"
-        numberNewMessages=numberNewMessages
-        time=time
-        isActive=isActive
-        onClick=../handleClick
-      }}}
+      {{{this}}}
     {{/each}}
   </ul>
 
@@ -41,17 +25,7 @@
 
   <ul class="chats-list">
     {{#each groups}}
-      {{{ChatInfo
-        id=id
-        avatarSrc=avatar
-        title=title
-        lastMessage=lastMessage
-        className="chats-list"
-        numberNewMessages=numberNewMessages
-        time=time
-        isActive=isActive
-        onClick=../handleClick
-      }}}
+      {{{this}}}
     {{/each}}
   </ul>
 </main>

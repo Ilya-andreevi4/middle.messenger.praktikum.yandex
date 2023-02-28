@@ -2,8 +2,10 @@
   "extends": "airbnb",
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint"],
+  "quotes": [2, "double"],
   "rules": {
     "max-len": [2, 100],
     "@typescript-eslint/no-unused-vars": 2,
+    "linebreak-style": ["error", "windows"]
     }
 }

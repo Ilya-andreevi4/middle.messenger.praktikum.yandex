@@ -21,6 +21,8 @@ import SettingsIcon from "../../static/media/settings.svg";
 import UnionIcon from "../../static/media/union.svg";
 import UserIcon from "../../static/media/user-add.svg";
 import ChatPhoto from "../../static/media/chat-photo.jpg";
+import ChatPhoto_1 from "../../static/media/chat-photo-1.jpg";
+import ChatPhoto_2 from "../../static/media/chat-photo-2.jpg";
 
 export const AvatarsExports = {
   Avatar_1,
@@ -52,4 +54,6 @@ export const IconsExports = {
 
 export const MediaExports = {
   ChatPhoto,
+  ChatPhoto_1,
+  ChatPhoto_2,
 };

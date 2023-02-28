@@ -4,7 +4,6 @@ import template from "./profile-block.hbs";
 import { AvatarsExports, IconsExports } from "../../../../utils/media-exports";
 import { Icon } from "../../../../components/icon";
 import { userStatus } from "../../../../utils/Interfaces";
-import { renderDom } from "../../../../utils/render-dom";
 
 interface ProfileBlockProps {
   avatarSrc: string;
@@ -27,7 +26,7 @@ export class ProfileBlock extends Block {
       alt: "settings",
       events: {
         click: () => {
-          renderDom("profile");
+          window.renderDom("profile");
         },
       },
     });
@@ -37,7 +36,7 @@ export class ProfileBlock extends Block {
       className: "profile-header",
       events: {
         click: () => {
-          renderDom("profile");
+          window.renderDom("profile");
         },
       },
     });

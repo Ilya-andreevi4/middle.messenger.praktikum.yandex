@@ -1,0 +1,18 @@
+.placeholder {
+  color: $transparent-white;
+  position: absolute;
+}
+
+.input:focus ~ .placeholder,
+.input:not(:placeholder-shown) ~ .placeholder {
+  opacity: 0;
+}
+
+input {
+  background: none;
+  text-decoration: none;
+  outline: none;
+  border: none;
+  color: $white;
+  width: 100%;
+}

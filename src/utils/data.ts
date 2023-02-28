@@ -4,11 +4,11 @@ import { IChat, IСhatting, IUser } from "./Interfaces";
 export const userData: IUser = {
   id: 20,
   avatar: AvatarsExports.Avatar_1,
-  mail: "pochta@yandex.ru",
-  login: "ivanivanov",
+  mail: "ilya@yandex.ru",
+  login: "ilya-andreevi4",
   firstName: "Ilya",
   lastName: "Orekhov",
-  chatName: "Ilya Orekhov",
+  chatName: "Ilya-Andreevi4",
   phone: "+7 (909) 967 30 30",
   password: "string",
   status: "online",
@@ -127,8 +127,22 @@ export const messagesData: IСhatting[] = [
     messages: [
       {
         from: "Johnny Cash",
+        text: "Hi Ilya, I'm sick today, can you cover for me at work?",
+        time: "08:36",
+        image: MediaExports.ChatPhoto_2,
+        my: false,
+      },
+      {
+        from: "You",
+        text: "Johnny hi! Yeah, sure, no problem. Get well!",
+        time: "08:51",
+        my: true,
+      },
+      {
+        from: "Johnny Cash",
         text: "Thank you! Good luck!",
         time: "09:13",
+        my: false,
       },
       {
         from: "You",
@@ -140,6 +154,7 @@ export const messagesData: IСhatting[] = [
         from: "Johnny Cash",
         text: "Amazing!",
         time: "15:41",
+        my: false,
       },
     ],
   },

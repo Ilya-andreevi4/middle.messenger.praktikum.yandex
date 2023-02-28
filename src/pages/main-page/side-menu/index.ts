@@ -1,13 +1,19 @@
-import { chatsData } from "../../../utils/data";
 import Block from "../../../utils/Block";
 import { FriendsContainer } from "./friends-container";
 import { ProfileBlock } from "./profile-block";
 import template from "./side-menu.hbs";
 import { userData } from "../../../utils/data";
 
-export class SideMenu extends Block {
-  constructor() {
-    super();
+interface SideMenuProps {
+  activeChatId: number | undefined;
+  handleChangeChat: () => void;
+  events: {
+    click: (event: Event) => void;
+  };
+}
+export class SideMenu extends Block<SideMenuProps> {
+  constructor(props: SideMenuProps) {
+    super(props);
   }
 
   init() {
@@ -17,7 +23,11 @@ export class SideMenu extends Block {
       userStatus: "online",
     });
     this.children.friendsContainer = new FriendsContainer({
-      chats: chatsData,
+      activeChatId: this.props.activeChatId,
+      handleChangeChat: this.props.handleChangeChat,
+      events: {
+        click: () => {},
+      },
     });
   }
 

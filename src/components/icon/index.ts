@@ -3,7 +3,7 @@ import Block from "../../utils/Block";
 import template from "./icon.hbs";
 
 interface IconProps {
-  src: URL;
+  src: string;
   alt: string;
   events: {
     click: () => void;
@@ -11,7 +11,7 @@ interface IconProps {
   className: string;
 }
 
-export class Icon extends Block {
+export class Icon extends Block<IconProps> {
   constructor(props: IconProps) {
     super(props);
   }

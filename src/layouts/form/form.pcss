@@ -1,4 +1,4 @@
-.container.container__modal {
+.container.modal__container {
   position: fixed;
   top: 0;
   left: 0;
@@ -27,11 +27,13 @@
 .modal .title {
   font-size: 20px;
   font-weight: 400;
+  margin-bottom: 56px;
 }
 
 .add-user__title {
   margin-bottom: 50px;
 }
+
 .add-user__title_error {
   color: $warning-red;
 }
@@ -39,7 +41,6 @@
 .modal__input {
   position: relative;
   height: 32px;
-  margin-bottom: 20px;
   border-bottom: 1px solid $accent-blue;
 }
 
@@ -47,38 +48,51 @@
   height: 32px;
   position: relative;
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 }
 
-.modal__input-container {
-  margin-bottom: 32px;
+.fields-container {
+  position: relative;
+  display: flex;
+  width: 100%;
+  gap: 24px;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 14px;
+  padding-bottom: 64px;
 }
 
-.placeholder {
-  color: $white;
-  left: 0px;
-  line-height: 13px;
-  pointer-events: none;
-  position: absolute;
-  transform-origin: 0 50%;
-  transition: transform 200ms, color 200ms;
-  top: 10px;
+.links-container {
+  position: relative;
+  display: flex;
+  gap: 16px;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 14px;
+  padding-bottom: 32px;
 }
 
-.modal__input:focus ~ .placeholder,
-.modal__input:not(:placeholder-shown) ~ .placeholder {
-  transform: translateY(-30px) scale(0.75);
+.placeholder.modal__placeholder {
+  transform-origin: 0 0;
+  transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out;
+}
+.modal__input:focus ~ .placeholder.modal__placeholder,
+.modal__input:not(:placeholder-shown) ~ .placeholder.modal__placeholder {
+  opacity: 0.65;
+  transform: scale(0.85) translateY(-24px);
 }
 
-.modal__input:focus:not(:placeholder-shown) ~ .placeholder {
+.modal__input-text:focus:not(:placeholder-shown) ~ .placeholder {
   color: $transparent-white;
 }
 
-.modal__input:focus ~ .placeholder {
+.modal__input-text:focus ~ .placeholder {
   color: $warning-red;
 }
 
 .modal__button {
-  margin-top: 32px;
   margin-bottom: 14px;
 }
 
@@ -92,23 +106,14 @@
   margin-bottom: 30px;
 }
 
-.modal__input-container_file {
+.input-file.modal__input-container {
   justify-content: center;
   align-items: center;
   display: flex;
   flex-direction: row;
-  margin-bottom: 44px;
 }
 
-.modal__input-container_file-uploaded {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-  margin-bottom: 16px;
-}
-
-.input.modal__input#file {
+.input.modal__input#input-file {
   background: none;
   width: 1px;
   height: 1px;
@@ -116,7 +121,7 @@
   opacity: 0;
 }
 
-.input.modal__input#file + .label {
+.input.modal__input#input-file + .placeholder {
   color: $accent-blue;
   padding: 8px 0px;
   position: relative;
@@ -129,7 +134,7 @@
   left: 0px;
 }
 
-.input.modal__input#file + .label.label_uploaded {
+.input.modal__input#input-file + .placeholder.placeholder_uploaded {
   position: relative;
   top: 0px;
   left: 0px;
@@ -147,6 +152,6 @@
   border: none;
 }
 
-.input.modal__input#file + .label:hover {
+.input.modal__input#input-file + .placeholder:hover {
   cursor: pointer;
 }

@@ -2,14 +2,7 @@
   {{#if isActive}}
     <ul class="message-list">
       {{#each messages}}
-        {{{Message
-          className="message-list"
-          from=from
-          text=text
-          time=time
-          image=image
-          my=my
-        }}}
+        {{{this}}}
       {{/each}}
     </ul>
   {{else}}
