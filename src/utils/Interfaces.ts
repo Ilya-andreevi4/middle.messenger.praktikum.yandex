@@ -1,5 +1,21 @@
+export type Primitive =
+  | bigint
+  | boolean
+  | null
+  | number
+  | string
+  | symbol
+  | undefined;
+
 export type userStatus = "online" | "offline" | "invisible";
 
+export type JsonValue = Primitive | JsonObject | JsonArray;
+
+export interface JsonObject {
+  [key: string]: JsonValue;
+}
+
+export interface JsonArray extends Array<JsonValue> {}
 export interface IUser {
   id: number;
   avatar: string;
