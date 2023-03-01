@@ -34,6 +34,7 @@ export class MessageInputForm extends Block<MessageInputFormProps> {
     this.children.attachButton = new Button({
       className: "attachment message-input-form",
       label: "",
+      type: "button",
       events: {
         click: () => {
           this.props.popIsOpen = !this.props.popIsOpen;

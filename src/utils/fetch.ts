@@ -14,17 +14,12 @@ type Options = {
   data?: JsonObject;
 };
 
-/**
- * Функцию реализовывать здесь необязательно, но может помочь не плодить логику у GET-метода
- * На входе: объект. Пример: {a: 1, b: 2, c: {d: 123}, k: [1, 2, 3]}
- * На выходе: строка. Пример: ?a=1&b=2&c=[object Object]&k=1,2,3
- */
 function queryStringify(data: any, prefix?: string): string {
   if (typeof data !== "object") {
     throw new Error("Query data must be object");
   }
   let res: string[] = [];
-  data.forEach((p) => {
+  data.forEach((p: string) => {
     const key = prefix ? `${prefix}[${p}]` : p;
     const value =
       data[key] === null || data[key] === undefined || Number.isNaN(data[key])
