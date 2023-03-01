@@ -3,7 +3,8 @@ import template from "./button.hbs";
 
 interface ButtonProps {
   label: string;
-  events: {
+  type?: "submit" | "reset" | "button" | "menu";
+  events?: {
     click: () => void;
   };
   className: string;

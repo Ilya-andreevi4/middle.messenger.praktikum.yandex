@@ -4,7 +4,9 @@
       Friends
     </h3>
     <div class="chats-header__input-box">
-      {{{input}}}
+      {{#each searchInput}}
+        {{{this}}}
+      {{/each}}
       {{{searchIcon}}}
     </div>
     {{{userIcon}}}

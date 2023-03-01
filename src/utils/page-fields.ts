@@ -1,5 +1,6 @@
 import NamePages from "./routes";
-const { login, profile, registration } = NamePages;
+const { main, login, profile, registration, changePassword, changeProfile } =
+  NamePages;
 
 const REGULAR_EXPRESSON = {
   EMAIL: /^(.+)@(.+){2,}\.(.+){2,}$/,
@@ -8,6 +9,7 @@ const REGULAR_EXPRESSON = {
   PHONE:
     /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/,
   PASSWORD: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&_\-]{6,}$/,
+  TEXT: /^[\w\W]*$/,
 };
 
 const REGEX_ERRORS = {
@@ -18,88 +20,99 @@ const REGEX_ERRORS = {
   PHONE: "Введите корректный номер телефона",
   PASSWORD:
     "Минимум 6 символов. Введите хотя бы одну заглавную букву, одну строчную букву и цифру",
+  TEXT: "Этой ошибки здесь не должно было быть...",
+};
+
+const TEXT = {
+  id: "text",
+  label: "Text",
+  type: "text",
+  regex: REGULAR_EXPRESSON.TEXT,
+  errorText: REGEX_ERRORS.TEXT,
 };
 
 const EMAIL = {
-  name: "email",
+  id: "email",
   label: "Email",
-  require: true,
+  type: "email",
   regex: REGULAR_EXPRESSON.EMAIL,
+  errorText: REGEX_ERRORS.EMAIL,
 };
 
 const LOGIN = {
-  name: "login",
-  label: "Логин",
-  require: true,
+  id: "login",
+  label: "Login",
+  type: "text",
   regex: REGULAR_EXPRESSON.LOGIN,
-  error_text: REGEX_ERRORS.LOGIN,
+  errorText: REGEX_ERRORS.LOGIN,
 };
 
 const DISPLAY_NAME = {
-  name: "display_name",
-  label: "Имя в чате",
+  id: "display_name",
+  label: "Chat Name",
+  type: "text",
   regex: REGULAR_EXPRESSON.LOGIN,
-  error_text: REGEX_ERRORS.LOGIN,
+  errorText: REGEX_ERRORS.LOGIN,
 };
 
 const FIRST_NAME = {
-  name: "first_name",
-  label: "Имя",
+  id: "first_name",
+  type: "text",
+  label: "First Name",
   regex: REGULAR_EXPRESSON.NAME,
-  error_text: REGEX_ERRORS.NAME,
+  errorText: REGEX_ERRORS.NAME,
 };
 
 const SECOND_NAME = {
-  name: "second_name",
-  label: "Фамилия",
+  id: "last_name",
+  type: "text",
+  label: "Last Name",
   regex: REGULAR_EXPRESSON.NAME,
-  error_text: REGEX_ERRORS.NAME,
+  errorText: REGEX_ERRORS.NAME,
 };
 
 const PHONE = {
-  name: "phone",
-  label: "Телефон",
+  id: "phone",
+  type: "tel",
+  label: "Phone",
   regex: REGULAR_EXPRESSON.PHONE,
-  error_text: REGEX_ERRORS.PHONE,
+  errorText: REGEX_ERRORS.PHONE,
 };
 
 const PASSWORD = {
-  name: "password",
+  id: "password",
   type: "password",
-  label: "Пароль",
-  require: true,
+  label: "Password",
   regex: REGULAR_EXPRESSON.PASSWORD,
-  error_text: REGEX_ERRORS.PASSWORD,
+  errorText: REGEX_ERRORS.PASSWORD,
 };
 
 const OLD_PASSWORD = {
-  name: "oldPassword",
+  id: "old_password",
   type: "password",
-  label: "Старый пароль",
-  require: true,
+  label: "Old password",
   regex: REGULAR_EXPRESSON.PASSWORD,
-  error_text: REGEX_ERRORS.PASSWORD,
+  errorText: REGEX_ERRORS.PASSWORD,
 };
 
 const NEW_PASSWORD = {
-  name: "newPassword",
+  id: "new_password",
   type: "password",
-  label: "Новый пароль",
-  require: true,
+  label: "New password",
   regex: REGULAR_EXPRESSON.PASSWORD,
-  error_text: REGEX_ERRORS.PASSWORD,
+  errorText: REGEX_ERRORS.PASSWORD,
 };
 
 const REPEAT_PASSWORD = {
-  name: "repeatPassword",
+  id: "confirm_new_password",
   type: "password",
-  label: "Повторите пароль",
-  require: true,
+  label: "Repeate new password",
   regex: REGULAR_EXPRESSON.PASSWORD,
-  error_text: REGEX_ERRORS.PASSWORD,
+  errorText: REGEX_ERRORS.PASSWORD,
 };
 
-const PAGE_INPUTS = {
+const PAGE_FIELDS = {
+  [main]: [TEXT],
   [login]: [LOGIN, PASSWORD],
   [registration]: [
     EMAIL,
@@ -110,17 +123,9 @@ const PAGE_INPUTS = {
     PASSWORD,
     REPEAT_PASSWORD,
   ],
-  [profile]: [
-    EMAIL,
-    LOGIN,
-    DISPLAY_NAME,
-    FIRST_NAME,
-    SECOND_NAME,
-    PHONE,
-    OLD_PASSWORD,
-    NEW_PASSWORD,
-    REPEAT_PASSWORD,
-  ],
+  [profile]: [EMAIL, LOGIN, DISPLAY_NAME, FIRST_NAME, SECOND_NAME, PHONE],
+  [changePassword]: [OLD_PASSWORD, NEW_PASSWORD, REPEAT_PASSWORD],
+  [changeProfile]: [EMAIL, LOGIN, DISPLAY_NAME, FIRST_NAME, SECOND_NAME, PHONE],
 };
 
-export default PAGE_INPUTS;
+export default PAGE_FIELDS;

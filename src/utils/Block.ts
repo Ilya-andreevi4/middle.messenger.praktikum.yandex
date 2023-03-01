@@ -18,8 +18,8 @@ class Block<P extends Record<string, any> = any> {
     FLOW_CDU: "flow:component-did-update",
     FLOW_RENDER: "flow:render",
   } as const;
-  public id = nanoid(6);
-  protected props: Props<P>;
+  public id = nanoid(8);
+  props: Props<P>;
   public children: Record<string, Block | Block[]>;
   private eventBus: () => EventBus<BlockEvents<Props<P>>>;
   private _element: HTMLElement | null = null;
@@ -82,20 +82,20 @@ class Block<P extends Record<string, any> = any> {
 
   _componentDidMount() {
     this.componentDidMount();
+
+    Object.values(this.children).forEach((child) => {
+      if (Array.isArray(child)) {
+        child.forEach((c) => c.dispatchComponentDidMount());
+      } else {
+        child.dispatchComponentDidMount();
+      }
+    });
   }
 
   componentDidMount() {}
 
   public dispatchComponentDidMount() {
     this.eventBus().emit(Block.EVENTS.FLOW_CDM);
-
-    Object.values(this.children).forEach((child) => {
-      if (Array.isArray(child)) {
-        child.map((c) => c.dispatchComponentDidMount());
-      } else {
-        child.dispatchComponentDidMount();
-      }
-    });
   }
 
   private _componentDidUpdate(oldProps: Props<P>, newProps: Props<P>) {
@@ -105,10 +105,9 @@ class Block<P extends Record<string, any> = any> {
   }
 
   protected componentDidUpdate(
-    oldProps: Props<P>,
-    newProps: Props<P>
+    _oldProps: Props<P>,
+    _newProps: Props<P>
   ): boolean {
-    console.log("Update props: ", oldProps, newProps);
     return true;
   }
 
@@ -145,8 +144,30 @@ class Block<P extends Record<string, any> = any> {
     this._addEvents();
   }
 
-  protected compile(template: (context: any) => string, context: any) {
-    const contextAndStubs = { ...context, children: this.children };
+  private _replaceStub(
+    fragment: HTMLTemplateElement,
+    child: Block | Block[] | string
+  ) {
+    if (Array.isArray(child)) {
+      child.forEach((c) => {
+        this._replaceStub(fragment, c);
+      });
+    } else if (typeof child === "string") {
+      return child;
+    } else {
+      const stub: HTMLElement | null = fragment.content.querySelector(
+        `[data-id="${child.id}"]`
+      );
+      if (!stub) {
+        return;
+      }
+      child.getContent()?.append(...Array.from(stub.childNodes));
+      stub?.replaceWith(child.getContent()!);
+    }
+  }
+
+  protected compile(template: (props: Props) => string, props: Props) {
+    const contextAndStubs = { ...props };
 
     Object.entries(this.children).forEach(([name, component]) => {
       if (Array.isArray(component)) {
@@ -161,26 +182,14 @@ class Block<P extends Record<string, any> = any> {
     const html = template(contextAndStubs);
     const temp = document.createElement("template");
     temp.innerHTML = html;
-    Object.entries(this.children).forEach(([_, component]) => {
-      if (Array.isArray(component)) {
-        component.forEach((child) => {
-          const stub = temp.content.querySelector(`[data-id="${child.id}"]`);
 
-          if (!stub) {
-            return;
-          }
-
-          child.getContent()?.append(...Array.from(stub.childNodes));
-          stub.replaceWith(child.getContent()!);
+    Object.entries(this.children).forEach((child) => {
+      if (Array.isArray(child)) {
+        child.forEach((c) => {
+          this._replaceStub(temp, c);
         });
       } else {
-        const stub = temp.content.querySelector(`[data-id="${component.id}"]`);
-
-        if (!stub) {
-          return;
-        }
-        component.getContent()?.append(...Array.from(stub.childNodes));
-        stub.replaceWith(component.getContent()!);
+        this._replaceStub(temp, child);
       }
     });
     return temp.content;
@@ -195,7 +204,6 @@ class Block<P extends Record<string, any> = any> {
   }
 
   _makePropsProxy(props: Props<P>) {
-    // Ещё один способ передачи this, но он больше не применяется с приходом ES6+
     const self = this;
 
     return new Proxy(props, {
@@ -208,8 +216,6 @@ class Block<P extends Record<string, any> = any> {
 
         target[prop as keyof Props<P>] = value;
 
-        // Запускаем обновление компоненты
-        // Плохой cloneDeep, в следующей итерации нужно заставлять добавлять cloneDeep им самим
         self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
         return true;
       },

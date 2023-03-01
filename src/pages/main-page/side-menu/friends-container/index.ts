@@ -6,6 +6,7 @@ import { Icon } from "../../../../components/icon";
 import { Field } from "../../../../components/field";
 import { ChatInfo } from "../../../../components/chat-info";
 import { chatsData } from "../../../../utils/data";
+import PAGE_FIELDS from "../../../../utils/page-fields";
 
 interface FriendsContainerProps {
   activeChatId: number | undefined;
@@ -22,12 +23,15 @@ export class FriendsContainer extends Block<FriendsContainerProps> {
   init() {
     this.children.friends = [] as ChatInfo[];
     this.children.groups = [] as ChatInfo[];
-    this.children.input = new Field({
-      id: "search",
-      className: "chats-header",
-      type: "text",
-      required: false,
-      label: "Search...",
+    this.children.searchInput = PAGE_FIELDS["main"].map((field) => {
+      return new Field({
+        ...field,
+        id: "search",
+        className: "chats-header",
+        type: "text",
+        required: false,
+        label: "Search...",
+      });
     });
     this.children.searchIcon = new Icon({
       src: IconsExports.SearchIcon,

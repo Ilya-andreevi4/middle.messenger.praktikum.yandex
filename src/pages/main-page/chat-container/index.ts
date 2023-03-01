@@ -1,7 +1,7 @@
 import Block from "../../../utils/Block";
 import { ChatHeader } from "./chat-header";
-import { ChatInput } from "./chat-input";
 import { ChatMain } from "./chat-main";
+import { MessageInputForm } from "../../../components/message-input-form";
 import template from "./chat-container.hbs";
 import { IChat } from "../../../utils/Interfaces";
 import { AvatarsExports } from "../../../utils/media-exports";
@@ -13,7 +13,6 @@ interface ChatContainerProps {
 export class ChatContainer extends Block<ChatContainerProps> {
   constructor(props: ChatContainerProps) {
     super(props);
-    this.props = { ...props };
   }
 
   init() {
@@ -27,11 +26,16 @@ export class ChatContainer extends Block<ChatContainerProps> {
       userStatus: this.props.activeChat?.status || "offline",
     });
     this.children.chatMain = new ChatMain({
-      isActive: this.props.isActive,
-      activeChat: this.props.activeChat,
+      ...this.props,
     });
-    this.children.chatInput = new ChatInput({
-      isActive: this.props.isActive,
+    this.children.messageForm = new MessageInputForm({
+      ...this.props,
+      events: {
+        submit: (e: Event) => {
+          e.preventDefault();
+          (<MessageInputForm>this.children.messageForm).logData();
+        },
+      },
     });
   }
 

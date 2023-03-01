@@ -1,0 +1,74 @@
+.placeholder {
+  color: $transparent-white;
+  position: absolute;
+}
+
+.input:focus ~ .placeholder,
+.input:not(:placeholder-shown) ~ .placeholder {
+  opacity: 0;
+}
+
+.input-container__text_error {
+  position: absolute;
+  bottom: -20px;
+}
+
+.input-container.error .placeholder,
+.input-container.error .input {
+  color: $warning-red !important;
+  border-color: $warning-red !important;
+}
+
+.text.text_error {
+  font-size: 11px;
+  color: $warning-red;
+  position: absolute;
+  bottom: -24px;
+  margin: 0px auto;
+}
+.fields-container.profile-page__fields-container .text.text_error {
+  bottom: -12px;
+}
+
+.input-container .text_error.input-container__text_error {
+  display: none;
+}
+
+.input-container.error .text_error.input-container__text_error {
+  display: inline-block;
+}
+
+.input-container {
+  height: 32px;
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.placeholder.modal__placeholder {
+  transform-origin: 0 0;
+  transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out;
+}
+
+.modal__input:focus ~ .placeholder.modal__placeholder,
+.modal__input:not(:placeholder-shown) ~ .placeholder.modal__placeholder {
+  opacity: 0.65;
+  transform: scale(0.85) translateY(-24px);
+}
+
+.modal__input-text:focus:not(:placeholder-shown) ~ .placeholder {
+  color: $transparent-white;
+}
+
+.modal__input-text:focus ~ .placeholder {
+  color: $warning-red;
+}
+
+.input-file.modal__input-container {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+}

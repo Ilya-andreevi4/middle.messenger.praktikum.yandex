@@ -14,7 +14,7 @@ interface FormProps {
     links?: Link[];
   };
   events: {
-    submit: () => void;
+    submit: (e: Event) => void;
   };
 }
 export class Form extends Block<FormProps> {
@@ -32,6 +32,27 @@ export class Form extends Block<FormProps> {
     if (this.props.children?.links) {
       this.children.links = this.props.children.links as Link[];
     }
+  }
+  get data() {
+    return (this.children.inputFields as Field[]).reduce(
+      (result: Record<string, string>, field) => ({
+        ...result,
+        ...{ [field.props.id]: field.getValue() },
+      }),
+      {}
+    );
+  }
+
+  logData() {
+    console.log(this.data);
+  }
+
+  isValid(): boolean {
+    let result = true;
+    (this.children.inputFields as Field[]).forEach((field) => {
+      result = field.isValid() && result;
+    });
+    return result;
   }
 
   render() {

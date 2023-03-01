@@ -4,7 +4,7 @@ import { IChat, IСhatting, IUser } from "./Interfaces";
 export const userData: IUser = {
   id: 20,
   avatar: AvatarsExports.Avatar_1,
-  mail: "ilya@yandex.ru",
+  email: "ilya@yandex.ru",
   login: "ilya-andreevi4",
   firstName: "Ilya",
   lastName: "Orekhov",

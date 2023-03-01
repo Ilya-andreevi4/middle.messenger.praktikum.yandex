@@ -8,7 +8,8 @@ interface InputProps {
   attributes?: any;
   required?: boolean;
   events?: {
-    change: (e: Event) => void;
+    blur: () => void;
+    focus: () => void;
   };
 }
 

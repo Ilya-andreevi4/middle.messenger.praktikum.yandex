@@ -1,23 +1,29 @@
-import { Button } from "../../../../components/button";
-import { Field } from "../../../../components/field";
-import { PopListItem } from "../../../../components/pop-list-item";
-import Block from "../../../../utils/Block";
-import { IconsExports } from "../../../../utils/media-exports";
-import template from "./chat-input.hbs";
+import { Button } from "../../components/button";
+import { Field } from "../../components/field";
+import { PopListItem } from "../../components/pop-list-item";
+import Block from "../../utils/Block";
+import { IconsExports } from "../../utils/media-exports";
+import template from "./message-input-form.hbs";
 
-interface ChatInputProps {
+interface MessageInputFormProps {
   isActive: boolean;
+  popIsOpen?: boolean;
+  popItems?: IPopItem[];
+  children?: Record<string, Block<any> | Block<any>[]>;
+  events: {
+    submit: (e: Event) => void;
+  };
 }
 interface IPopItem {
   icon: string;
   title: string;
   className: string;
 }
-export class ChatInput extends Block {
-  constructor(props: ChatInputProps) {
-    super(props);
 
-    this.props.popIsOpen = false as boolean;
+export class MessageInputForm extends Block<MessageInputFormProps> {
+  constructor(props: MessageInputFormProps) {
+    super(props);
+    this.props.popIsOpen = false;
   }
 
   init() {
@@ -57,7 +63,7 @@ export class ChatInput extends Block {
       required: false,
     });
     this.children.attachButton = new Button({
-      className: "attachment chat-footer",
+      className: "attachment message-input-form",
       label: "",
       events: {
         click: () => {
@@ -66,12 +72,18 @@ export class ChatInput extends Block {
       },
     });
     this.children.sendButton = new Button({
-      className: "send chat-footer",
+      className: "send message-input-form",
+      type: "submit",
       label: "",
-      events: {
-        click: () => {},
-      },
     });
+  }
+
+  get data() {
+    return (this.children.messageInput as Field).getValue();
+  }
+
+  logData() {
+    console.log("New message: ", this.data);
   }
 
   render() {

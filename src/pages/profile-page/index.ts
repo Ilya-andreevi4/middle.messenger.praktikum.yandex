@@ -2,10 +2,12 @@ import { Avatar } from "../../components/avatar";
 import { Button } from "../../components/button";
 import { Field } from "../../components/field";
 import { Link } from "../../components/link";
+import { Nav } from "../../components/nav";
 import { Form } from "../../layouts/form";
 import Block from "../../utils/Block";
 import { userData } from "../../utils/data";
 import { AvatarsExports } from "../../utils/media-exports";
+import PAGE_FIELDS from "../../utils/page-fields";
 import template from "./profile-page.hbs";
 
 export class ProfilePage extends Block {
@@ -17,8 +19,9 @@ export class ProfilePage extends Block {
   }
 
   protected init(): void {
+    this.children.navBar = new Nav();
     this.children.avatar = new Avatar({
-      src: userData.avatar ? userData.avatar : AvatarsExports.AvatarBox,
+      src: AvatarsExports.AvatarBox,
       className: "profile-page",
       events: {
         click: () => {
@@ -36,75 +39,39 @@ export class ProfilePage extends Block {
       title: this.props.userName,
       isPopup: false,
       children: {
-        inputFields: [
-          new Field({
-            label: "Email",
+        inputFields: PAGE_FIELDS["profile"].map((field) => {
+          return new Field({
+            ...field,
             className: "profile-page",
-            id: "email",
-            type: "email",
             attributes: [
-              { key: "placeholder", value: userData.mail },
+              {
+                key: "placeholder",
+                value: () => {
+                  if (field.id === "email") {
+                    return userData.email;
+                  }
+                  if (field.id === "login") {
+                    return userData.login;
+                  }
+                  if (field.id === "first_name") {
+                    return userData.firstName;
+                  }
+                  if (field.id === "last_name") {
+                    return userData.lastName;
+                  }
+                  if (field.id === "display_name") {
+                    return userData.chatName;
+                  }
+                  if (field.id === "phone") {
+                    return userData.phone;
+                  }
+                  return "";
+                },
+              },
               { key: "readonly", value: true },
             ],
-            events: {
-              change: () => {},
-            },
-          }),
-          new Field({
-            label: "Login",
-            className: "profile-page",
-            id: "login",
-            type: "text",
-            attributes: [
-              { key: "placeholder", value: userData.login },
-              { key: "readonly", value: true },
-            ],
-            events: {
-              change: () => {},
-            },
-          }),
-          new Field({
-            label: "First name",
-            className: "profile-page",
-            id: "firstName",
-            type: "text",
-            attributes: [
-              { key: "placeholder", value: userData.firstName },
-              { key: "readonly", value: true },
-            ],
-            events: {
-              change: () => {},
-            },
-          }),
-          new Field({
-            label: "Last Name",
-            className: "profile-page",
-            id: "lastName",
-            type: "text",
-            attributes: [
-              { key: "placeholder", value: userData.lastName },
-              { key: "readonly", value: true },
-            ],
-            events: {
-              change: () => {},
-            },
-          }),
-          new Field({
-            label: "Phone",
-            className: "profile-page",
-            id: "phone",
-            type: "tel",
-            attributes: [
-              { key: "placeholder", value: userData.phone },
-              { key: "readonly", value: true },
-              { key: "minlength", value: 10 },
-              { key: "maxlength", value: 14 },
-            ],
-            events: {
-              change: () => {},
-            },
-          }),
-        ],
+          });
+        }),
         links: [
           new Link({
             className: "profile-page",
@@ -136,10 +103,7 @@ export class ProfilePage extends Block {
         ],
       },
       events: {
-        submit: () => {
-          // const target = (e.target as HTMLInputElement) || null;
-          // console.log(target.value);
-        },
+        submit: () => {},
       },
     });
 
@@ -148,71 +112,25 @@ export class ProfilePage extends Block {
       title: this.props.userName,
       isPopup: false,
       children: {
-        inputFields: [
-          new Field({
-            label: "Email",
+        inputFields: PAGE_FIELDS["changeProfile"].map((field) => {
+          return new Field({
+            ...field,
+            required: true,
             className: "modal",
-            id: "email",
-            type: "email",
-            events: {
-              change: () => {},
-            },
-          }),
-          new Field({
-            label: "Login",
-            className: "modal",
-            id: "login",
-            type: "text",
-            events: {
-              change: () => {},
-            },
-          }),
-          new Field({
-            label: "First name",
-            className: "modal",
-            id: "firstName",
-            type: "text",
-            events: {
-              change: () => {},
-            },
-          }),
-          new Field({
-            label: "Last Name",
-            className: "modal",
-            id: "lastName",
-            type: "text",
-            events: {
-              change: () => {},
-            },
-          }),
-          new Field({
-            label: "Phone",
-            className: "modal",
-            id: "phone",
-            type: "tel",
-            attributes: [
-              { key: "minlength", value: 10 },
-              { key: "maxlength", value: 14 },
-            ],
-            events: {
-              change: () => {},
-            },
-          }),
-        ],
+          });
+        }),
         submitButton: new Button({
           label: "Save",
           className: "modal",
-          events: {
-            click: () => {
-              this.setProps({ isChangeProfile: false });
-            },
-          },
         }),
       },
       events: {
-        submit: () => {
-          // const target = (e.target as HTMLInputElement) || null;
-          // console.log(target.value);
+        submit: (e: Event) => {
+          e.preventDefault();
+          (this.children.changeProfileForm as Form).logData();
+          if ((this.children.changeProfileForm as Form).isValid()) {
+            this.setProps({ isChangeProfile: false });
+          }
         },
       },
     });
@@ -222,53 +140,25 @@ export class ProfilePage extends Block {
       title: this.props.userName,
       isPopup: false,
       children: {
-        inputFields: [
-          new Field({
-            label: "Old password",
-            className: "modal",
-            id: "old_password",
-            type: "password",
-            attributes: [{ key: "minlength", value: 6 }],
-            events: {
-              change: () => {},
-            },
-          }),
-          new Field({
-            label: "New password",
-            className: "modal",
-            id: "new_password",
-            type: "password",
-            attributes: [{ key: "minlength", value: 6 }],
-            events: {
-              change: () => {},
-            },
-          }),
-          new Field({
-            label: "Repeate new password",
-            className: "modal",
-            id: "confirm_new_password",
-            type: "password",
+        inputFields: PAGE_FIELDS["changePassword"].map((field) => {
+          return new Field({
+            ...field,
             required: true,
-            attributes: [{ key: "minlength", value: 6 }],
-            events: {
-              change: () => {},
-            },
-          }),
-        ],
+            className: "modal",
+          });
+        }),
         submitButton: new Button({
           label: "Save",
           className: "modal",
-          events: {
-            click: () => {
-              this.setProps({ isChangePassword: false });
-            },
-          },
         }),
       },
       events: {
-        submit: () => {
-          // const target = (e.target as HTMLInputElement) || null;
-          // console.log(target.value);
+        submit: (e: Event) => {
+          e.preventDefault();
+          (this.children.changePasswordForm as Form).logData();
+          if ((this.children.changePasswordForm as Form).isValid()) {
+            this.setProps({ isChangePassword: false });
+          }
         },
       },
     });
@@ -278,7 +168,11 @@ export class ProfilePage extends Block {
       className: "modal",
       isPopup: true,
       events: {
-        submit: () => {},
+        submit: (e: Event) => {
+          e.preventDefault();
+          (this.children.changeAvatarModal as Form).logData();
+          this.setProps({ modalIsOpen: false });
+        },
       },
       children: {
         inputFields: [
@@ -287,23 +181,15 @@ export class ProfilePage extends Block {
             className: "input-file modal",
             id: "input-file",
             label: "Download image",
+            errorText: "You should select the file",
             required: true,
-            events: {
-              change: () => {
-                window.renderDom("profile");
-              },
-            },
+            regex: /^[A-Za-z]{1,18}\.[A-Za-z]{1,5}$/,
           }),
         ],
 
         submitButton: new Button({
           label: "Change",
           className: "modal",
-          events: {
-            click: () => {
-              window.renderDom("profile");
-            },
-          },
         }),
       },
     });

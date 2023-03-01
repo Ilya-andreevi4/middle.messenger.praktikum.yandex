@@ -2,8 +2,10 @@ import { Button } from "../../components/button";
 import { Field } from "../../components/field";
 import { Link } from "../../components/link";
 import { Form } from "../../layouts/form";
+import PAGE_FIELDS from "../../utils/page-fields";
 import Block from "../../utils/Block";
 import template from "./login-page.hbs";
+import { Nav } from "../../components/nav";
 
 export class LoginPage extends Block {
   constructor() {
@@ -11,41 +13,33 @@ export class LoginPage extends Block {
   }
 
   init() {
+    this.children.navBar = new Nav();
     this.children.loginModal = new Form({
-      className: "modal",
       title: "Log in",
+      className: "modal",
       isPopup: false,
       events: {
-        submit: () => {},
+        submit: (e: Event) => {
+          e.preventDefault();
+          (this.children.loginModal as Form).logData();
+          if ((this.children.loginModal as Form).isValid()) {
+            window.renderDom("main");
+          }
+        },
       },
       children: {
-        inputFields: [
-          new Field({
-            label: "Login",
-            className: "modal",
-            id: "login",
-            type: "text",
-            required: true,
-            events: {
-              change: () => {},
-            },
-          }),
-          new Field({
-            label: "Password",
-            className: "modal",
-            id: "password",
-            type: "password",
-            required: true,
-            attributes: [{ key: "minlength", value: 6 }],
-            events: {
-              change: () => {},
-            },
-          }),
-        ],
+        inputFields: PAGE_FIELDS["login"].map(
+          (field) =>
+            new Field({
+              ...field,
+              className: "modal",
+              type: "text",
+              required: true,
+            })
+        ),
         submitButton: new Button({
           label: "Enter",
           className: "modal",
-          events: { click: () => {} },
         }),
         links: [
           new Link({

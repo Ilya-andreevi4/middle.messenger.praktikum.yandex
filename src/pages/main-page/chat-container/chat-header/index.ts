@@ -6,6 +6,7 @@ import { Form } from "../../../../layouts/form";
 import Block from "../../../../utils/Block";
 import { IconsExports } from "../../../../utils/media-exports";
 import template from "./chat-header.hbs";
+import PAGE_FIELDS from "../../../../utils/page-fields";
 
 interface ChatHeaderProps {
   isActive: boolean;
@@ -45,26 +46,28 @@ export class ChatHeader extends Block<ChatHeaderProps> {
       isPopup: true,
       title: "Add User",
       events: {
-        submit: () => {},
+        submit: (e: Event) => {
+          e.preventDefault();
+          (this.children.inviteModal as Form).logData();
+          if ((this.children.inviteModal as Form).isValid()) {
+            this.setProps({ isModalOpen: false });
+          }
+        },
       },
       children: {
-        inputFields: [
-          new Field({
-            id: "login",
-            type: "text",
-            label: "Login",
-            className: "modal",
-            required: true,
-          }),
-        ],
+        inputFields: PAGE_FIELDS["main"].map(
+          (field) =>
+            new Field({
+              ...field,
+              label: "Login",
+              className: "modal",
+              type: "text",
+              required: false,
+            })
+        ),
         submitButton: new Button({
           label: "Invite",
           className: "modal",
-          events: {
-            click: () => {
-              this.props.isModalOpen = false;
-            },
-          },
         }),
       },
     });

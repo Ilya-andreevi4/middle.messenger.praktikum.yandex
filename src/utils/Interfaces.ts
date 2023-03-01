@@ -3,7 +3,7 @@ export type userStatus = "online" | "offline" | "invisible";
 export interface IUser {
   id: number;
   avatar: string;
-  mail?: string;
+  email?: string;
   login?: string;
   firstName: string;
   lastName: string;

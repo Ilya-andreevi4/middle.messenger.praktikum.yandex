@@ -6,7 +6,7 @@ import template from "./chat-main.hbs";
 
 interface ChatMainProps {
   isActive: boolean;
-  activeChat: IChat | undefined;
+  activeChat?: IChat;
 }
 export class ChatMain extends Block {
   constructor(props: ChatMainProps) {
