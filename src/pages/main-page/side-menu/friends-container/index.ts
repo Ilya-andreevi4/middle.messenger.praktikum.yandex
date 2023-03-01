@@ -7,13 +7,13 @@ import { Field } from "../../../../components/field";
 import { ChatInfo } from "../../../../components/chat-info";
 import { chatsData } from "../../../../utils/data";
 import PAGE_FIELDS from "../../../../utils/page-fields";
+import { Form } from "../../../../layouts/form";
+import { Button } from "../../../../components/button";
 
 interface FriendsContainerProps {
   activeChatId: number | undefined;
   handleChangeChat: (e: Event, id: number) => void;
-  events: {
-    click: () => void;
-  };
+  inviteModalIsOpen?: boolean;
 }
 export class FriendsContainer extends Block<FriendsContainerProps> {
   constructor(props: FriendsContainerProps) {
@@ -21,6 +21,7 @@ export class FriendsContainer extends Block<FriendsContainerProps> {
   }
 
   init() {
+    this.props.inviteModalIsOpen = false;
     this.children.friends = [] as ChatInfo[];
     this.children.groups = [] as ChatInfo[];
     this.children.searchInput = PAGE_FIELDS["main"].map((field) => {
@@ -46,7 +47,10 @@ export class FriendsContainer extends Block<FriendsContainerProps> {
       className: "chats-header",
       alt: "add user",
       events: {
-        click: () => {},
+        click: (e) => {
+          e.preventDefault();
+          this.props.inviteModalIsOpen = !this.props.inviteModalIsOpen;
+        },
       },
     });
     this.children.groupIcon = new Icon({
@@ -54,23 +58,20 @@ export class FriendsContainer extends Block<FriendsContainerProps> {
       className: "chats-header",
       alt: "add group",
       events: {
-        click: () => {},
+        click: (e) => {
+          e.preventDefault();
+          this.props.inviteModalIsOpen = !this.props.inviteModalIsOpen;
+        },
       },
     });
-
     chatsData.forEach((chat: IChat) => {
       if (!chat.isGroup) {
         (this.children.friends as ChatInfo[]).push(
           new ChatInfo({
-            id: chat.id,
+            ...chat,
             avatarSrc: chat.avatar,
-            title: chat.title,
-            lastMessage: chat.lastMessage,
             className: "chats-list",
-            numberNewMessages: chat.numberNewMessages,
-            time: chat.time,
             isActive: chat.id === this.props.activeChatId,
-            isGroup: chat.isGroup,
             events: {
               click: (e) => {
                 e.preventDefault();
@@ -82,15 +83,10 @@ export class FriendsContainer extends Block<FriendsContainerProps> {
       } else {
         (this.children.groups as ChatInfo[]).push(
           new ChatInfo({
-            id: chat.id,
+            ...chat,
             avatarSrc: chat.avatar,
-            title: chat.title,
-            lastMessage: chat.lastMessage,
             className: "chats-list",
-            numberNewMessages: chat.numberNewMessages,
-            time: chat.time,
             isActive: chat.id === this.props.activeChatId,
-            isGroup: chat.isGroup,
             events: {
               click: (e) => {
                 e.preventDefault();
@@ -100,6 +96,36 @@ export class FriendsContainer extends Block<FriendsContainerProps> {
           })
         );
       }
+    });
+    this.children.inviteModal = new Form({
+      className: "modal",
+      isPopup: true,
+      title: "Add User",
+      events: {
+        submit: (e: Event) => {
+          e.preventDefault();
+          (this.children.inviteModal as Form).logData();
+          if ((this.children.inviteModal as Form).isValid()) {
+            this.setProps({ inviteModalIsOpen: false });
+          }
+        },
+      },
+      children: {
+        inputFields: PAGE_FIELDS["main"].map(
+          (field) =>
+            new Field({
+              ...field,
+              label: "Login",
+              className: "modal",
+              type: "text",
+              required: false,
+            })
+        ),
+        submitButton: new Button({
+          label: "Invite",
+          className: "modal",
+        }),
+      },
     });
   }
 

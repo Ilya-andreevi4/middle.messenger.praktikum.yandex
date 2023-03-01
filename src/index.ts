@@ -1,4 +1,4 @@
-import { renderDom } from "./utils/render-dom";
+import renderDom from "./utils/render-dom";
 
 window.renderDom = renderDom;
 

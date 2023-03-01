@@ -3,10 +3,10 @@ import { Button } from "../../../../components/button";
 import { Icon } from "../../../../components/icon";
 import { Field } from "../../../../components/field";
 import { Form } from "../../../../layouts/form";
-import Block from "../../../../utils/Block";
-import { IconsExports } from "../../../../utils/media-exports";
-import template from "./chat-header.hbs";
 import PAGE_FIELDS from "../../../../utils/page-fields";
+import { IconsExports } from "../../../../utils/media-exports";
+import Block from "../../../../utils/Block";
+import template from "./chat-header.hbs";
 
 interface ChatHeaderProps {
   isActive: boolean;
@@ -40,7 +40,6 @@ export class ChatHeader extends Block<ChatHeaderProps> {
         },
       },
     });
-
     this.children.inviteModal = new Form({
       className: "modal",
       isPopup: true,

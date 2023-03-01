@@ -1,6 +1,6 @@
-import { Icon } from "../icon";
 import Block from "../../utils/Block";
 import template from "./message.hbs";
+import { Icon } from "../icon";
 import { IconsExports } from "../../utils/media-exports";
 
 interface MessageProps {
@@ -29,7 +29,6 @@ export class Message extends Block<MessageProps> {
         click: () => {},
       },
     });
-
     this.children.icon = new Icon({
       src: IconsExports.MailIcon,
       alt: "opened",

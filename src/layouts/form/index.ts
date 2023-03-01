@@ -47,7 +47,7 @@ export class Form extends Block<FormProps> {
     console.log(this.data);
   }
 
-  isValid(): boolean {
+  isValid() {
     let result = true;
     (this.children.inputFields as Field[]).forEach((field) => {
       result = field.isValid() && result;

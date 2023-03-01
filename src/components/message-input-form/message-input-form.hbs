@@ -1,10 +1,11 @@
 <form class="message-input-form {{#if isActive }} message-input-form_active {{/if}}">
-{{#if popIsOpen }}
-    <ul class="popper popper-add-files message-input-form__popper-add-files">
-      {{#each popListItems}}
-        {{{this}}}
-      {{/each}}
-    </ul>
+  {{#if popIsOpen }}
+    {{{popupFormAddFiles}}}
+      {{!-- <ul class="popper popper-add-files message-input-form__popper-add-files">
+        {{#each popListItems}}
+          {{{this}}}
+        {{/each}}
+      </ul> --}}
   {{/if}}
   {{{attachButton}}}
   {{{messageInput}}}

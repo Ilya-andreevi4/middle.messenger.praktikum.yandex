@@ -1,6 +1,6 @@
 import Block from "../../utils/Block";
-import { AvatarsExports } from "../../utils/media-exports";
 import template from "./avatar.hbs";
+import { AvatarsExports } from "../../utils/media-exports";
 
 interface AvatarProps {
   src: string;
@@ -17,7 +17,6 @@ export class Avatar extends Block<AvatarProps> {
 
   init() {
     const avatar = this.props.src;
-
     if (!avatar) {
       this.props.src = AvatarsExports.AvatarBox;
     } else {

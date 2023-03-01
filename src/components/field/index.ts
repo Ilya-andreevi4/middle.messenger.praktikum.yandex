@@ -1,6 +1,6 @@
 import Block from "../../utils/Block";
-import { Input } from "../input";
 import template from "./field.hbs";
+import { Input } from "../input";
 
 interface Attribute {
   key: string;

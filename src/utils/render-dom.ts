@@ -17,7 +17,7 @@ export const ROUTES = {
   [profile]: ProfilePage,
 };
 
-export function renderDom(route: keyof typeof ROUTES) {
+export default function renderDom(route: keyof typeof ROUTES) {
   const root = document.querySelector("#app")!;
   root.innerHTML = ``;
   const pageComponent = ROUTES[route || notFound];

@@ -25,9 +25,6 @@ export class SideMenu extends Block<SideMenuProps> {
     this.children.friendsContainer = new FriendsContainer({
       activeChatId: this.props.activeChatId,
       handleChangeChat: this.props.handleChangeChat,
-      events: {
-        click: () => {},
-      },
     });
   }
 

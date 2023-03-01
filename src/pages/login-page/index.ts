@@ -3,9 +3,9 @@ import { Field } from "../../components/field";
 import { Link } from "../../components/link";
 import { Form } from "../../layouts/form";
 import PAGE_FIELDS from "../../utils/page-fields";
+import { Nav } from "../../components/nav";
 import Block from "../../utils/Block";
 import template from "./login-page.hbs";
-import { Nav } from "../../components/nav";
 
 export class LoginPage extends Block {
   constructor() {

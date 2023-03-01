@@ -1,6 +1,6 @@
-import { Avatar } from "../../../../components/avatar";
 import Block from "../../../../utils/Block";
 import template from "./profile-block.hbs";
+import { Avatar } from "../../../../components/avatar";
 import { AvatarsExports, IconsExports } from "../../../../utils/media-exports";
 import { Icon } from "../../../../components/icon";
 import { userStatus } from "../../../../utils/Interfaces";
@@ -19,7 +19,6 @@ export class ProfileBlock extends Block {
   init() {
     this.props.arrowDownIcon = IconsExports.ArrowDownIcon;
     this.props.settingsIcon = IconsExports.SettingsIcon;
-
     this.children.settingsIcon = new Icon({
       src: IconsExports.SettingsIcon,
       className: "profile-block",
@@ -30,7 +29,6 @@ export class ProfileBlock extends Block {
         },
       },
     });
-
     this.children.avatar = new Avatar({
       src: AvatarsExports.Avatar_1,
       className: "profile-header",

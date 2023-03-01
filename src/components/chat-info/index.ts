@@ -1,6 +1,6 @@
-import { Avatar } from "../avatar";
 import Block from "../../utils/Block";
 import template from "./chat-info.hbs";
+import { Avatar } from "../avatar";
 
 interface ChatInfoProps {
   id: number;

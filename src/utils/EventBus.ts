@@ -1,5 +1,5 @@
 export class EventBus<E extends { [Ev: string]: unknown[] }> {
-  private readonly listeners: {
+  private listeners: {
     [K in keyof E]?: Array<(...args: E[K]) => void>;
   } = {};
   on<K extends keyof E>(event: K, callback: (...args: E[K]) => void) {

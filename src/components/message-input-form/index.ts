@@ -1,23 +1,16 @@
 import { Button } from "../../components/button";
+import { PopupFormAddFiles } from "../popup-form-add-files";
 import { Field } from "../../components/field";
-import { PopListItem } from "../../components/pop-list-item";
 import Block from "../../utils/Block";
-import { IconsExports } from "../../utils/media-exports";
 import template from "./message-input-form.hbs";
 
 interface MessageInputFormProps {
   isActive: boolean;
   popIsOpen?: boolean;
-  popItems?: IPopItem[];
   children?: Record<string, Block<any> | Block<any>[]>;
   events: {
     submit: (e: Event) => void;
   };
-}
-interface IPopItem {
-  icon: string;
-  title: string;
-  className: string;
 }
 
 export class MessageInputForm extends Block<MessageInputFormProps> {
@@ -27,33 +20,9 @@ export class MessageInputForm extends Block<MessageInputFormProps> {
   }
 
   init() {
-    this.props.popItems = [
-      {
-        icon: IconsExports.MediaIcon,
-        title: "Media",
-        className: "popper-add-files",
-      },
-      {
-        icon: IconsExports.FileAddIcon,
-        title: "File",
-        className: "popper-add-files",
-      },
-      {
-        icon: IconsExports.LocationIcon,
-        title: "Location",
-        className: "popper-add-files",
-      },
-    ];
-
-    this.children.popListItems = this.props.popItems.map(
-      (item: IPopItem) =>
-        new PopListItem({
-          icon: item.icon,
-          title: item.title,
-          className: item.className,
-          events: { click: () => {} },
-        })
-    );
+    this.children.popupFormAddFiles = new PopupFormAddFiles({
+      className: "popper-add-files",
+    });
     this.children.messageInput = new Field({
       id: "message",
       regex: /^[\w\W]*$/,

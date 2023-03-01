@@ -18,7 +18,6 @@ export class Input extends Block<InputProps> {
     super(props);
     this.props = { ...props };
   }
-  protected init(): void {}
 
   render() {
     return this.compile(template, this.props);

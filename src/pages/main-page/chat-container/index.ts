@@ -33,7 +33,7 @@ export class ChatContainer extends Block<ChatContainerProps> {
       events: {
         submit: (e: Event) => {
           e.preventDefault();
-          (<MessageInputForm>this.children.messageForm).logData();
+          (this.children.messageForm as MessageInputForm).logData();
         },
       },
     });
