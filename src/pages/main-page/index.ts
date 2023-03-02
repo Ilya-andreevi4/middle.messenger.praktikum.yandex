@@ -11,7 +11,7 @@ export class MainPage extends Block {
 
   init() {
     this.props.activeChatId = 2;
-    // chatsData.find((chat) => chat.isActive)?.id;
+    //README Нужно прописать логику выбора чата с выведением выбранного чата в chat-container
     this.props.handleChatSelect = (e: Event, id: number) => {
       if (e) {
         console.log("Event ", e, " ID ", id);

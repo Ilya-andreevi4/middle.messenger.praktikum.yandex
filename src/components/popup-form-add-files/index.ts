@@ -52,6 +52,7 @@ export class PopupFormAddFiles extends Block<PopupFormAddFilesProps> {
             label: item.title,
             regex: /^[\w\W]*$/,
             className: this.props.className,
+            name: "file",
             id: item.id,
             type: "file",
           }),

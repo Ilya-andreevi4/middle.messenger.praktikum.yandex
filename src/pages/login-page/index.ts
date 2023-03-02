@@ -40,6 +40,7 @@ export class LoginPage extends Block {
         submitButton: new Button({
           label: "Enter",
           className: "modal",
+          type: "submit",
         }),
         links: [
           new Link({

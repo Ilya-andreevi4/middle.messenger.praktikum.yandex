@@ -58,6 +58,8 @@ export class ChatHeader extends Block<ChatHeaderProps> {
           (field) =>
             new Field({
               ...field,
+              id: "login",
+              name: "login",
               label: "Login",
               className: "modal",
               type: "text",
@@ -67,6 +69,7 @@ export class ChatHeader extends Block<ChatHeaderProps> {
         submitButton: new Button({
           label: "Invite",
           className: "modal",
+          type: "submit",
         }),
       },
     });

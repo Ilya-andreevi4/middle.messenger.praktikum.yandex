@@ -28,6 +28,7 @@ export class FriendsContainer extends Block<FriendsContainerProps> {
       return new Field({
         ...field,
         id: "search",
+        name: "search",
         className: "chats-header",
         type: "text",
         required: false,
@@ -116,6 +117,8 @@ export class FriendsContainer extends Block<FriendsContainerProps> {
             new Field({
               ...field,
               label: "Login",
+              id:"login",
+              name:"login",
               className: "modal",
               type: "text",
               required: false,
@@ -124,6 +127,7 @@ export class FriendsContainer extends Block<FriendsContainerProps> {
         submitButton: new Button({
           label: "Invite",
           className: "modal",
+          type: "submit",
         }),
       },
     });

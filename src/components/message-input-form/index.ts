@@ -29,6 +29,7 @@ export class MessageInputForm extends Block<MessageInputFormProps> {
       type: "text",
       className: "message",
       label: "Message...",
+      name: "message",
       required: false,
     });
     this.children.attachButton = new Button({

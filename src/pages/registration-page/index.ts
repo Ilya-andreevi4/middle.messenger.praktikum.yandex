@@ -38,6 +38,7 @@ export class RegistrationPage extends Block {
         submitButton: new Button({
           label: "Create profile",
           className: "modal",
+          type: "submit",
         }),
         links: [
           new Link({

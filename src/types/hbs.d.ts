@@ -1,3 +1,4 @@
+import "/"
 declare module "*.hbs" {
   import { TemplateDelegate } from "handlebars/runtime";
 

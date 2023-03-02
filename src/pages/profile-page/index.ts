@@ -122,6 +122,7 @@ export class ProfilePage extends Block {
         submitButton: new Button({
           label: "Save",
           className: "modal",
+          type: "submit",
         }),
       },
       events: {
@@ -150,6 +151,7 @@ export class ProfilePage extends Block {
         submitButton: new Button({
           label: "Save",
           className: "modal",
+          type: "submit",
         }),
       },
       events: {
@@ -179,7 +181,8 @@ export class ProfilePage extends Block {
           new Field({
             type: "file",
             className: "input-file modal",
-            id: "input-file",
+            id: "avatar",
+            name: "avatar",
             label: "Download image",
             errorText: "You should select the file",
             required: true,
@@ -190,6 +193,7 @@ export class ProfilePage extends Block {
         submitButton: new Button({
           label: "Change",
           className: "modal",
+          type: "submit",
         }),
       },
     });
@@ -197,6 +201,7 @@ export class ProfilePage extends Block {
     this.children.sideButton = new Button({
       className: "side-panel",
       label: "",
+      type: "button",
       events: {
         click: () => {
           window.renderDom("main");

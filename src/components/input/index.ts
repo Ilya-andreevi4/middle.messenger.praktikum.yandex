@@ -3,6 +3,7 @@ import template from "./input.hbs";
 
 interface InputProps {
   id: string;
+  name: string;
   type: string;
   className: string;
   attributes?: any;
