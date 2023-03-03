@@ -1,13 +1,13 @@
 .nav {
   position: absolute;
-  height: 16px;
+  height: 24px;
   width: fit-content;
-  top: 16px;
+  top: 24px;
   right: 40px;
   display: flex;
   z-index: 9000;
 }
-.nav li {
+.nav .link.nav__link {
   background: rgba(0, 0, 0, 0.2);
   display: flex;
   height: 100%;
@@ -16,14 +16,14 @@
   align-items: center;
 }
 
-.nav li:hover {
+.nav .link.nav__link:hover {
   background: rgba(0, 0, 0, 0.4);
 }
 
-.nav a {
+.nav .link.nav__link {
   font-size: 12px;
-  font-weight: lighter;
-  color: inherit;
+  font-weight: normal;
+  color: $accent-blue;
 }
 
 .nav.change-avatar {
@@ -32,18 +32,6 @@
   flex-direction: column;
   position: relative;
   width: 100%;
-  top: 0;
-  left: 0;
-}
-
-.nav.change-avatar li:nth-child(1) {
-  background: none;
-}
-
-.nav.change-avatar li {
-  display: flex;
-  flex-direction: column;
-  position: relative;
   top: 0;
   left: 0;
 }

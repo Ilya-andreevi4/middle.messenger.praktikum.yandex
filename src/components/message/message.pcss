@@ -1,7 +1,6 @@
-
 .message {
   display: flex;
-  padding: 0px 16px;
+  padding: 24px 16px;
   margin-bottom: 32px;
   max-width: 100%;
   flex-direction: row;
@@ -41,21 +40,21 @@
 }
 
 .friends-name.message-body__friends-name {
-  color: rgba(11, 183, 223, 0.7);
+  color: $accent-blue;
 }
 
 .message-body .message-body__friends-name_align-right {
   justify-content: flex-end;
   align-items: flex-end;
-  color: rgba(255, 255, 255, 0.6);
+  color: $transparent-white;
 }
 
 .message__time-message {
-  margin-left: 8px;
+  margin: 0px 12px -20px;
 }
 
 .image-box {
-  display: block;
+  display: flex;
   position: relative;
   margin: 0px -16px;
   width: calc(100% + 32px);
@@ -89,4 +88,5 @@
   position: absolute;
   right: 12px;
   bottom: 4px;
+  text-shadow: 0 0 1px rgba(35, 35, 35, 1);
 }

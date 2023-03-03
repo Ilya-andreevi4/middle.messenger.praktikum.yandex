@@ -1,41 +1,47 @@
 {
-  "name": "sprint_1",
+  "name": "sprint_2",
   "version": "1.0.0",
-  "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "parcel build index.hbs --no-cache",
-    "start": "parcel index.hbs --no-cache --port 3000"
+    "build": "rm -rf dist && parcel build static/index.html --no-cache",
+    "start": "parcel build static/index.html --open && node server.js",
+    "lint": "node_modules/.bin/eslint . --ext .js,.ts && node_modules/.bin/stylelint ."
   },
   "author": "Ilya Orekhov",
   "license": "ISC",
+  "engines": {
+      "node": ">=12"
+    },
   "devDependencies": {
-    "@anikin/parcel-transformer-handlebars": "1.0.9",
     "@anikin/parcel-transformer-handlebars-precompile": "1.0.1",
-    "@typescript-eslint/eslint-plugin": "5.50.0",
-    "@typescript-eslint/parser": "5.50.0",
-    "assert": "2.0.0",
+    "@typescript-eslint/eslint-plugin": "5.53.0",
+    "@typescript-eslint/parser": "5.53.0",
     "autoprefixer": "10.4.13",
-    "browserify-zlib": "0.2.0",
-    "buffer": "5.7.1",
-    "crypto-browserify": "3.12.0",
-    "eslint": "8.33.0",
-    "events": "3.3.0",
-    "express": "4.18.2",
+    "eslint": "8.34.0",
+    "eslint-config-airbnb": "19.0.4",
+    "eslint-config-airbnb-typescript": "17.0.0",
     "parcel": "2.8.3",
-    "path-browserify": "1.0.1",
+    "@parcel/validator-typescript": "2.8.3",
     "postcss": "8.4.21",
-    "process": "0.11.10",
-    "punycode": "1.4.1",
-    "querystring-es3": "0.2.1",
-    "stream-browserify": "3.0.0",
-    "stream-http": "3.2.0",
-    "string_decoder": "1.3.0",
-    "typescript": "4.9.5",
-    "url": "0.11.0",
-    "util": "0.12.5"
+    "postcss-import": "15.1.0",
+    "postcss-nested": "6.0.0",
+    "postcss-simple-vars": "7.0.1",
+    "stylelint": "15.2.0",
+    "nanoid": "4.0.0",
+    "typescript": "4.9.5"
   },
   "dependencies": {
+    "express": "4.18.2",
     "handlebars": "4.7.7"
+  }, 
+  "browserModern": "dist/index.html",
+  "targets": {
+    "browserModern": {
+      "engines": {
+        "browsers": [
+          "last 1 Chrome version"
+        ]
+      }
+    }
   }
 }

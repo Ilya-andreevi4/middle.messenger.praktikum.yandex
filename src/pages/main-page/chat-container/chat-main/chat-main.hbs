@@ -1,0 +1,13 @@
+<main class="chat-main chat-main_{{isActive}}">
+  {{#if isActive}}
+    <ul class="message-list">
+      {{#each messages}}
+        {{{this}}}
+      {{/each}}
+    </ul>
+  {{else}}
+    <h2 class="text chat-main__text">
+      Select a chat room
+    </h2>
+  {{/if}}
+</main>

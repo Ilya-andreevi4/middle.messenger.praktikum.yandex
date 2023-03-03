@@ -1,0 +1,79 @@
+@import "../components/icon/icon.pcss";
+@import "./color-vars.pcss";
+@import "../components/nav/nav.pcss";
+@import "../components/link/link.pcss";
+@import "../components/button/button.pcss";
+@import "../components/input/input.pcss";
+@import "../components/avatar/avatar.pcss";
+@import "../components/field/field.pcss";
+@import "../components/message/message.pcss";
+@import "../components/message-input-form/message-input-form.pcss";
+@import "../components/popup-form-add-files/popup-form-add-files.pcss";
+@import "../components/chat-info/chat-info.pcss";
+@import "../layouts/form/form.pcss";
+@import "../pages/main-page/side-menu/side-menu.pcss";
+@import "../pages/main-page/side-menu/profile-block/profile-block.pcss";
+@import "../pages/main-page/side-menu/friends-container/friends-container.pcss";
+@import "../pages/main-page/chat-container/chat-container.pcss";
+@import "../pages/main-page/chat-container/chat-header/chat-header.pcss";
+@import "../pages/main-page/chat-container/chat-main/chat-main.pcss";
+@import "../pages/login-page/login-page.pcss";
+@import "../pages/server-error-page/error-page.pcss";
+@import "../pages/profile-page/profile-page.pcss";
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
+  text-shadow: 0 0 4 rgba(0, 0, 0, 0.25);
+  color: $white;
+}
+
+ul,
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+.text {
+  font-size: 16px;
+  color: $white;
+  font-weight: lighter;
+}
+
+.text.text_uploaded {
+  opacity: 60%;
+  margin-bottom: 20px;
+}
+
+.popper {
+  display: flex;
+  justify-content: space-around;
+  background: $lighter-bg;
+  border: 2px solid #000000;
+  box-shadow: 2px -5px 10px rgba(0, 0, 0, 0.25),
+    inset 0px 0px 16px 1px rgba(0, 0, 0, 0.25);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: $grey-bg;
+}

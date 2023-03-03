@@ -1,0 +1,21 @@
+<form class="container {{className}}__container {{#if isPopup }} container_darker{{/if}}">
+  <div class="modal {{className}}__modal">
+    <h1 class="title">
+      {{title}}
+    </h1>
+
+    <div class="fields-container {{className}}__fields-container ">
+      {{#each inputFields}}
+          {{{this}}}
+      {{/each}}
+    </div>
+
+    {{{submitButton}}}
+
+    <div class="links-container {{className}}__links-container ">
+        {{#each links}}
+            {{{this}}}
+        {{/each}}
+    </div>
+  </div>
+</form>
