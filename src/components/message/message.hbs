@@ -1,37 +1,46 @@
-<div class="message {{#if isFromYou }}align-right{{/if}}">
-  <div class="message-body message__message-body {{#if isFromYou }}align-right{{/if}}">
-  {{!-- Если сообщение от пользователя: подпись "You" с иконкой о статусе письма --}}
-    {{#if isFromYou }}
-    <div class="name-box message__name-box">
-      {{> components/icon/icon src="static/media/Mail1.svg" className="message" alt="open" }}
-      <h2 class="friends-name message-body__friends-name message-body__friends-name_align-right">
-        You
-      </h2>
+<li>
+  <div class="message {{#if my }}align-right{{/if}}">
+    {{#if my }}
+      {{#unless image }}
+        <span class="time-message message__time-message">
+          {{ time }}
+        </span>
+      {{/unless}}
+    {{/if}}
+    <div class="message-body message__message-body {{#if my }}align-right{{/if}}">
+      {{#if my }}
+        <div class="name-box message__name-box">
+          {{{ icon }}}
+          <h2 class="friends-name message-body__friends-name message-body__friends-name_align-right">
+            You
+          </h2>
+        </div>
+      {{else}}
+        <h2 class="friends-name message-body__friends-name">
+            {{ from }}
+        </h2>
+      {{/if}}
+      {{#if image }}
+        <div class="image-box message-body__image-box">
+          {{{arrowDownIcon}}}
+          <img class="image image-box__image" src={{ image }} alt="image"/>
+          <span class="time-message image-box__time-message">
+            {{ time }}
+          </span>
+        </div>
+      {{/if}}
+      {{#if text }}
+        <p class="text {{ classNames }}__text">
+          {{ text }}
+        </p>
+      {{/if}}
     </div>
-    {{!-- Если сообщение от друга пользователя: в подписе имя и фамилия отправителя --}}
-    {{else}}
-      <h2 class="friends-name message-body__friends-name">
-          {{ firstName }} {{ lastName }}
-      </h2>
-    {{/if}}
-    {{#if image }}
-    <div class="image-box message-body__image-box">
-      <img class="icon image-box__icon" src="static/media/arrow-down.svg" alt="arrow"/>
-      <img class="image image-box__image" src={{ image }} alt="image"/>
-      <span class="time-message image-box__time-message">
-        {{ time }}
-      </span>
-    </div>
-    {{/if}}
-    {{#if text }}
-      <p class="text {{ classNames }}__text">
-        {{ text }}
-      </p>
-    {{/if}}
+    {{#unless my }}
+      {{#unless image }}
+          <span class="time-message message__time-message">
+            {{ time }}
+          </span>
+      {{/unless}}
+    {{/unless}}
   </div>
-  {{#unless image }}
-    <span class="time-message message__time-message">
-      {{ time }}
-    </span>
-  {{/unless}}
-</div>
+</li>

@@ -1,5 +1,10 @@
 <ul class="nav">
-  <li>
+  {{#each links}}
+    <li>
+      {{{this}}}
+    </li>
+  {{/each}}
+  {{! <li>
     <a class="link nav__link" href="/">
       Chats
     </a>
@@ -56,5 +61,5 @@
         </a>
       </li>
     </ul>
-  </li>
+  </li> }}
 </ul>

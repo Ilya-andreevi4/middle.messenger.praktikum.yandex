@@ -1,0 +1,19 @@
+<li class="chat-info chats-list__chat-info {{#if isActive }} chats-list__chat-info_active {{/if}}">
+  {{{avatar}}}
+  <div class="friends-info {{ className }}__friends-info">
+    <h2 class="friends-name {{ className }}__friends-name">
+      {{ title }}
+    </h2>
+    <p class="last-message {{ className }}__last-message">
+      {{ lastMessage }}
+    </p>
+  </div>
+  <div class="status-chat {{ className }}__status-chat">
+    <span class="{{ className }}__number-messages {{#if numberNewMessages }} number-messages {{else}} number-messages_none {{/if}}">
+      {{ numberNewMessages }}
+    </span>
+    <span class="time-messages {{ className }}__time-messages">
+      {{ time }}
+    </span>
+  </div>
+</li>
