@@ -28,6 +28,7 @@ const MESSAGE = {
   id: "message",
   label: "Text",
   type: "message",
+  name: "message",
   regex: REGULAR_EXPRESSON.MESSAGE,
   errorText: REGEX_ERRORS.MESSAGE,
 };
