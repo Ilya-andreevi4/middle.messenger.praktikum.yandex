@@ -9,6 +9,9 @@
   },
   "author": "Ilya Orekhov",
   "license": "ISC",
+  "engines": {
+      "node": ">=12"
+    },
   "devDependencies": {
     "@anikin/parcel-transformer-handlebars-precompile": "1.0.1",
     "@typescript-eslint/eslint-plugin": "5.53.0",
