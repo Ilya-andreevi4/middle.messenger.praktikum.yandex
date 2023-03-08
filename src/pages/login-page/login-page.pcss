@@ -1,10 +1,11 @@
 .entry-page__form {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  height: fit-content;
+  justify-content: center;
+
   width: 100%;
+  height: fit-content;
 }
 
 .entry-page__title {
@@ -12,17 +13,20 @@
 }
 
 .entry-page__text {
-  font-size: 20px;
   margin-bottom: 64px;
+  font-size: 20px;
 }
 
 .entry-page__placeholder {
-  color: $white;
-  left: 0px;
-  line-height: 13px;
   pointer-events: none;
+
   position: absolute;
-  transform-origin: 0 50%;
-  transition: transform 200ms, color 200ms;
   top: 10px;
+  left: 0;
+  transform-origin: 0 50%;
+
+  line-height: 13px;
+  color: $white;
+
+  transition: transform 200ms, color 200ms;
 }
