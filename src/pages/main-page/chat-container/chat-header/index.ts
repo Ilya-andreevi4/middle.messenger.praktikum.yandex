@@ -47,10 +47,12 @@ export class ChatHeader extends Block<ChatHeaderProps> {
       events: {
         submit: (e: Event) => {
           e.preventDefault();
-          (this.children.inviteModal as Form).logData();
-          if ((this.children.inviteModal as Form).isValid()) {
-            this.setProps({ isModalOpen: false });
-          }
+          console.log((this.children.inviteModal as Form).children);
+
+          // (this.children.inviteModal as Form).logData();
+          // if ((this.children.inviteModal as Form).isValid()) {
+          this.setProps({ isModalOpen: false });
+          // }
         },
       },
       children: {
@@ -64,7 +66,7 @@ export class ChatHeader extends Block<ChatHeaderProps> {
               className: "modal",
               type: "text",
               required: false,
-            })
+            }),
         ),
         submitButton: new Button({
           label: "Invite",

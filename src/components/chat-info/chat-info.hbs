@@ -1,5 +1,8 @@
 <li class="chat-info chats-list__chat-info {{#if isActive }} chats-list__chat-info_active {{/if}}">
-  {{{avatar}}}
+  <div class="avatar-container chat-info__avatar-container {{#if isActive }} chat-info__avatar-container_active {{/if}}">
+    {{{avatar}}}
+  </div>
+
   <div class="friends-info {{ className }}__friends-info">
     <h2 class="friends-name {{ className }}__friends-name">
       {{ title }}

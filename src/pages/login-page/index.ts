@@ -6,6 +6,8 @@ import PAGE_FIELDS from "../../utils/page-fields";
 import { Nav } from "../../components/nav";
 import Block from "../../utils/Block";
 import template from "./login-page.hbs";
+import AuthController from "../../controllers/AuthContoller";
+import { Routes, SignupData } from "../../utils/Interfaces";
 
 export class LoginPage extends Block {
   constructor() {
@@ -21,9 +23,9 @@ export class LoginPage extends Block {
       events: {
         submit: (e: Event) => {
           e.preventDefault();
-          (this.children.loginModal as Form).logData();
           if ((this.children.loginModal as Form).isValid()) {
-            window.renderDom("main");
+            this.onSubmit();
+            //   window.renderDom("main");
           }
         },
       },
@@ -35,7 +37,7 @@ export class LoginPage extends Block {
               className: "modal",
               type: "text",
               required: true,
-            })
+            }),
         ),
         submitButton: new Button({
           label: "Enter",
@@ -44,17 +46,23 @@ export class LoginPage extends Block {
         }),
         links: [
           new Link({
+            to: Routes.Registation,
             label: "Create account",
             className: "modal",
-            events: {
-              click: () => {
-                window.renderDom("registration");
-              },
-            },
           }),
         ],
       },
     });
+  }
+
+  onSubmit() {
+    const inputFields = (this.children.loginModal as Form).children.inputFields as Field[];
+    const values = inputFields.map((child) => {
+      return [(child as Field).getName(), (child as Field).getValue()];
+    });
+
+    const data = Object.fromEntries(values);
+    AuthController.signin(data as SignupData);
   }
 
   render() {

@@ -24,28 +24,29 @@ export class Form extends Block<FormProps> {
   }
   protected init(): void {
     if (this.props.children?.submitButton) {
-      this.children.submitButton = this.props.children.submitButton as Button;
+      this.children.submitButton = this.props.children.submitButton;
     }
     if (this.props.children?.inputFields) {
-      this.children.inputFields = this.props.children.inputFields as Field[];
+      this.children.inputFields = this.props.children.inputFields;
     }
     if (this.props.children?.links) {
-      this.children.links = this.props.children.links as Link[];
+      this.children.links = this.props.children.links;
     }
   }
-  get data() {
-    return (this.children.inputFields as Field[]).reduce(
-      (result: Record<string, string>, field) => ({
-        ...result,
-        ...{ [field.props.id]: field.getValue() },
-      }),
-      {}
-    );
-  }
 
-  logData() {
-    console.log(this.data);
-  }
+  // get data() {
+  //   return (this.children.inputFields as Field[]).reduce(
+  //     (result: Record<string, string>, field) => ({
+  //       ...result,
+  //       ...{ [field.props.id]: field.getValue() },
+  //     }),
+  //     {},
+  //   );
+  // }
+
+  // logData() {
+  //   console.log(this.data);
+  // }
 
   isValid() {
     let result = true;

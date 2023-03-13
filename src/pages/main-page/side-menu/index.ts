@@ -19,7 +19,7 @@ export class SideMenu extends Block<SideMenuProps> {
   init() {
     this.children.profileBlock = new ProfileBlock({
       avatarSrc: userData.avatar,
-      userName: `${userData.firstName} ${userData.lastName}`,
+      userName: `${userData.first_name} ${userData.second_name}`,
       userStatus: "online",
     });
     this.children.friendsContainer = new FriendsContainer({

@@ -3,7 +3,8 @@ import template from "./profile-block.hbs";
 import { Avatar } from "../../../../components/avatar";
 import { AvatarsExports, IconsExports } from "../../../../utils/media-exports";
 import { Icon } from "../../../../components/icon";
-import { userStatus } from "../../../../utils/Interfaces";
+import { Routes, userStatus } from "../../../../utils/Interfaces";
+import Router from "../../../../utils/Router";
 
 interface ProfileBlockProps {
   avatarSrc: string;
@@ -25,7 +26,8 @@ export class ProfileBlock extends Block {
       alt: "settings",
       events: {
         click: () => {
-          window.renderDom("profile");
+          Router.go(Routes.Profile);
+          //window.renderDom("profile");
         },
       },
     });
@@ -34,7 +36,8 @@ export class ProfileBlock extends Block {
       className: "profile-header",
       events: {
         click: () => {
-          window.renderDom("profile");
+          Router.go(Routes.Profile);
+          //window.renderDom("profile");
         },
       },
     });

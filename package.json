@@ -1,4 +1,3 @@
-
 {
   "name": "sprint_2",
   "version": "1.0.0",
@@ -6,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rm -rf dist && parcel build static/index.html --no-cache",
-    "start": "parcel build static/index.html --open && node server.js",
+    "start": "parcel build static/index.html && node server.js",
     "lint": "node_modules/.bin/eslint . --ext .js,.ts && node_modules/.bin/stylelint ."
   },
   "author": "Ilya Orekhov",

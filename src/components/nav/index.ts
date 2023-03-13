@@ -1,3 +1,4 @@
+import { Routes } from "../../utils/Interfaces";
 import Block from "../../utils/Block";
 import { Link } from "../link";
 import template from "./nav.hbs";
@@ -11,20 +12,12 @@ export class Nav extends Block {
     this.children.links = [
       new Link({
         label: "505 Error Page",
-        events: {
-          click: () => {
-            window.renderDom("error");
-          },
-        },
+        to: Routes.NetworkError,
         className: "nav",
       }),
       new Link({
         label: "404 Error Page",
-        events: {
-          click: () => {
-            window.renderDom("notFound");
-          },
-        },
+        to: Routes.NotFound,
         className: "nav",
       }),
     ];

@@ -1,26 +1,23 @@
 import NamePages from "./routes";
-const { main, login, profile, registration, changePassword, changeProfile } =
-  NamePages;
+const { main, login, profile, registration, changePassword, changeProfile } = NamePages;
 
 const REGULAR_EXPRESSON = {
   EMAIL: /^(.+)@(.+){2,}\.(.+){2,}$/,
+  // EMAIL: /^\S+@\S+$/,
   LOGIN: /^[A-Za-z1-9\-_]{2,16}$/,
   NAME: /^[A-ZА-Я]{1}[a-zа-я\-ъ]+$/,
-  PHONE:
-    /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/,
-  PASSWORD:
-    /^(?=.*[a-zа-я])(?=.*[A-ZА-Я])(?=.*\d)[A-Za-zА-Яа-я\d@$!%*?&_\-]{6,}$/,
+  PHONE: /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/,
+  // PHONE: /^((8|+7)[- ]?)?((?\d{3})?[- ]?)?[\d- ]{7,10}$/,
+  PASSWORD: /^(?=.*[a-zа-я])(?=.*[A-ZА-Я])(?=.*\d)[A-Za-zА-Яа-я\d@$!%*?&_\-]{6,}$/,
   MESSAGE: /^[\w\W]*$/,
 };
 
 const REGEX_ERRORS = {
   EMAIL: "E-mail введен не корректно",
-  LOGIN:
-    "Допускаются только латинские буквы, цифры, знаки - и _ (от 2 до 16 символов).",
+  LOGIN: "Допускаются только латинские буквы, цифры, знаки - и _ (от 2 до 16 символов).",
   NAME: "Первая буква- заглавная остальные строчные. Допускаются только буквы.",
   PHONE: "Введите корректный номер телефона",
-  PASSWORD:
-    "Минимум 6 символов. Введите хотя бы одну заглавную букву, одну строчную букву и цифру",
+  PASSWORD: "Минимум 6 символов. Введите хотя бы одну заглавную букву, одну строчную букву и цифру",
   MESSAGE: "Это поле не должно быть пустым...",
 };
 
@@ -70,10 +67,10 @@ const FIRST_NAME = {
 };
 
 const SECOND_NAME = {
-  id: "last_name",
+  id: "second_name",
   type: "text",
-  label: "Last Name",
-  name: "last_name",
+  label: "Second Name",
+  name: "second_name",
   regex: REGULAR_EXPRESSON.NAME,
   errorText: REGEX_ERRORS.NAME,
 };
@@ -126,15 +123,7 @@ const REPEAT_PASSWORD = {
 const PAGE_FIELDS = {
   [main]: [MESSAGE],
   [login]: [LOGIN, PASSWORD],
-  [registration]: [
-    EMAIL,
-    LOGIN,
-    FIRST_NAME,
-    SECOND_NAME,
-    PHONE,
-    PASSWORD,
-    REPEAT_PASSWORD,
-  ],
+  [registration]: [FIRST_NAME, SECOND_NAME, LOGIN, EMAIL, PHONE, PASSWORD, REPEAT_PASSWORD],
   [profile]: [EMAIL, LOGIN, DISPLAY_NAME, FIRST_NAME, SECOND_NAME, PHONE],
   [changePassword]: [OLD_PASSWORD, NEW_PASSWORD, REPEAT_PASSWORD],
   [changeProfile]: [EMAIL, LOGIN, DISPLAY_NAME, FIRST_NAME, SECOND_NAME, PHONE],

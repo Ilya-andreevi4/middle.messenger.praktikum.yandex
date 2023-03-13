@@ -46,11 +46,8 @@ export class Field extends Block<FieldProps> {
   isValid() {
     const value: string = this.getValue();
 
-    const regexError: boolean =
-      !!this.props.regex && !new RegExp(this.props.regex).test(value);
-    const error = this.props.required
-      ? !value || regexError
-      : !!value && regexError;
+    const regexError: boolean = !!this.props.regex && !new RegExp(this.props.regex).test(value);
+    const error = this.props.required ? !value || regexError : !!value && regexError;
     if (error) {
       this.element!.classList.add("error");
     } else {
@@ -61,10 +58,12 @@ export class Field extends Block<FieldProps> {
   }
 
   getValue() {
-    const currentInput = this.getContent()?.querySelector(
-      `[name=${this.props.id}]`
-    ) as HTMLInputElement;
-    return currentInput.value;
+    const value = (this.children.input as Input).getValue();
+    return value;
+  }
+  getName() {
+    const name = (this.children.input as Input).getName();
+    return name;
   }
 
   render() {
