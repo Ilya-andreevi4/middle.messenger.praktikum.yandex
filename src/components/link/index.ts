@@ -1,9 +1,11 @@
 import Block from "../../utils/Block";
 import template from "./link.hbs";
+import Router from "../../utils/Router";
 
 interface LinkProps {
+  to?: string;
   label: string;
-  events: {
+  events?: {
     click: () => void;
   };
   className: string;
@@ -11,11 +13,19 @@ interface LinkProps {
 
 export class Link extends Block<LinkProps> {
   constructor(props: LinkProps) {
-    super(props);
-    this.props = { ...props };
+    super({
+      ...props,
+      events: props.events || {
+        click: () => this.navigate(),
+      },
+    });
+  }
+
+  navigate() {
+    this.props.to && Router.go(this.props.to);
   }
 
   render() {
-    return this.compile(template, this.props);
+    return this.compile(template, { ...this.props });
   }
 }

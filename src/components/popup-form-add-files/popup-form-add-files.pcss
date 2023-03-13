@@ -1,20 +1,25 @@
 .pop-list-item {
+  cursor: pointer;
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
   width: 100%;
   height: 100%;
-  display: flex;
-  position: relative;
-  align-items: center;
-  cursor: pointer;
+
   transition: 0.3 "background" ease-in-out;
 }
+
 .pop-list-item:hover {
-  box-shadow: inset 0 0 20 5 rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 0 20 5 rgb(0 0 0 / 20%);
 }
 
 .popper-add-files__icon {
-  margin: 0px 16px 0px 12px;
-  height: 24px;
   width: 24px;
+  height: 24px;
+  margin: 0 16px 0 12px;
 }
 
 .input-container.popper-add-files__input-container {
@@ -24,24 +29,29 @@
 .pop-list-item .popper-add-files__input {
   position: absolute;
   z-index: -1;
-  opacity: 0;
+
   display: block;
+
   width: 100%;
   height: 100%;
+
+  opacity: 0;
 }
 
 .placeholder.popper-add-files__placeholder {
+  z-index: 2000;
+
   display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
   width: 100%;
   height: 100%;
   padding-left: 48px;
-  z-index: 2000;
-  align-items: center;
-  justify-content: flex-start;
 }
 
 .input:focus ~ .placeholder.popper-add-files__placeholder,
 .input:not(:placeholder-shown) ~ .placeholder.popper-add-files__placeholder {
-  opacity: 1;
   color: white;
+  opacity: 1;
 }

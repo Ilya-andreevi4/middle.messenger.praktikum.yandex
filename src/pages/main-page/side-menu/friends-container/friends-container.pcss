@@ -1,21 +1,27 @@
 .friends-container {
   display: flex;
+  flex-direction: column;
+
   width: 100%;
   height: calc(100vh - 64px);
-  flex-direction: column;
-  background: linear-gradient(135deg, rgb(39, 43, 45) 0%, rgb(50, 56, 60) 100%);
+
+  background: linear-gradient(135deg, rgb(39 43 45) 0%, rgb(50 56 60) 100%);
 }
 
 .chats-header {
-  height: 34px;
-  background: $lighter-bg;
-  color: $accent-blue;
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  padding-left: 16px;
   z-index: 2000;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.4);
+
+  display: flex;
+  align-items: center;
+  justify-content: start;
+
+  height: 34px;
+  padding-left: 16px;
+
+  color: $accent-blue;
+
+  background: $lighter-bg;
+  box-shadow: 0 0 4px rgb(0 0 0 / 40%);
 }
 
 .chats-header__groups {
@@ -28,14 +34,20 @@
 }
 
 .chats-header__icon {
-  margin-right: 4px;
-  margin-left: 8px;
   width: 24px;
   height: 24px;
+  margin-right: 4px;
+  margin-left: 8px;
 }
+
 .chats-header__input-box .chats-header__icon {
   position: absolute;
-  right: 0px;
+  right: 0;
+
+  justify-self: flex-end;
+
+  width: 18px;
+  height: 18px;
 }
 
 .chats-header__groups .icon {
@@ -43,46 +55,46 @@
 }
 
 .chats-header__input-box {
+  position: relative;
+
   display: flex;
   align-items: center;
-  position: relative;
-  background-color: rgba(0, 0, 0, 0.1);
-  color: $transparent-white;
+
   min-width: 135px;
   height: 24px;
   margin-left: 16px;
-  box-shadow: inset 0 0 2 rgba(0, 0, 0, 0.25);
+
+  color: $transparent-white;
+
+  background-color: rgb(0 0 0 /10%);
+  box-shadow: inset 0 0 2 rgb(0 0 0 / 25%);
 }
 
 .chats-header__input-container {
-  background: none;
   max-width: calc(100% - 26px);
-  padding-left: 16px;
-  font-size: 16px;
   height: 100%;
+  padding-left: 16px;
+
+  font-size: 16px;
+
+  background: none;
 }
+
 .chats-header_placeholder {
   top: 3px;
   left: 16px;
 }
 
 .chats-header__input {
-  color: $transparent-white;
-  min-width: 78px;
   width: 100%;
+  min-width: 78px;
   height: 100%;
+  color: $transparent-white;
 }
 
 .chats-header__input::placeholder {
   font-family: Arial, Helvetica, sans-serif;
-
   color: $transparent-white;
-}
-
-.chats-header__input-box .chats-header__icon {
-  justify-self: flex-end;
-  height: 18px;
-  width: 18px;
 }
 
 .chats-header__input:focus + .chats-header__search__icon {
@@ -90,15 +102,15 @@
 }
 
 .chats-list {
-  height: 384px;
   overflow-y: auto;
+  height: 384px;
 }
 
 .chats-list__user-title {
-  padding: 0px;
+  padding: 0;
 }
 
 .chats-list__user-name {
   font-weight: 500;
-  opacity: 80%;
+  opacity: 0.8;
 }

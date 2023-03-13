@@ -79,7 +79,7 @@ export class FriendsContainer extends Block<FriendsContainerProps> {
                 this.props.handleChangeChat(e, chat.id);
               },
             },
-          })
+          }),
         );
       } else {
         (this.children.groups as ChatInfo[]).push(
@@ -94,7 +94,7 @@ export class FriendsContainer extends Block<FriendsContainerProps> {
                 this.props.handleChangeChat(e, chat.id);
               },
             },
-          })
+          }),
         );
       }
     });
@@ -105,10 +105,11 @@ export class FriendsContainer extends Block<FriendsContainerProps> {
       events: {
         submit: (e: Event) => {
           e.preventDefault();
-          (this.children.inviteModal as Form).logData();
-          if ((this.children.inviteModal as Form).isValid()) {
-            this.setProps({ inviteModalIsOpen: false });
-          }
+          console.log((this.children.inviteModal as Form).children);
+          // (this.children.inviteModal as Form).logData();
+          // if ((this.children.inviteModal as Form).isValid()) {
+          this.setProps({ inviteModalIsOpen: false });
+          // }
         },
       },
       children: {
@@ -117,12 +118,12 @@ export class FriendsContainer extends Block<FriendsContainerProps> {
             new Field({
               ...field,
               label: "Login",
-              id:"login",
-              name:"login",
+              id: "login",
+              name: "login",
               className: "modal",
               type: "text",
               required: false,
-            })
+            }),
         ),
         submitButton: new Button({
           label: "Invite",

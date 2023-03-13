@@ -1,11 +1,23 @@
 {
-  "extends": "airbnb",
-  "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint"],
-  "quotes": [2, "double"],
-  "rules": {
-    "max-len": [2, 100],
-    "@typescript-eslint/no-unused-vars": 2,
-    "linebreak-style": ["error", "windows"]
+  "extends": ["react-app", "react-app/jest"],
+  "plugins": ["prettier"],
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
     }
+  },
+  "rules": {
+    "prettier/prettier": 2,
+    "import/order": [
+      2,
+      {
+        "groups": ["external", "builtin", "index", "sibling", "parent", "internal", "type"],
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        },
+        "newlines-between": "always-and-inside-groups"
+      }
+    ]
+  }
 }

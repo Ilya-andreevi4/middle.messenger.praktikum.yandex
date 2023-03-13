@@ -1,16 +1,10 @@
 import { EventBus } from "./EventBus";
 import { nanoid } from "nanoid";
 
-type BlockEvents<P = any> = {
-  init: [];
-  "flow:component-did-mount": [];
-  "flow:component-did-update": [P, P];
-  "flow:render": [];
-};
-
 type Props<P extends Record<string, unknown> = any> = {
   events?: Record<string, (...args: any) => void>;
 } & P;
+
 class Block<P extends Record<string, any> = any> {
   static EVENTS = {
     INIT: "init",
@@ -21,7 +15,7 @@ class Block<P extends Record<string, any> = any> {
   public id = nanoid(8);
   props: Props<P>;
   public children: Record<string, Block | Block[]>;
-  private eventBus: () => EventBus<BlockEvents<Props<P>>>;
+  private eventBus: () => EventBus;
   private _element: HTMLElement | null = null;
 
   /** JSDoc
@@ -30,8 +24,8 @@ class Block<P extends Record<string, any> = any> {
    * @returns {void}
    */
 
-  protected constructor(propsWithChildren: P = {} as P) {
-    const eventBus = new EventBus<BlockEvents<Props<P>>>();
+  constructor(propsWithChildren: P = {} as P) {
+    const eventBus = new EventBus();
     const { props, children } = this._getChildrenAndProps(propsWithChildren);
 
     this.children = children;
@@ -41,7 +35,7 @@ class Block<P extends Record<string, any> = any> {
     eventBus.emit(Block.EVENTS.INIT);
   }
 
-  private _getChildrenAndProps(childrenAndProps: Props<P>): {
+  private _getChildrenAndProps(childrenAndProps: P): {
     props: Props<P>;
     children: Record<string, Block>;
   } {
@@ -66,7 +60,7 @@ class Block<P extends Record<string, any> = any> {
     });
   }
 
-  _registerEvents(eventBus: EventBus<BlockEvents>) {
+  _registerEvents(eventBus: EventBus) {
     eventBus.on(Block.EVENTS.INIT, this._init.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
@@ -104,10 +98,7 @@ class Block<P extends Record<string, any> = any> {
     }
   }
 
-  protected componentDidUpdate(
-    _oldProps: Props<P>,
-    _newProps: Props<P>
-  ): boolean {
+  protected componentDidUpdate(_oldProps: Props<P>, _newProps: Props<P>): boolean {
     return true;
   }
 
@@ -144,10 +135,7 @@ class Block<P extends Record<string, any> = any> {
     this._addEvents();
   }
 
-  private _replaceStub(
-    fragment: HTMLTemplateElement,
-    child: Block | Block[] | string
-  ) {
+  private _replaceStub(fragment: HTMLTemplateElement, child: Block | Block[] | string) {
     if (Array.isArray(child)) {
       child.forEach((c) => {
         this._replaceStub(fragment, c);
@@ -155,9 +143,7 @@ class Block<P extends Record<string, any> = any> {
     } else if (typeof child === "string") {
       return child;
     } else {
-      const stub: HTMLElement | null = fragment.content.querySelector(
-        `[data-id="${child.id}"]`
-      );
+      const stub: HTMLElement | null = fragment.content.querySelector(`[data-id="${child.id}"]`);
       if (!stub) {
         return;
       }
@@ -171,9 +157,7 @@ class Block<P extends Record<string, any> = any> {
 
     Object.entries(this.children).forEach(([name, component]) => {
       if (Array.isArray(component)) {
-        contextAndStubs[name] = component.map(
-          (child) => `<div data-id="${child.id}"></div>`
-        );
+        contextAndStubs[name] = component.map((child) => `<div data-id="${child.id}"></div>`);
       } else {
         contextAndStubs[name] = `<div data-id="${component.id}"></div>`;
       }
