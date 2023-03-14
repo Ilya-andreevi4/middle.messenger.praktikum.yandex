@@ -10,9 +10,10 @@ import { AvatarsExports } from "../../utils/media-exports";
 import PAGE_FIELDS from "../../utils/page-fields";
 import template from "./profile-page.hbs";
 import { ChangePasswordProps, ChangeProfileProps, Routes, User } from "../../utils/Interfaces";
-import { withStore } from "../../utils/Store";
+import { withUser } from "../../utils/Store";
 import { isEqual } from "../../utils/helpers";
 import ProfileController from "../../controllers/ProfileController";
+import { Loader } from "../../layouts/loader";
 
 interface ProfileProps {
   data: User;
@@ -37,6 +38,7 @@ class ProfilePageBase extends Block<ProfileProps> {
     this.props.isChangePassword = false;
     this.props.isChangeProfile = false;
     this.children.navBar = new Nav("");
+    this.children.Loader = new Loader({ isLoading: this.props.isLoading });
     this.children.avatar = new Avatar({
       src: this.props.data.avatar || AvatarsExports.AvatarBox,
       className: "profile-page",
@@ -279,32 +281,22 @@ class ProfilePageBase extends Block<ProfileProps> {
   }
 
   protected componentDidUpdate(oldProps: ProfileProps, newProps: ProfileProps): boolean {
-    /**
-     * Обновляем детей
-     */
     console.log("oldProps: ", oldProps);
     console.log("newProps: ", newProps);
 
+    if (oldProps.isLoading !== newProps.isLoading) {
+      (this.children.Loader as Loader).setProps({ isLoading: newProps.isLoading });
+      return false;
+    }
     if (!isEqual(oldProps.data, newProps.data)) {
       ((this.children.profileForm as Form).children.inputFields as Field[]).forEach((field) => {
         field.setProps({ value: JSON.stringify(newProps.data[field.props.name as keyof User]) });
       });
-      return false;
+      return true;
     }
     if (!isEqual(oldProps, newProps)) {
       return true;
     }
-    /**
-     * Другой вариант — просто заново создать всех детей. Но тогда метод должен возвращать true, чтобы новые дети отрендерились
-     *
-     * this.children.fields = userFields.map(name => {
-     *   return new ProfileField({ name, value: newProps[name] });
-     * });
-     */
-
-    /**
-     * Так как мы обновили детей, этот компонент не обязательно рендерить
-     */
     return false;
   }
 
@@ -313,6 +305,7 @@ class ProfilePageBase extends Block<ProfileProps> {
   }
 }
 
-const withUser = withStore((state) => ({ ...state.user }));
+// const withUser = withStore((state) => ({ ...state.user }));
+
 //@ts-ignore
 export const ProfilePage = withUser(ProfilePageBase);

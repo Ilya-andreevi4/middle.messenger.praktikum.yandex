@@ -11,7 +11,7 @@ export class MainPage extends Block {
     this.props.handleChatSelect = (e: Event, id: number) => {
       if (e) {
         console.log("Event ", e, " ID ", id);
-        (this.children.sideMenu as SideMenu).setProps({
+        (this.children.sideMenu as Block).setProps({
           activeChatId: id,
         });
         (this.children.chatContainer as ChatContainer).setProps({

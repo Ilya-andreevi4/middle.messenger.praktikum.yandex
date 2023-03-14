@@ -1,6 +1,5 @@
 import { Button } from "../../components/button";
 import { Field } from "../../components/field";
-import { Link } from "../../components/link";
 import Block from "../../utils/Block";
 import template from "./form.hbs";
 
@@ -11,7 +10,7 @@ interface FormProps {
   children?: {
     inputFields?: Field[];
     submitButton?: Button;
-    links?: Link[];
+    links?: Block[];
   };
   events: {
     submit: (e: Event) => void;

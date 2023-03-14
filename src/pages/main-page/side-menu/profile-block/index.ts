@@ -7,9 +7,9 @@ import { Routes, userStatus } from "../../../../utils/Interfaces";
 import Router from "../../../../utils/Router";
 
 interface ProfileBlockProps {
-  avatarSrc: string;
-  userName: string;
-  userStatus: userStatus;
+  avatarSrc?: string;
+  userName?: string;
+  userStatus?: userStatus;
 }
 
 export class ProfileBlock extends Block {
@@ -27,17 +27,15 @@ export class ProfileBlock extends Block {
       events: {
         click: () => {
           Router.go(Routes.Profile);
-          //window.renderDom("profile");
         },
       },
     });
     this.children.avatar = new Avatar({
-      src: AvatarsExports.Avatar_1,
+      src: this.props.avatarSrc || AvatarsExports.Avatar_1,
       className: "profile-header",
       events: {
         click: () => {
           Router.go(Routes.Profile);
-          //window.renderDom("profile");
         },
       },
     });

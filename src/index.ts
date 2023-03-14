@@ -30,8 +30,8 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     Router.start();
 
-    if (!isProtectedRoute && !store.getState().user.error) {
-      Router.go(Routes.Profile);
+    if (!isProtectedRoute && store.getState().user.data) {
+      Router.go(Routes.Chats);
     } else {
       Router.go(Routes.Index);
     }

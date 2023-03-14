@@ -16,8 +16,9 @@ class ProfileController {
         .changeProfile(data)
         .then(async (res) => {
           console.log("res: ", res);
-
-          await this.fetchUser();
+          // @ts-ignore
+          const UserId = res.id;
+          await this.fetchUser(UserId);
         })
         .catch((e) => {
           console.error("error with changeProfile: ", e);
@@ -32,8 +33,12 @@ class ProfileController {
 
   async changePassword(data: ChangePasswordProps) {
     try {
-      await this.api.changePassword(data);
-      await this.fetchUser();
+      await this.api.changePassword(data).then(async (res) => {
+        //@ts-ignore
+        const UserId = res.id;
+        await this.fetchUser(UserId);
+      });
+
       router.go(Routes.Profile);
     } catch (e: any) {
       console.error("Troble with change password in profileController:", e);
@@ -51,9 +56,9 @@ class ProfileController {
     }
   }
 
-  async fetchUser() {
+  async fetchUser(id?: number) {
     try {
-      const user = await this.api.read();
+      const user = await this.api.read(id);
       store.set("user.data", user);
     } catch (e: any) {
       console.error("Troble with fetchUser in profileController:", e);

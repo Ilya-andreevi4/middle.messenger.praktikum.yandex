@@ -8,10 +8,20 @@ import Block from "../../utils/Block";
 import template from "./login-page.hbs";
 import AuthController from "../../controllers/AuthContoller";
 import { Routes, SignupData } from "../../utils/Interfaces";
+import { UserStateProps, withUser } from "../../utils/Store";
+import { Loader } from "../../layouts/loader";
 
-export class LoginPage extends Block {
+interface LoginPageProps extends UserStateProps {}
+
+class LoginPageBase extends Block<LoginPageProps> {
+  constructor(props: LoginPageProps) {
+    super(props);
+  }
   init() {
+    console.log("data in login page: ", this.props.data);
+
     this.children.navBar = new Nav("");
+    this.children.loader = new Loader({ isLoading: this.props.isLoading });
     this.children.loginModal = new Form({
       title: "Log in",
       className: "modal",
@@ -61,7 +71,19 @@ export class LoginPage extends Block {
     AuthController.signin(data as SignupData);
   }
 
+  // protected componentDidUpdate(_oldProps: UserStateProps, _newProps: UserStateProps): boolean {
+  //   console.log("data in login page: ", _oldProps, _newProps);
+
+  //   if (_oldProps.data || _newProps.data) {
+  //     Router.go(Routes.Chats);
+  //     return false;
+  //   }
+  //   return !isEqual(_oldProps.data!, _newProps.data!);
+  // }
+
   render() {
     return this.compile(template, this.props);
   }
 }
+//@ts-ignore
+export const LoginPage = withUser(LoginPageBase);
