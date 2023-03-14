@@ -1,11 +1,11 @@
-import { User, ChangeProfileProps, ChangePasswordProps } from "src/utils/Interfaces";
+import { User, ChangeProfileProps, ChangePasswordProps } from "../utils/Interfaces";
 import BaseAPI from "./BaseAPI";
 
 // TODO Переписать весь файл под редактор профиля
 
 export class ProfileAPI extends BaseAPI {
   constructor() {
-    super("/auth");
+    super("");
   }
 
   read(id?: number): Promise<User> {
@@ -20,9 +20,10 @@ export class ProfileAPI extends BaseAPI {
     return this.http.put("/user/password", data);
   }
 
-  //   changeAvatar(file: File) {
-  //     return this.http.put("/user/avatar", file);
-  //   } //TODO
+  changeAvatar(data: FormData) {
+    console.log("strAvatar: ", JSON.stringify(data));
+    return this.http.put("/user/avatar", data);
+  } //TODO
 
   update = undefined;
 

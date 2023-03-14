@@ -7,18 +7,7 @@ import { RegistrationPage } from "./pages/registration-page";
 import { ErrorPage } from "./pages/server-error-page";
 import { Routes } from "./utils/Interfaces";
 import Router from "./utils/Router";
-// import renderDom from "./utils/render-dom";
-
-// window.renderDom = renderDom;
-
-// export enum Routes {
-//   Index = "/",
-//   Chats = "/chats",
-//   NotFound = "/404",
-//   NetworkError = "/505",
-//   Registation = "/reg",
-//   Profile = "/profile",
-// }
+import store from "./utils/Store";
 
 window.addEventListener("DOMContentLoaded", async () => {
   Router.use(Routes.Index, LoginPage)
@@ -36,14 +25,15 @@ window.addEventListener("DOMContentLoaded", async () => {
       isProtectedRoute = false;
       break;
   }
-
   try {
     await AuthController.fetchUser();
 
     Router.start();
 
-    if (!isProtectedRoute) {
+    if (!isProtectedRoute && !store.getState().user.error) {
       Router.go(Routes.Profile);
+    } else {
+      Router.go(Routes.Index);
     }
   } catch (e) {
     Router.start();

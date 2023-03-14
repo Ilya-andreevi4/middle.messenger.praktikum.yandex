@@ -24,7 +24,7 @@ class Block<P extends Record<string, any> = any> {
    * @returns {void}
    */
 
-  constructor(propsWithChildren: P = {} as P) {
+  constructor(propsWithChildren: P) {
     const eventBus = new EventBus();
     const { props, children } = this._getChildrenAndProps(propsWithChildren);
 
@@ -210,7 +210,7 @@ class Block<P extends Record<string, any> = any> {
   }
 
   show() {
-    this.getContent()!.style.display = "inherit";
+    this.getContent()!.style.display = "flex";
   }
 
   hide() {

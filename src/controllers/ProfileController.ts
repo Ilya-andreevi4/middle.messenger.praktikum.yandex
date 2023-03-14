@@ -1,7 +1,7 @@
 import store from "../utils/Store";
 import router from "../utils/Router";
 import { ChangePasswordProps, ChangeProfileProps, Routes } from "../utils/Interfaces";
-import API, { ProfileAPI } from "src/api/ProfileAPI";
+import API, { ProfileAPI } from "../api/ProfileAPI";
 
 class ProfileController {
   private readonly api: ProfileAPI;
@@ -12,45 +12,53 @@ class ProfileController {
 
   async changeProfile(data: ChangeProfileProps) {
     try {
-      await this.api.changeProfile(data);
+      await this.api
+        .changeProfile(data)
+        .then(async (res) => {
+          console.log("res: ", res);
 
-      router.go(Routes.Chats);
-    } catch (e: any) {
-      console.error(e);
+          await this.fetchUser();
+        })
+        .catch((e) => {
+          console.error("error with changeProfile: ", e);
+        });
+
+      console.log("router go to profile! user:", store.getState().user.data);
+      router.go(Routes.Profile);
+    } catch (e) {
+      console.error("Troble with change profile in profileController:", e);
     }
   }
 
   async changePassword(data: ChangePasswordProps) {
     try {
       await this.api.changePassword(data);
+      await this.fetchUser();
+      router.go(Routes.Profile);
+    } catch (e: any) {
+      console.error("Troble with change password in profileController:", e);
+    }
+  }
+  async changeAvatar(data: FormData) {
+    try {
+      await this.api.changeAvatar(data);
 
       await this.fetchUser();
 
-      router.go(Routes.Chats);
+      router.go(Routes.Profile);
     } catch (e: any) {
-      console.error(e.message);
+      console.error("Troble with change avatar in profileController:", e);
     }
   }
 
   async fetchUser() {
     try {
       const user = await this.api.read();
-
-      store.set("user", user);
+      store.set("user.data", user);
     } catch (e: any) {
-      console.error(e.message);
+      console.error("Troble with fetchUser in profileController:", e);
     }
   }
-
-  // async changeAvatar() { //TODO
-  //   try {
-  //     await this.api.ChangeAvatarProps();
-
-  //     router.go(Routes.Index);
-  //   } catch (e: any) {
-  //     console.error(e.message);
-  //   }
-  // }
 }
 
 export default new ProfileController();

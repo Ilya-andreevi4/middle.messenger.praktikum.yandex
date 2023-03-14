@@ -13,12 +13,8 @@ interface IValues extends SignupData {
   confirm_new_password: string;
 }
 export class RegistrationPage extends Block {
-  constructor() {
-    super();
-  }
-
   init() {
-    this.children.navBar = new Nav();
+    this.children.navBar = new Nav("");
     this.children.registrationForm = new Form({
       title: "Registration",
       className: "modal",
@@ -72,7 +68,6 @@ export class RegistrationPage extends Block {
         .filter((field) => field.props.id === "password" || field.props.id === "confirm_new_password")
         .map((field) => {
           field.element!.classList.add("error");
-          // field.setProps({ errorText: "The passwords don't match" }); TODO ошибка не меняется
         });
       alert("Введённые пароли не совпадают");
       throw new Error("Введённые пароли не совпадают");
@@ -80,14 +75,12 @@ export class RegistrationPage extends Block {
       inputFields
         .filter((field) => field.props.id === "password" || field.props.id === "confirm_new_password")
         .map((field) => {
-          //   field.props.errorText = // TODO вернуть прежнюю ошибку
-          //     "Минимум 6 символов. Введите хотя бы одну заглавную букву, одну строчную букву и цифру";
           field.element!.classList.remove("error");
         });
     }
     const data = Object.fromEntries(
-      values.filter((arrVal) => {
-        return arrVal[0] !== "confirm_new_password";
+      values.filter((keyValue) => {
+        return keyValue[0] !== "confirm_new_password";
       }),
     );
 

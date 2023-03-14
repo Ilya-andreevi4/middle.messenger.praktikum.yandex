@@ -34,20 +34,6 @@ export class Form extends Block<FormProps> {
     }
   }
 
-  // get data() {
-  //   return (this.children.inputFields as Field[]).reduce(
-  //     (result: Record<string, string>, field) => ({
-  //       ...result,
-  //       ...{ [field.props.id]: field.getValue() },
-  //     }),
-  //     {},
-  //   );
-  // }
-
-  // logData() {
-  //   console.log(this.data);
-  // }
-
   isValid() {
     let result = true;
     (this.children.inputFields as Field[]).forEach((field) => {

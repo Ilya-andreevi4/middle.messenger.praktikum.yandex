@@ -23,9 +23,7 @@ export class Button extends Block<ButtonProps> {
   }
 
   navigate() {
-    this.props.to
-      ? Router.go(this.props.to)
-      : console.log("Не назначен 'to', адрес для перехода, для кнопки: ", this.props.label);
+    this.props.to && Router.go(this.props.to);
   }
 
   render() {

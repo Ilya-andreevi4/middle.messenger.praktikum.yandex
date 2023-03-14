@@ -5,10 +5,6 @@ import { ChatContainer } from "./chat-container";
 import template from "./main-page.hbs";
 import { SideMenu } from "./side-menu";
 export class MainPage extends Block {
-  constructor() {
-    super();
-  }
-
   init() {
     this.props.activeChatId = 2;
     //README Нужно прописать логику выбора чата с выведением выбранного чата в chat-container
@@ -23,7 +19,7 @@ export class MainPage extends Block {
         });
       }
     };
-    this.children.navBar = new Nav();
+    this.children.navBar = new Nav("");
     this.children.sideMenu = new SideMenu({
       handleChangeChat: this.props.handleChatSelect,
       activeChatId: this.props.activeChatId,

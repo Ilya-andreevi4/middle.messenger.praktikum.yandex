@@ -6,25 +6,39 @@ import { Link } from "../../components/link";
 import { Nav } from "../../components/nav";
 import { Form } from "../../layouts/form";
 import Block from "../../utils/Block";
-import { userData } from "../../utils/data";
 import { AvatarsExports } from "../../utils/media-exports";
 import PAGE_FIELDS from "../../utils/page-fields";
 import template from "./profile-page.hbs";
-import { Routes } from "../../utils/Interfaces";
+import { ChangePasswordProps, ChangeProfileProps, Routes, User } from "../../utils/Interfaces";
 import { withStore } from "../../utils/Store";
+import { isEqual } from "../../utils/helpers";
+import ProfileController from "../../controllers/ProfileController";
 
-class ProfilePageBase extends Block {
-  constructor() {
-    super();
+interface ProfileProps {
+  data: User;
+  isLoading: boolean;
+  error?: string;
+  modalIsOpen?: boolean;
+  isChangePassword?: boolean;
+  isChangeProfile?: boolean;
+}
+
+class ProfilePageBase extends Block<ProfileProps> {
+  constructor(p: ProfileProps) {
+    super(p);
     this.props.modalIsOpen = false;
     this.props.isChangePassword = false;
     this.props.isChangeProfile = false;
   }
-
   protected init(): void {
-    this.children.navBar = new Nav();
+    console.log("profile data: ", this.props);
+
+    this.props.modalIsOpen = false;
+    this.props.isChangePassword = false;
+    this.props.isChangeProfile = false;
+    this.children.navBar = new Nav("");
     this.children.avatar = new Avatar({
-      src: AvatarsExports.AvatarBox,
+      src: this.props.data.avatar || AvatarsExports.AvatarBox,
       className: "profile-page",
       events: {
         click: () => {
@@ -33,13 +47,13 @@ class ProfilePageBase extends Block {
       },
     });
 
-    this.props.userName = userData.display_name
-      ? userData.display_name
-      : userData.first_name + " " + userData.second_name;
+    this.props.data.display_name = this.props.data.display_name
+      ? this.props.data.display_name
+      : this.props.data.first_name + " " + this.props.data.second_name;
 
     this.children.profileForm = new Form({
       className: "profile-page",
-      title: this.props.userName,
+      title: this.props.data.display_name,
       isPopup: false,
       children: {
         inputFields: PAGE_FIELDS["profile"].map((field) => {
@@ -50,27 +64,8 @@ class ProfilePageBase extends Block {
               {
                 key: "placeholder",
                 value: () => {
-                  const currentName = field.id;
-                  return userData[currentName] ? userData[currentName] : "";
-                  // if (field.id === "email") { //TODO Проверить валидность!
-                  //   return userData.email;
-                  // }
-                  // if (field.id === "login") {
-                  //   return userData.login;
-                  // }
-                  // if (field.id === "first_name") {
-                  //   return userData.firstName;
-                  // }
-                  // if (field.id === "second_name") {
-                  //   return userData.lastName;
-                  // }
-                  // if (field.id === "display_name") {
-                  //   return userData.chatName;
-                  // }
-                  // if (field.id === "phone") {
-                  //   return userData.phone;
-                  // }
-                  // return "";
+                  console.log("inputValue: ", field.name, this.props.data[field.name as keyof User]);
+                  return this.props.data[field.name as keyof User];
                 },
               },
               { key: "readonly", value: true },
@@ -114,7 +109,7 @@ class ProfilePageBase extends Block {
 
     this.children.changeProfileForm = new Form({
       className: "profile-page",
-      title: this.props.userName,
+      title: this.props.data.display_name,
       isPopup: false,
       children: {
         inputFields: PAGE_FIELDS["changeProfile"].map((field) => {
@@ -122,6 +117,19 @@ class ProfilePageBase extends Block {
             ...field,
             required: true,
             className: "modal",
+            attributes: [
+              {
+                key: "value",
+                value: () => {
+                  console.log("inputValue: ", field.name, this.props.data[field.name as keyof User]);
+                  return this.props.data[field.name as keyof User];
+                },
+                // () => {
+                //   const currentName = field.id;
+                //   return userData[currentName] ? userData[currentName] : "";
+                // },
+              },
+            ],
           });
         }),
         submitButton: new Button({
@@ -135,16 +143,22 @@ class ProfilePageBase extends Block {
           e.preventDefault();
           console.log((this.children.changeProfileForm as Form).children);
           // (this.children.changeProfileForm as Form).logData();
-          // if ((this.children.changeProfileForm as Form).isValid()) {
-          this.setProps({ isChangeProfile: false });
-          // }
+          if ((this.children.changeProfileForm as Form).isValid()) {
+            try {
+              this.onSubmit("changeProfileForm");
+
+              this.setProps({ isChangeProfile: false });
+            } catch (e) {
+              console.error(e);
+            }
+          }
         }, //TODO Переделать на Auth API
       },
     });
 
     this.children.changePasswordForm = new Form({
       className: "profile-page",
-      title: this.props.userName,
+      title: this.props.data.display_name,
       isPopup: false,
       children: {
         inputFields: PAGE_FIELDS["changePassword"].map((field) => {
@@ -164,15 +178,20 @@ class ProfilePageBase extends Block {
         submit: (e: Event) => {
           e.preventDefault();
           console.log((this.children.changePasswordForm as Form).children);
-          // (this.children.changePasswordForm as Form).logData();
-          // if ((this.children.changePasswordForm as Form).isValid()) {
-          this.setProps({ isChangePassword: false });
-          // }
-        }, //TODO Переделать на Auth API
+          if ((this.children.changePasswordForm as Form).isValid()) {
+            //TODO Переделать на Auth API
+            try {
+              this.onSubmit("changePasswordForm");
+              this.setProps({ isChangePassword: false });
+            } catch (e) {
+              console.error(e);
+            }
+          }
+        },
       },
     });
 
-    (this.children.changeAvatarModal as Form) = new Form({
+    this.children.changeAvatarModal = new Form({
       title: "Change Avatar",
       className: "modal",
       isPopup: true,
@@ -180,8 +199,12 @@ class ProfilePageBase extends Block {
         submit: (e: Event) => {
           e.preventDefault();
           console.log((this.children.changeAvatarModal as Form).children);
-          // (this.children.changeAvatarModal as Form).logData();
-          this.setProps({ modalIsOpen: false });
+          try {
+            this.onSubmit("changeAvatarModal");
+            this.setProps({ modalIsOpen: false });
+          } catch (e) {
+            console.error(e);
+          }
         }, //TODO Переделать на Auth API
       },
       children: {
@@ -203,6 +226,7 @@ class ProfilePageBase extends Block {
           className: "modal",
           type: "submit",
         }),
+        links: undefined,
       },
     });
 
@@ -214,11 +238,81 @@ class ProfilePageBase extends Block {
     });
   }
 
+  onSubmit(formName: "changeAvatarModal" | "changePasswordForm" | "changeProfileForm") {
+    //Находим у соответсвующей формы все её инпуты и берём с них данные в виде массивов
+    const inputFields = (this.children[formName] as Form).children.inputFields as Field[];
+    const values = inputFields.map((child) => {
+      return [(child as Field).getName(), (child as Field).getValue()];
+    });
+
+    const valuesObjects = Object.fromEntries(values);
+    // Проверяем пароли на совпедение в форме смены пароля
+    if (formName === "changePasswordForm" && valuesObjects.confirm_new_password !== valuesObjects.newPassword) {
+      inputFields
+        .filter((field) => field.props.id === "newPassword" || field.props.id === "confirm_new_password")
+        .map((field) => {
+          field.element!.classList.add("error");
+        });
+      alert("Введённые пароли не совпадают");
+      throw new Error("Введённые пароли не совпадают");
+    } else {
+      inputFields
+        .filter((field) => field.props.id === "password" || field.props.id === "confirm_new_password")
+        .map((field) => {
+          field.element!.classList.remove("error");
+        });
+    }
+
+    const data = Object.fromEntries(
+      values.filter((keyValue) => {
+        return keyValue[0] !== "confirm_new_password";
+      }),
+    );
+
+    if (formName === "changeProfileForm") {
+      ProfileController.changeProfile(data as ChangeProfileProps);
+    } else if (formName === "changePasswordForm") {
+      ProfileController.changePassword(data as ChangePasswordProps);
+    } else if (formName === "changeAvatarModal") {
+      ProfileController.changeAvatar(data as FormData);
+    }
+  }
+
+  protected componentDidUpdate(oldProps: ProfileProps, newProps: ProfileProps): boolean {
+    /**
+     * Обновляем детей
+     */
+    console.log("oldProps: ", oldProps);
+    console.log("newProps: ", newProps);
+
+    if (!isEqual(oldProps.data, newProps.data)) {
+      ((this.children.profileForm as Form).children.inputFields as Field[]).forEach((field) => {
+        field.setProps({ value: JSON.stringify(newProps.data[field.props.name as keyof User]) });
+      });
+      return false;
+    }
+    if (!isEqual(oldProps, newProps)) {
+      return true;
+    }
+    /**
+     * Другой вариант — просто заново создать всех детей. Но тогда метод должен возвращать true, чтобы новые дети отрендерились
+     *
+     * this.children.fields = userFields.map(name => {
+     *   return new ProfileField({ name, value: newProps[name] });
+     * });
+     */
+
+    /**
+     * Так как мы обновили детей, этот компонент не обязательно рендерить
+     */
+    return false;
+  }
+
   render() {
     return this.compile(template, this.props);
   }
 }
 
-export const ProfilePage = withStore((state) => {
-  return state.user.data || {};
-})(ProfilePageBase);
+const withUser = withStore((state) => ({ ...state.user }));
+//@ts-ignore
+export const ProfilePage = withUser(ProfilePageBase);

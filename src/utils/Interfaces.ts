@@ -87,13 +87,14 @@ export interface ChangePasswordProps extends JsonObject {
   newPassword: string;
 }
 
-export interface User extends JsonObject {
+export interface User {
   id: number;
   first_name: string;
   second_name: string;
+  display_name?: string;
   login: string;
   email: string;
   password: string;
   phone: string;
-  avatar: string;
+  avatar?: string;
 }

@@ -24,7 +24,9 @@ class Route {
   constructor(private pathname: string, private readonly blockClass: typeof Block, private readonly query: string) {}
 
   leave() {
-    this.block = null;
+    if (this.block) {
+      this.block.hide();
+    }
   }
 
   match(pathname: string) {
@@ -34,10 +36,10 @@ class Route {
   render() {
     if (!this.block) {
       this.block = new this.blockClass({});
-
       render(this.query, this.block);
       return;
     }
+    this.block.show();
   }
 }
 

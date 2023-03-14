@@ -94,19 +94,19 @@ const PASSWORD = {
 };
 
 const OLD_PASSWORD = {
-  id: "old_password",
+  id: "oldPassword",
   type: "password",
   label: "Old password",
-  name: "old_password",
+  name: "oldPassword",
   regex: REGULAR_EXPRESSON.PASSWORD,
   errorText: REGEX_ERRORS.PASSWORD,
 };
 
 const NEW_PASSWORD = {
-  id: "new_password",
+  id: "newPassword",
   type: "password",
   label: "New password",
-  name: "new_password",
+  name: "newPassword",
   regex: REGULAR_EXPRESSON.PASSWORD,
   errorText: REGEX_ERRORS.PASSWORD,
 };

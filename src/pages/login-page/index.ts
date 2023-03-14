@@ -10,12 +10,8 @@ import AuthController from "../../controllers/AuthContoller";
 import { Routes, SignupData } from "../../utils/Interfaces";
 
 export class LoginPage extends Block {
-  constructor() {
-    super();
-  }
-
   init() {
-    this.children.navBar = new Nav();
+    this.children.navBar = new Nav("");
     this.children.loginModal = new Form({
       title: "Log in",
       className: "modal",

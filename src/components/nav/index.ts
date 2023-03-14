@@ -4,10 +4,6 @@ import { Link } from "../link";
 import template from "./nav.hbs";
 
 export class Nav extends Block {
-  constructor() {
-    super();
-  }
-
   protected init(): void {
     this.children.links = [
       new Link({

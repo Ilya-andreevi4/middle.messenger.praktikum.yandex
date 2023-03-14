@@ -9,8 +9,11 @@ enum METHODS {
 }
 
 type Options = {
+  headers?: Record<string, string>;
   method?: METHODS;
-  data?: JsonObject;
+  timeout?: number;
+  id?: number;
+  data?: JsonObject | FormData;
 };
 
 // function queryStringify(data: any, prefix?: string): string {
@@ -39,18 +42,23 @@ export default class HTTPTransport {
   }
 
   public get<Response>(path = "/", id?: number): Promise<Response> {
-    return this.request(this.endpoint + path + id && `/${id}`, { method: METHODS.GET });
+    const currentPath = id && path !== "/" ? path + `/${id}` : path;
+    console.log("url for fetch user: ", this.endpoint + currentPath);
+    console.log("endpoint for fetch user: ", this.endpoint);
+    console.log("path for fetch user: ", path);
+
+    return this.request(this.endpoint + currentPath, { method: METHODS.GET });
   }
 
-  public post<Response = void>(path: string, data?: JsonObject): Promise<Response> {
+  public post<Response = void>(path: string, data?: JsonObject | FormData): Promise<Response> {
     return this.request(this.endpoint + path, { method: METHODS.POST, data });
   }
 
-  public put<Response = void>(path: string, data: JsonObject): Promise<Response> {
+  public put<Response = void>(path: string, data?: JsonObject | FormData): Promise<Response> {
     return this.request(this.endpoint + path, { data, method: METHODS.PUT });
   }
 
-  public patch<Response = void>(path: string, data: JsonObject): Promise<Response> {
+  public patch<Response = void>(path: string, data?: JsonObject | FormData): Promise<Response> {
     return this.request<Response>(this.endpoint + path, {
       method: METHODS.PATCH,
       data,
@@ -62,16 +70,10 @@ export default class HTTPTransport {
   }
 
   private request<Response>(url: string, options: Options = { method: METHODS.GET }): Promise<Response> {
-    const { method, data } = options;
+    // const { method, data } = options;
+    const { headers = { "Content-Type": "application/json" }, method = METHODS.GET, timeout = 5000, data } = options;
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
-      // const isGet = method === METHODS.GET;
-      // if (isGet) {
-      //   const newUrl = url + queryStringify(data);
-      //   xhr.open(method, newUrl);
-      // } else {
-      //   xhr.open(method, url);
-      // }
       xhr.open(method ? method : METHODS.GET, url);
 
       xhr.onreadystatechange = () => {
@@ -84,12 +86,15 @@ export default class HTTPTransport {
         }
       };
 
+      Object.keys(headers).forEach((key: string) => {
+        xhr.setRequestHeader(key, headers[key]);
+      });
+
       xhr.onabort = () => reject({ reason: "abort" });
       xhr.onerror = () => reject({ reason: "network error" });
       xhr.ontimeout = () => reject({ reason: "timeout" });
 
-      xhr.setRequestHeader("Content-Type", "application/json");
-
+      xhr.timeout = timeout;
       xhr.withCredentials = true;
       xhr.responseType = "json";
 
@@ -102,25 +107,32 @@ export default class HTTPTransport {
   }
 }
 
-// type FetchWithRetriyOptions = Options & {
-//   retries: number;
-// };
+type FetchWithRetriyOptions = Options & {
+  retries: number;
+};
 
-// export function fetchWithRetry(
-//   url: string,
-//   options: FetchWithRetriyOptions
-// ): Promise<XMLHttpRequest> {
-//   const { retries = 5, ...fetchOptions } = options;
+export function fetchWithRetry(endpoint: string, url: string, options: FetchWithRetriyOptions): Promise<any> {
+  const { retries = 5, ...fetchOptions } = options;
 
-//   function onError() {
-//     if (retries === 1) {
-//       throw new Error("No retries left");
-//     }
-//     return fetchWithRetry(url, {
-//       ...fetchOptions,
-//       ...{ retries: retries - 1 },
-//     });
-//   }
-
-//   return new HTTPTransport().request(url, fetchOptions).catch(onError);
-// }
+  function onError(e: any) {
+    if (retries === 1) {
+      throw new Error("Retries left. Error:", e);
+    }
+    return fetchWithRetry(endpoint, url, {
+      ...fetchOptions,
+      ...{ retries: retries - 1 },
+    });
+  }
+  const currentMethod = options.method?.toLowerCase() || "get";
+  if (currentMethod === "post") {
+    return new HTTPTransport(endpoint).post(url, fetchOptions.data).catch((e) => onError(e));
+  } else if (currentMethod === "delete") {
+    return new HTTPTransport(endpoint).delete(url).catch((e) => onError(e));
+  } else if (currentMethod === "put") {
+    return new HTTPTransport(endpoint).put(url, fetchOptions.data).catch((e) => onError(e));
+  } else if (currentMethod === "patch") {
+    return new HTTPTransport(endpoint).patch(url, fetchOptions.data).catch((e) => onError(e));
+  } else {
+    return new HTTPTransport(endpoint).get(url, fetchOptions.id).catch((e) => onError(e));
+  }
+}

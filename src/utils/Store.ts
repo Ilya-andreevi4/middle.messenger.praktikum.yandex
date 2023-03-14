@@ -11,14 +11,18 @@ export interface StateProps {
   user: {
     data?: User;
     error?: string;
-    isLoading?: boolean;
+    isLoading: boolean;
   };
   chats?: any[]; //TODO изменить тип
   selectedChatId?: number;
 }
 
 export class Store extends EventBus {
-  private state: StateProps = { user: {} };
+  private state: StateProps = {
+    user: {
+      isLoading: false,
+    },
+  };
 
   public set(keypath: string, data: unknown) {
     set(this.state, keypath, data);
