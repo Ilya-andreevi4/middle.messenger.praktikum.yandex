@@ -8,6 +8,7 @@ import PAGE_FIELDS from "../../utils/page-fields";
 import template from "./registration-page.hbs";
 import AuthController from "../../controllers/AuthContoller";
 import { Routes, SignupData } from "../../utils/Interfaces";
+import { Loader } from "../../layouts/loader";
 
 interface IValues extends SignupData {
   confirm_new_password: string;
@@ -15,6 +16,7 @@ interface IValues extends SignupData {
 export class RegistrationPage extends Block {
   init() {
     this.children.navBar = new Nav("");
+    this.children.Loader = new Loader({});
     this.children.registrationForm = new Form({
       title: "Registration",
       className: "modal",

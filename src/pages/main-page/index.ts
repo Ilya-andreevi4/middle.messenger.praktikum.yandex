@@ -1,3 +1,4 @@
+import { Loader } from "../../layouts/loader";
 import { Nav } from "../../components/nav";
 import Block from "../../utils/Block";
 import { chatsData } from "../../utils/data";
@@ -6,6 +7,7 @@ import template from "./main-page.hbs";
 import { SideMenu } from "./side-menu";
 export class MainPage extends Block {
   init() {
+    this.children.loader = new Loader({});
     this.props.activeChatId = 2;
     //README Нужно прописать логику выбора чата с выведением выбранного чата в chat-container
     this.props.handleChatSelect = (e: Event, id: number) => {

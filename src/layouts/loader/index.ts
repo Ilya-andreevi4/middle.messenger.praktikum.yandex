@@ -1,11 +1,10 @@
+import { UserStateProps, withUser } from "../../utils/Store";
 import Block from "../../utils/Block";
 import template from "./loader.hbs";
 
-interface LoaderProps {
-  isLoading: boolean;
-}
+interface LoaderProps extends UserStateProps {}
 
-export class Loader extends Block<LoaderProps> {
+class LoaderBase extends Block<LoaderProps> {
   constructor(props: LoaderProps) {
     super(props);
   }
@@ -14,3 +13,6 @@ export class Loader extends Block<LoaderProps> {
     return this.compile(template, this.props);
   }
 }
+
+//@ts-ignore
+export const Loader = withUser(LoaderBase);

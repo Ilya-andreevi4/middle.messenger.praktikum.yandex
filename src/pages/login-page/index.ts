@@ -21,7 +21,7 @@ class LoginPageBase extends Block<LoginPageProps> {
     console.log("data in login page: ", this.props.data);
 
     this.children.navBar = new Nav("");
-    this.children.loader = new Loader({ isLoading: this.props.isLoading });
+    this.children.loader = new Loader({});
     this.children.loginModal = new Form({
       title: "Log in",
       className: "modal",
@@ -74,8 +74,8 @@ class LoginPageBase extends Block<LoginPageProps> {
   // protected componentDidUpdate(_oldProps: UserStateProps, _newProps: UserStateProps): boolean {
   //   console.log("data in login page: ", _oldProps, _newProps);
 
-  //   if (_oldProps.data || _newProps.data) {
-  //     Router.go(Routes.Chats);
+  //   if (_oldProps.isLoading || _newProps.isLoading) {
+  //     (this.children.loader as Block).setProps({ isLoading: _newProps.isLoading });
   //     return false;
   //   }
   //   return !isEqual(_oldProps.data!, _newProps.data!);

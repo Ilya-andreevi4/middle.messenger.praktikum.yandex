@@ -38,7 +38,7 @@ class ProfilePageBase extends Block<ProfileProps> {
     this.props.isChangePassword = false;
     this.props.isChangeProfile = false;
     this.children.navBar = new Nav("");
-    this.children.Loader = new Loader({ isLoading: this.props.isLoading });
+    this.children.loader = new Loader({});
     this.children.avatar = new Avatar({
       src: this.props.data.avatar || AvatarsExports.AvatarBox,
       className: "profile-page",
@@ -283,11 +283,14 @@ class ProfilePageBase extends Block<ProfileProps> {
   protected componentDidUpdate(oldProps: ProfileProps, newProps: ProfileProps): boolean {
     console.log("oldProps: ", oldProps);
     console.log("newProps: ", newProps);
+    // if (oldProps.isLoading || newProps.isLoading) {
+    //   console.log("Включаем лоадер");
+    //   (this.children.loader as Block).setProps({ isLoading: newProps.isLoading });
 
-    if (oldProps.isLoading !== newProps.isLoading) {
-      (this.children.Loader as Loader).setProps({ isLoading: newProps.isLoading });
-      return false;
-    }
+    //   console.log("Включили лоадер");
+    //   return false;
+    // }
+
     if (!isEqual(oldProps.data, newProps.data)) {
       ((this.children.profileForm as Form).children.inputFields as Field[]).forEach((field) => {
         field.setProps({ value: JSON.stringify(newProps.data[field.props.name as keyof User]) });

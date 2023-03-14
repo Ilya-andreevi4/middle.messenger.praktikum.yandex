@@ -11,6 +11,7 @@ class ProfileController {
   }
 
   async changeProfile(data: ChangeProfileProps) {
+    store.set("user.isLoading", true);
     try {
       await this.api
         .changeProfile(data)
@@ -28,10 +29,12 @@ class ProfileController {
       router.go(Routes.Profile);
     } catch (e) {
       console.error("Troble with change profile in profileController:", e);
+      store.set("user.isLoading", false);
     }
   }
 
   async changePassword(data: ChangePasswordProps) {
+    store.set("user.isLoading", true);
     try {
       await this.api.changePassword(data).then(async (res) => {
         //@ts-ignore
@@ -42,9 +45,11 @@ class ProfileController {
       router.go(Routes.Profile);
     } catch (e: any) {
       console.error("Troble with change password in profileController:", e);
+      store.set("user.isLoading", false);
     }
   }
   async changeAvatar(data: FormData) {
+    store.set("user.isLoading", true);
     try {
       await this.api.changeAvatar(data);
 
@@ -53,6 +58,7 @@ class ProfileController {
       router.go(Routes.Profile);
     } catch (e: any) {
       console.error("Troble with change avatar in profileController:", e);
+      store.set("user.isLoading", false);
     }
   }
 
@@ -60,8 +66,10 @@ class ProfileController {
     try {
       const user = await this.api.read(id);
       store.set("user.data", user);
+      store.set("user.isLoading", false);
     } catch (e: any) {
       console.error("Troble with fetchUser in profileController:", e);
+      store.set("user.isLoading", false);
     }
   }
 }

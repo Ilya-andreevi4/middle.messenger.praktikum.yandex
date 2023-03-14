@@ -9,10 +9,7 @@ export enum StoreEvents {
 
 export class Store extends EventBus {
   private state: StateProps = {
-    user: {
-      isLoading: false,
-      profileMode: "normal",
-    },
+    user: {},
   };
 
   public set(keypath: string, data: unknown) {
@@ -60,8 +57,8 @@ export default store;
 export interface UserStateProps {
   data?: User;
   error?: string;
-  isLoading: boolean;
-  profileMode: "normal" | "change_profile" | "change_password" | "change_avatar";
+  isLoading?: boolean;
+  profileMode?: "normal" | "change_profile" | "change_password" | "change_avatar";
 }
 export interface StateProps {
   user: UserStateProps;
