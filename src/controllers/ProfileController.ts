@@ -63,6 +63,7 @@ class ProfileController {
   }
 
   async fetchUser(id?: number) {
+    store.set("user.isLoading", true);
     try {
       const user = await this.api.read(id);
       store.set("user.data", user);

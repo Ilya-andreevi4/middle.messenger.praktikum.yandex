@@ -9,6 +9,13 @@ class LoaderBase extends Block<LoaderProps> {
     super(props);
   }
 
+  protected componentDidUpdate(oldProps: LoaderProps, newProps: LoaderProps): boolean {
+    if (oldProps.isLoading !== newProps.isLoading) {
+      return true;
+    }
+    return false;
+  }
+
   render() {
     return this.compile(template, this.props);
   }

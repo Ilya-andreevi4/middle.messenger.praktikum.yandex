@@ -20,6 +20,7 @@ export class Form extends Block<FormProps> {
   constructor(props: FormProps) {
     super(props);
   }
+
   protected init(): void {
     if (this.props.children?.submitButton) {
       this.children.submitButton = this.props.children.submitButton;

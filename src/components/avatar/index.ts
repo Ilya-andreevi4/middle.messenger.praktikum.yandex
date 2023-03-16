@@ -5,7 +5,7 @@ import { AvatarsExports } from "../../utils/media-exports";
 interface AvatarProps {
   src: string;
   events: {
-    click: () => void;
+    click: (e: Event) => void;
   };
   className: string;
 }
@@ -16,11 +16,8 @@ export class Avatar extends Block<AvatarProps> {
   }
 
   init() {
-    const avatar = this.props.src;
-    if (!avatar) {
+    if (!this.props.src) {
       this.props.src = AvatarsExports.AvatarBox;
-    } else {
-      this.props.src = avatar;
     }
   }
 

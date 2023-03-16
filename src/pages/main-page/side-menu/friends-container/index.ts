@@ -16,11 +16,10 @@ interface FriendsContainerProps {
 export class FriendsContainer extends Block<FriendsContainerProps> {
   constructor(props: FriendsContainerProps) {
     super(props);
+    this.props.inviteModalIsOpen = false;
   }
 
   init() {
-    this.props.inviteModalIsOpen = false;
-
     this.children.friends = [] as any[];
     this.children.groups = [] as any[];
 
@@ -74,7 +73,8 @@ export class FriendsContainer extends Block<FriendsContainerProps> {
       events: {
         click: (e) => {
           e.preventDefault();
-          this.props.inviteModalIsOpen = !this.props.inviteModalIsOpen;
+          this.setProps({ inviteModalIsOpen: true });
+          (this.children.inviteModal as Form).getContent()?.addEventListener("click", handleModalClose);
         },
       },
     });
@@ -86,7 +86,8 @@ export class FriendsContainer extends Block<FriendsContainerProps> {
       events: {
         click: (e) => {
           e.preventDefault();
-          this.props.inviteModalIsOpen = !this.props.inviteModalIsOpen;
+          this.setProps({ inviteModalIsOpen: true });
+          (this.children.inviteModal as Form).getContent()?.addEventListener("click", handleModalClose);
         },
       },
     });
@@ -94,11 +95,11 @@ export class FriendsContainer extends Block<FriendsContainerProps> {
     this.children.inviteModal = new Form({
       className: "modal",
       isPopup: true,
-      title: "Add User",
+      title: "Create new chat",
       events: {
         submit: (e: Event) => {
           e.preventDefault();
-          console.log((this.children.inviteModal as Form).children);
+          console.log("invite form children", (this.children.inviteModal as Form).children);
           this.setProps({ inviteModalIsOpen: false });
         },
       },
@@ -107,9 +108,9 @@ export class FriendsContainer extends Block<FriendsContainerProps> {
           (field) =>
             new Field({
               ...field,
-              label: "Login",
-              id: "login",
-              name: "login",
+              label: "Title",
+              id: "title",
+              name: "title",
               className: "modal",
               type: "text",
               required: false,
@@ -121,6 +122,15 @@ export class FriendsContainer extends Block<FriendsContainerProps> {
           type: "submit",
         }),
       },
+    });
+    //Закрытие модального окна при клике на background
+    const handleModalClose: (e: Event) => void = (e) => {
+      e.preventDefault();
+      this.setProps({ inviteModalIsOpen: false });
+      return (this.children.inviteModal as Form).getContent()?.removeEventListener("click", handleModalClose);
+    };
+    (this.children.inviteModal as Form).getContent()?.firstElementChild?.addEventListener("click", (e) => {
+      e.stopPropagation();
     });
   }
 

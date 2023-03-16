@@ -52,18 +52,15 @@ export default class HTTPTransport {
   }
 
   public put<Response = void>(path: string, data?: JsonObject | FormData): Promise<Response> {
-    return this.request(this.endpoint + path, { data, method: METHODS.PUT });
+    return this.request(this.endpoint + path, { method: METHODS.PUT, data });
   }
 
   public patch<Response = void>(path: string, data?: JsonObject | FormData): Promise<Response> {
-    return this.request<Response>(this.endpoint + path, {
-      method: METHODS.PATCH,
-      data,
-    });
+    return this.request<Response>(this.endpoint + path, { method: METHODS.PATCH, data });
   }
 
-  public delete<Response>(path: string): Promise<Response> {
-    return this.request(this.endpoint + path, { method: METHODS.DELETE });
+  public delete<Response>(path: string, data?: JsonObject | FormData): Promise<Response> {
+    return this.request(this.endpoint + path, { method: METHODS.DELETE, data });
   }
 
   private request<Response>(url: string, options: Options = { method: METHODS.GET }): Promise<Response> {

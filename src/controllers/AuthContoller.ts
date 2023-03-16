@@ -38,11 +38,10 @@ export class AuthController {
   }
 
   async fetchUser(id?: number) {
-    try {
-      console.log("try to fetch user from AuthController");
+    store.set("user.isLoading", true);
 
+    try {
       const user = await this.api.read(id);
-      console.log("user fetching success", user);
       if (!user.display_name) {
         user.display_name = user.login;
       }
@@ -50,6 +49,7 @@ export class AuthController {
       if (user.avatar) {
         store.set("user.data.avatar", `https://ya-praktikum.tech/api/v2/resources${user.avatar}`);
       }
+      console.log("user fetching success", user);
       store.set("user.error", undefined);
       store.set("user.isLoading", false);
     } catch (e) {

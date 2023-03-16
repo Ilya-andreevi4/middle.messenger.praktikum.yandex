@@ -27,22 +27,13 @@ interface ProfileProps {
 class ProfilePageBase extends Block<ProfileProps> {
   constructor(props: ProfileProps) {
     super(props);
+    this.props.isChangeAvatar = false;
   }
   protected init(): void {
-    this.props.isChangeAvatar = false;
     this.props.isChangePassword = false;
     this.props.isChangeProfile = false;
     this.children.navBar = new Nav("");
     this.children.loader = new Loader({});
-    this.children.avatar = new Avatar({
-      src: this.props.data.avatar || AvatarsExports.AvatarBox,
-      className: "profile-page",
-      events: {
-        click: () => {
-          this.setProps({ isChangeAvatar: true });
-        },
-      },
-    });
 
     this.props.data.display_name = this.props.data.display_name
       ? this.props.data.display_name
@@ -222,6 +213,29 @@ class ProfilePageBase extends Block<ProfileProps> {
       type: "button",
       to: Routes.Chats,
     });
+
+    //Закрытие модального окна при клике на background
+    const handleModalClose: (e: Event) => void = (e) => {
+      e.preventDefault();
+      this.setProps({ isChangeAvatar: false });
+      return (this.children.changeAvatarModal as Form).getContent()?.removeEventListener("click", handleModalClose);
+    };
+
+    this.children.avatar = new Avatar({
+      src: this.props.data.avatar || AvatarsExports.AvatarBox,
+      className: "profile-page",
+      events: {
+        click: (e) => {
+          e.preventDefault();
+          this.setProps({ isChangeAvatar: true });
+          (this.children.changeAvatarModal as Form).getContent()?.addEventListener("click", handleModalClose);
+        },
+      },
+    });
+
+    (this.children.changeAvatarModal as Form).getContent()?.firstElementChild?.addEventListener("click", (e) => {
+      e.stopPropagation();
+    });
   }
 
   handleSubmit = (formName: "changeAvatarModal" | "changePasswordForm" | "changeProfileForm") => {
@@ -274,10 +288,12 @@ class ProfilePageBase extends Block<ProfileProps> {
 
   protected componentDidUpdate(oldProps: ProfileProps, newProps: ProfileProps): boolean {
     if (!isEqual(oldProps.data, newProps.data)) {
-      ((this.children.profileForm as Form).children.inputFields as Field[]).forEach((field) => {
-        field.setProps({ value: JSON.stringify(newProps.data[field.props.name as keyof User]) });
-      });
+      this.setProps({ data: newProps.data });
+      (this.children.avatar as Avatar).setProps({ src: newProps.data.avatar });
       return true;
+    }
+    if (oldProps.isChangeAvatar !== newProps.isChangeAvatar) {
+      this.setProps({ isChangeAvatar: newProps.isChangeAvatar });
     }
     if (
       oldProps.isChangePassword !== newProps.isChangePassword ||

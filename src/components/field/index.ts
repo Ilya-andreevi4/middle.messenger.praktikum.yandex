@@ -36,9 +36,6 @@ export class Field extends Block<FieldProps> {
         blur: () => {
           this.isValid();
         },
-        focus: () => {
-          this.isValid();
-        },
       },
     });
   }

@@ -11,8 +11,8 @@ export interface JsonObject {
 export interface JsonArray extends Array<JsonValue> {}
 
 export interface IUser extends JsonObject {
-  id: number;
-  avatar: string;
+  id?: number;
+  avatar?: string;
   email?: string;
   login?: string;
   first_name: string;
@@ -20,19 +20,45 @@ export interface IUser extends JsonObject {
   display_name?: string;
   phone?: string;
   password?: string;
-  status: userStatus;
+  status?: userStatus;
 }
 
+// [
+//   {
+//     id: 123,
+//     title: "my-chat",
+//     avatar: "/123/avatar1.jpg",
+//     unread_count: 15,
+//     last_message: {
+//       user: {
+//         first_name: "Petya",
+//         second_name: "Pupkin",
+//         avatar: "/path/to/avatar.jpg",
+//         email: "my@email.com",
+//         login: "userLogin",
+//         phone: "8(911)-222-33-22",
+//       },
+//       time: "2020-01-02T14:22:22.000Z",
+//       content: "this is message content",
+//     },
+//   },
+// ];
+
+export interface ILastMessage extends JsonObject {
+  user: IUser;
+  time: string;
+  content: string;
+}
 export interface IChat extends JsonObject {
   id: number;
-  avatar: string;
-  title: string;
-  lastMessage: string;
-  isActive: boolean;
-  numberNewMessages?: number;
-  time: string;
-  status?: userStatus;
-  isGroup: boolean;
+  avatar?: string;
+  title?: string;
+  last_message?: ILastMessage;
+  isActive?: boolean;
+  unread_count?: number;
+  time?: string; //TODO лишнее
+  status?: userStatus; //TODO лишнее
+  isGroup?: boolean; //TODO лишнее
   users?: IUser[];
 }
 
@@ -42,12 +68,31 @@ export interface IСhatting extends JsonObject {
   messages: IMessages[];
 }
 
+// TODO trash
 export interface IMessages extends JsonObject {
   from: string;
   text?: string;
   time: string;
   image?: any;
   my?: boolean;
+}
+//
+
+export interface Message {
+  chat_id: number;
+  time: string;
+  type: string;
+  user_id: number;
+  content: string;
+  file?: {
+    id: number;
+    user_id: number;
+    path: string;
+    filename: string;
+    content_type: string;
+    content_size: number;
+    upload_date: string;
+  };
 }
 
 export const enum Routes {

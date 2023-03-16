@@ -1,7 +1,7 @@
 import { set } from "./helpers";
 import { EventBus } from "./EventBus";
 import Block from "./Block";
-import { User } from "./Interfaces";
+import { IChat, Message, User } from "./Interfaces";
 
 export interface UserStateProps {
   data?: User;
@@ -11,7 +11,8 @@ export interface UserStateProps {
 }
 export interface StateProps {
   user: UserStateProps;
-  chats?: any[]; //TODO изменить тип
+  chats?: IChat[]; //TODO изменить тип
+  messages?: Record<number, Message[]>;
   selectedChatId?: number;
 }
 

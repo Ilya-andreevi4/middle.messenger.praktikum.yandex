@@ -10,7 +10,6 @@ interface InputProps {
   required?: boolean;
   events?: {
     blur: () => void;
-    focus: () => void;
   };
 }
 

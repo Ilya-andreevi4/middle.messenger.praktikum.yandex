@@ -23,6 +23,7 @@ interface ChatHeaderProps {
 export class ChatHeaderBase extends Block<ChatHeaderProps> {
   constructor(props: ChatHeaderProps) {
     super(props);
+    this.props.isModalOpen = false;
   }
 
   init() {
@@ -34,8 +35,6 @@ export class ChatHeaderBase extends Block<ChatHeaderProps> {
       this.props.isActive = false;
     }
 
-    this.props.isModalOpen = false;
-
     this.props.userName = this.props.activeChat?.title || "UserName";
     this.props.userStatus = this.props.activeChat?.status || "offline";
 
@@ -44,17 +43,6 @@ export class ChatHeaderBase extends Block<ChatHeaderProps> {
       className: "chat-header",
       events: {
         click: () => {},
-      },
-    });
-
-    this.children.moreIcon = new Icon({
-      src: IconsExports.MoreIcon,
-      className: "chat-header",
-      alt: "more",
-      events: {
-        click: () => {
-          this.props.isModalOpen = !this.props.isModalOpen;
-        },
       },
     });
 
@@ -91,9 +79,35 @@ export class ChatHeaderBase extends Block<ChatHeaderProps> {
         }),
       },
     });
+    this.children.moreIcon = new Icon({
+      src: IconsExports.MoreIcon,
+      className: "chat-header",
+      alt: "more",
+      events: {
+        click: (e) => {
+          e.preventDefault();
+          this.setProps({ isModalOpen: true });
+          (this.children.inviteModal as Form).getContent()?.addEventListener("click", handleModalClose);
+        },
+      },
+    });
+    //Закрытие модального окна при клике на background
+    const handleModalClose: (e: Event) => void = (e) => {
+      e.preventDefault();
+      this.setProps({ isModalOpen: false });
+      return (this.children.inviteModal as Form).getContent()?.removeEventListener("click", handleModalClose);
+    };
+
+    (this.children.inviteModal as Form).getContent()?.firstElementChild?.addEventListener("click", (e) => {
+      e.stopPropagation();
+    });
   }
 
   protected componentDidUpdate(oldProps: ChatHeaderProps, newProps: ChatHeaderProps): boolean {
+    if (oldProps.isModalOpen !== newProps.isModalOpen) {
+      this.setProps({ isModalOpen: newProps.isModalOpen });
+      return true;
+    }
     if (oldProps.selectedChatId !== newProps.selectedChatId) {
       const currentChatId = newProps.selectedChatId;
       const newChatState = chatsData.find((chat) => chat.id === currentChatId);
