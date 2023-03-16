@@ -31,7 +31,7 @@ export class ProfileBlock extends Block {
       },
     });
     this.children.avatar = new Avatar({
-      src: this.props.avatarSrc || AvatarsExports.Avatar_1,
+      src: this.props.avatarSrc || AvatarsExports.AvatarBox,
       className: "profile-header",
       events: {
         click: () => {
