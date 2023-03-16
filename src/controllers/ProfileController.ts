@@ -16,7 +16,6 @@ class ProfileController {
       await this.api
         .changeProfile(data)
         .then(async (res) => {
-          console.log("res: ", res);
           // @ts-ignore
           const UserId = res.id;
           await this.fetchUser(UserId);
@@ -24,8 +23,6 @@ class ProfileController {
         .catch((e) => {
           console.error("error with changeProfile: ", e);
         });
-
-      console.log("router go to profile! user:", store.getState().user.data);
       router.go(Routes.Profile);
     } catch (e) {
       console.error("Troble with change profile in profileController:", e);
@@ -36,11 +33,7 @@ class ProfileController {
   async changePassword(data: ChangePasswordProps) {
     store.set("user.isLoading", true);
     try {
-      await this.api.changePassword(data).then(async (res) => {
-        //@ts-ignore
-        const UserId = res.id;
-        await this.fetchUser(UserId);
-      });
+      await this.api.changePassword(data);
 
       router.go(Routes.Profile);
     } catch (e: any) {
@@ -48,12 +41,19 @@ class ProfileController {
       store.set("user.isLoading", false);
     }
   }
-  async changeAvatar(data: FormData) {
-    store.set("user.isLoading", true);
-    try {
-      await this.api.changeAvatar(data);
 
-      await this.fetchUser();
+  async changeAvatar(data: File) {
+    store.set("user.isLoading", true);
+
+    const fileData = new FormData();
+    fileData.append("avatar", data);
+
+    try {
+      await this.api.changeAvatar(fileData).then(async (res) => {
+        //@ts-ignore
+        const UserId = res.id;
+        await this.fetchUser(UserId);
+      });
 
       router.go(Routes.Profile);
     } catch (e: any) {
@@ -66,6 +66,7 @@ class ProfileController {
     try {
       const user = await this.api.read(id);
       store.set("user.data", user);
+      store.set("user.data.avatar", `https://ya-praktikum.tech/api/v2/resources${user.avatar}`);
       store.set("user.isLoading", false);
     } catch (e: any) {
       console.error("Troble with fetchUser in profileController:", e);

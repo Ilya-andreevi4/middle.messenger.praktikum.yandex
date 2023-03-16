@@ -19,7 +19,6 @@ interface FormProps {
 export class Form extends Block<FormProps> {
   constructor(props: FormProps) {
     super(props);
-    this.props = { ...props };
   }
   protected init(): void {
     if (this.props.children?.submitButton) {

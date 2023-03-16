@@ -1,8 +1,6 @@
 import { User, ChangeProfileProps, ChangePasswordProps } from "../utils/Interfaces";
 import BaseAPI from "./BaseAPI";
 
-// TODO Переписать весь файл под редактор профиля
-
 export class ProfileAPI extends BaseAPI {
   constructor() {
     super("");
@@ -21,9 +19,8 @@ export class ProfileAPI extends BaseAPI {
   }
 
   changeAvatar(data: FormData) {
-    console.log("strAvatar: ", JSON.stringify(data));
-    return this.http.put("/user/avatar", data);
-  } //TODO
+    return this.http.put("/user/profile/avatar", data);
+  }
 
   update = undefined;
 

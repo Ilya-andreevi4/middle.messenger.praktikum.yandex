@@ -25,12 +25,12 @@ window.addEventListener("DOMContentLoaded", async () => {
       isProtectedRoute = false;
       break;
   }
+
   try {
     await AuthController.fetchUser();
-
     Router.start();
 
-    if (!isProtectedRoute && store.getState().user.data) {
+    if (store.getState().user.data) {
       Router.go(Routes.Chats);
     } else {
       Router.go(Routes.Index);
@@ -39,7 +39,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     Router.start();
 
     if (isProtectedRoute) {
-      Router.go(Routes.Index);
+      Router.go(window.location.pathname);
     }
   }
 });

@@ -3,11 +3,9 @@ const { main, login, profile, registration, changePassword, changeProfile } = Na
 
 const REGULAR_EXPRESSON = {
   EMAIL: /^(.+)@(.+){2,}\.(.+){2,}$/,
-  // EMAIL: /^\S+@\S+$/,
   LOGIN: /^[A-Za-z1-9\-_]{2,16}$/,
   NAME: /^[A-ZА-Я]{1}[a-zа-я\-ъ]+$/,
   PHONE: /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/,
-  // PHONE: /^((8|+7)[- ]?)?((?\d{3})?[- ]?)?[\d- ]{7,10}$/,
   PASSWORD: /^(?=.*[a-zа-я])(?=.*[A-ZА-Я])(?=.*\d)[A-Za-zА-Яа-я\d@$!%*?&_\-]{6,}$/,
   MESSAGE: /^[\w\W]*$/,
 };

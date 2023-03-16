@@ -5,7 +5,8 @@
   left: 288px;
 
   overflow-y: visible;
-  display: none;
+  display: flex;
+  flex-direction: row;
   justify-content: space-between;
 
   width: calc(100% - 288px);
@@ -14,11 +15,6 @@
 
   background: $darker-bg;
   box-shadow: 0 0 15px 4px rgb(0 0 0 / 40%);
-}
-
-form.message-input-form_active {
-  display: flex;
-  flex-direction: row;
 }
 
 .message-input-form__button {

@@ -4,32 +4,49 @@ import { Icon } from "../../../../components/icon";
 import { Field } from "../../../../components/field";
 import { Form } from "../../../../layouts/form";
 import PAGE_FIELDS from "../../../../utils/page-fields";
-import { IconsExports } from "../../../../utils/media-exports";
+import { AvatarsExports, IconsExports } from "../../../../utils/media-exports";
 import Block from "../../../../utils/Block";
 import template from "./chat-header.hbs";
+import { IChat } from "../../../../utils/Interfaces";
+import { chatsData } from "../../../../utils/data";
+import { withSelectedChatId } from "../../../../utils/Store";
 
 interface ChatHeaderProps {
+  selectedChatId: number | undefined;
+  activeChat?: IChat;
   isActive: boolean;
   avatarSrc: string;
   userName: string;
   userStatus: string;
   isModalOpen?: boolean;
 }
-export class ChatHeader extends Block<ChatHeaderProps> {
+export class ChatHeaderBase extends Block<ChatHeaderProps> {
   constructor(props: ChatHeaderProps) {
     super(props);
   }
 
   init() {
+    this.props.activeChat = chatsData.find((chat) => chat.id === this.props.selectedChatId);
+
+    if (this.props.activeChat) {
+      this.props.isActive = true;
+    } else {
+      this.props.isActive = false;
+    }
+
     this.props.isModalOpen = false;
-    this.props.isActive = this.props.isActive;
+
+    this.props.userName = this.props.activeChat?.title || "UserName";
+    this.props.userStatus = this.props.activeChat?.status || "offline";
+
     this.children.avatar = new Avatar({
-      src: this.props.avatarSrc,
+      src: this.props.activeChat?.avatar || AvatarsExports.AvatarBox,
       className: "chat-header",
       events: {
         click: () => {},
       },
     });
+
     this.children.moreIcon = new Icon({
       src: IconsExports.MoreIcon,
       className: "chat-header",
@@ -40,6 +57,7 @@ export class ChatHeader extends Block<ChatHeaderProps> {
         },
       },
     });
+
     this.children.inviteModal = new Form({
       className: "modal",
       isPopup: true,
@@ -48,8 +66,6 @@ export class ChatHeader extends Block<ChatHeaderProps> {
         submit: (e: Event) => {
           e.preventDefault();
           console.log((this.children.inviteModal as Form).children);
-
-          // (this.children.inviteModal as Form).logData();
           // if ((this.children.inviteModal as Form).isValid()) {
           this.setProps({ isModalOpen: false });
           // }
@@ -77,7 +93,27 @@ export class ChatHeader extends Block<ChatHeaderProps> {
     });
   }
 
+  protected componentDidUpdate(oldProps: ChatHeaderProps, newProps: ChatHeaderProps): boolean {
+    if (oldProps.selectedChatId !== newProps.selectedChatId) {
+      const currentChatId = newProps.selectedChatId;
+      const newChatState = chatsData.find((chat) => chat.id === currentChatId);
+      this.setProps({
+        selectedChatId: newProps.selectedChatId,
+        activeChat: newChatState,
+        isActive: newChatState ? true : false,
+        userName: newChatState?.title || "UserName",
+        userStatus: newChatState?.status || "offline",
+      });
+      (this.children.avatar as Avatar).setProps({ src: newChatState?.avatar });
+      return true;
+    }
+    return false;
+  }
+
   render() {
     return this.compile(template, this.props);
   }
 }
+
+//@ts-ignore
+export const ChatHeader = withSelectedChatId(ChatHeaderBase);

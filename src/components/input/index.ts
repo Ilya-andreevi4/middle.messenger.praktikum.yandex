@@ -28,6 +28,10 @@ export class Input extends Block<InputProps> {
     return (this.element as HTMLInputElement).value;
   }
 
+  getFile() {
+    return (this.element as HTMLInputElement).files![0];
+  }
+
   render() {
     return this.compile(template, this.props);
   }

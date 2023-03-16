@@ -43,7 +43,13 @@ export class AuthController {
 
       const user = await this.api.read(id);
       console.log("user fetching success", user);
+      if (!user.display_name) {
+        user.display_name = user.login;
+      }
       store.set("user.data", user);
+      if (user.avatar) {
+        store.set("user.data.avatar", `https://ya-praktikum.tech/api/v2/resources${user.avatar}`);
+      }
       store.set("user.error", undefined);
       store.set("user.isLoading", false);
     } catch (e) {

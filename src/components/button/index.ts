@@ -7,7 +7,7 @@ interface ButtonProps {
   to?: string;
   type?: "submit" | "reset" | "button" | "menu";
   events?: {
-    click: () => void;
+    click: (e: Event) => void;
   };
   className: string;
 }
@@ -30,5 +30,3 @@ export class Button extends Block<ButtonProps> {
     return this.compile(template, this.props);
   }
 }
-
-// export const Button = withRouter(BaseButton);

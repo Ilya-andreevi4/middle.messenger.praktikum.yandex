@@ -43,9 +43,6 @@ export default class HTTPTransport {
 
   public get<Response>(path = "/", id?: number): Promise<Response> {
     const currentPath = id && path !== "/" ? path + `/${id}` : path;
-    console.log("url for fetch user: ", this.endpoint + currentPath);
-    console.log("endpoint for fetch user: ", this.endpoint);
-    console.log("path for fetch user: ", path);
 
     return this.request(this.endpoint + currentPath, { method: METHODS.GET });
   }
@@ -70,8 +67,7 @@ export default class HTTPTransport {
   }
 
   private request<Response>(url: string, options: Options = { method: METHODS.GET }): Promise<Response> {
-    // const { method, data } = options;
-    const { headers = { "Content-Type": "application/json" }, method = METHODS.GET, timeout = 5000, data } = options;
+    const { headers, method = METHODS.GET, timeout = 5000, data } = options;
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       xhr.open(method ? method : METHODS.GET, url);
@@ -85,10 +81,15 @@ export default class HTTPTransport {
           }
         }
       };
+      if (!(data instanceof FormData)) {
+        xhr.setRequestHeader("Content-Type", "application/json");
+      }
 
-      Object.keys(headers).forEach((key: string) => {
-        xhr.setRequestHeader(key, headers[key]);
-      });
+      if (headers) {
+        Object.keys(headers).forEach((key: string) => {
+          xhr.setRequestHeader(key, headers[key]);
+        });
+      }
 
       xhr.onabort = () => reject({ reason: "abort" });
       xhr.onerror = () => reject({ reason: "network error" });
@@ -100,6 +101,8 @@ export default class HTTPTransport {
 
       if (method === METHODS.GET || !data) {
         xhr.send();
+      } else if (data instanceof FormData) {
+        xhr.send(data);
       } else {
         xhr.send(JSON.stringify(data));
       }

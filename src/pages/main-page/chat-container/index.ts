@@ -4,36 +4,41 @@ import { ChatMain } from "./chat-main";
 import { MessageInputForm } from "../../../components/message-input-form";
 import template from "./chat-container.hbs";
 import { IChat } from "../../../utils/Interfaces";
-import { AvatarsExports } from "../../../utils/media-exports";
+// import { AvatarsExports } from "../../../utils/media-exports";
+import { StateProps, withStore } from "../../../utils/Store";
+import { chatsData } from "../../../utils/data";
+import { Field } from "src/components/field";
 
-interface ChatContainerProps {
+interface ChatContainerProps extends StateProps {
   isActive: boolean;
   activeChat?: IChat;
 }
-export class ChatContainer extends Block<ChatContainerProps> {
+export class ChatContainerBase extends Block<ChatContainerProps> {
   constructor(props: ChatContainerProps) {
     super(props);
+    this.props = { ...props };
   }
 
   init() {
+    this.props.activeChat = chatsData.find((chat) => chat.id === this.props.selectedChatId);
     if (this.props.activeChat) {
       this.props.isActive = true;
+    } else {
+      this.props.isActive = false;
     }
-    this.children.chatHeader = new ChatHeader({
-      isActive: this.props.isActive,
-      avatarSrc: this.props.activeChat?.avatar || AvatarsExports.AvatarBox,
-      userName: this.props.activeChat?.title || "UserName",
-      userStatus: this.props.activeChat?.status || "offline",
-    });
+
+    this.children.chatHeader = new ChatHeader({});
+
     this.children.chatMain = new ChatMain({
       ...this.props,
     });
+
     this.children.messageForm = new MessageInputForm({
       ...this.props,
       events: {
         submit: (e: Event) => {
           e.preventDefault();
-          (this.children.messageForm as MessageInputForm).logData();
+          console.log("message: ", ((this.children.messageForm as Block).children.messageInput as Field).getValue());
         },
       },
     });
@@ -43,3 +48,6 @@ export class ChatContainer extends Block<ChatContainerProps> {
     return this.compile(template, this.props);
   }
 }
+
+//@ts-ignore
+export const ChatContainer = withStore((state) => ({ ...state }))(ChatContainerBase);

@@ -61,6 +61,12 @@ export class Field extends Block<FieldProps> {
     const value = (this.children.input as Input).getValue();
     return value;
   }
+
+  getFile() {
+    const value = (this.children.input as Input).getFile();
+    return value;
+  }
+
   getName() {
     const name = (this.children.input as Input).getName();
     return name;
