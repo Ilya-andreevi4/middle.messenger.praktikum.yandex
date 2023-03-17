@@ -2,14 +2,15 @@ import Block from "../../utils/Block";
 import template from "./chat-info.hbs";
 import { Avatar } from "../avatar";
 import store, { withSelectedChatId } from "../../utils/Store";
+import { ILastMessage } from "../../utils/Interfaces";
+import { AvatarsExports } from "../../utils/media-exports";
 
 interface ChatInfoProps {
   id: number;
   title: string;
-  lastMessage?: string;
-  avatarSrc: string;
+  lastMessage?: ILastMessage;
+  avatar?: string;
   className: string;
-  time?: string;
   isActive?: boolean;
   selectedChatId: number;
   isGroup?: boolean;
@@ -17,7 +18,7 @@ interface ChatInfoProps {
   events: {
     click: (e: Event) => void;
   };
-  numberNewMessages?: number;
+  unread_count?: number;
 }
 
 export class ChatInfoBase extends Block<ChatInfoProps> {
@@ -45,8 +46,11 @@ export class ChatInfoBase extends Block<ChatInfoProps> {
       events: {
         click: () => {},
       },
-      src: this.props.avatarSrc,
+      src: this.props.avatar || AvatarsExports.AvatarBox,
     });
+    if (!this.props.unread_count || this.props.unread_count < 1) {
+      this.props.unread_count = undefined;
+    }
   }
 
   protected componentDidUpdate(oldProps: ChatInfoProps, newProps: ChatInfoProps): boolean {

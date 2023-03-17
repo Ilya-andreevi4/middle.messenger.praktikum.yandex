@@ -17,6 +17,7 @@ class ChatsController {
   }
 
   async fetchChats() {
+    store.set("user.isLoading", true);
     const chats = await this.api.read();
 
     chats.map(async (chat: IChat) => {
@@ -26,6 +27,9 @@ class ChatsController {
     });
 
     store.set("chats", chats);
+    console.log("fetch chats success!", chats);
+
+    store.set("user.isLoading", false);
   }
 
   addUserToChat(id: number, userId: number) {
@@ -35,6 +39,9 @@ class ChatsController {
   async delete(id: number) {
     await this.api.delete(id);
 
+    console.log("delete chat success!");
+
+    store.set("selectedChatId", undefined);
     this.fetchChats();
   }
 
@@ -43,13 +50,13 @@ class ChatsController {
   }
 
   selectChat(id: number) {
-    store.set("selectedChat", id);
+    store.set("selectedChatId", id);
   }
 }
 
-const controller = new ChatsController();
+const chatController = new ChatsController();
 
 // @ts-ignore
-window.chatsController = controller;
+window.chatsController = chatController;
 
-export default controller;
+export default chatController;

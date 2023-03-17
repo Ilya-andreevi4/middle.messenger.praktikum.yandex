@@ -8,26 +8,27 @@ import { AvatarsExports, IconsExports } from "../../../../utils/media-exports";
 import Block from "../../../../utils/Block";
 import template from "./chat-header.hbs";
 import { IChat } from "../../../../utils/Interfaces";
-import { chatsData } from "../../../../utils/data";
-import { withSelectedChatId } from "../../../../utils/Store";
+import { StateProps, withStore } from "../../../../utils/Store";
+import { PopupFormChatActions } from "../../../../components/chat-actions-popup";
 
-interface ChatHeaderProps {
-  selectedChatId: number | undefined;
+interface ChatHeaderProps extends StateProps {
   activeChat?: IChat;
   isActive: boolean;
   avatarSrc: string;
   userName: string;
   userStatus: string;
   isModalOpen?: boolean;
+  isSettingsOpen?: boolean;
 }
 export class ChatHeaderBase extends Block<ChatHeaderProps> {
   constructor(props: ChatHeaderProps) {
     super(props);
     this.props.isModalOpen = false;
+    this.props.isSettingsOpen = false;
   }
 
   init() {
-    this.props.activeChat = chatsData.find((chat) => chat.id === this.props.selectedChatId);
+    this.props.activeChat = this.props.chats.find((chat) => chat.id === this.props.selectedChatId);
 
     if (this.props.activeChat) {
       this.props.isActive = true;
@@ -79,6 +80,21 @@ export class ChatHeaderBase extends Block<ChatHeaderProps> {
         }),
       },
     });
+
+    this.children.settingsPopup = new PopupFormChatActions({ className: "chat-action-popup" });
+    //Закрытие модального окна при клике на background
+    const handleSettingsClose: (e: Event) => void = (e) => {
+      e.preventDefault();
+      this.setProps({ isSettingsOpen: false });
+      return (
+        window.removeEventListener("mousedown", handleSettingsClose),
+        (this.children.settingsPopup as Block).getContent()?.removeEventListener("mousedown", handleStopPropagation)
+      );
+    };
+
+    const handleStopPropagation: (e: Event) => void = (e) => {
+      e.stopPropagation();
+    };
     this.children.moreIcon = new Icon({
       src: IconsExports.MoreIcon,
       className: "chat-header",
@@ -86,31 +102,20 @@ export class ChatHeaderBase extends Block<ChatHeaderProps> {
       events: {
         click: (e) => {
           e.preventDefault();
-          this.setProps({ isModalOpen: true });
-          (this.children.inviteModal as Form).getContent()?.addEventListener("click", handleModalClose);
+          this.setProps({ isSettingsOpen: true });
+          window.addEventListener("mousedown", handleSettingsClose);
+          (this.children.settingsPopup as Block).getContent()?.addEventListener("mousedown", handleStopPropagation);
         },
       },
     });
-    //Закрытие модального окна при клике на background
-    const handleModalClose: (e: Event) => void = (e) => {
-      e.preventDefault();
-      this.setProps({ isModalOpen: false });
-      return (this.children.inviteModal as Form).getContent()?.removeEventListener("click", handleModalClose);
-    };
 
-    (this.children.inviteModal as Form).getContent()?.firstElementChild?.addEventListener("click", (e) => {
-      e.stopPropagation();
-    });
+    console.log("settings ", (this.children.settingsPopup as Block).getContent());
   }
 
   protected componentDidUpdate(oldProps: ChatHeaderProps, newProps: ChatHeaderProps): boolean {
-    if (oldProps.isModalOpen !== newProps.isModalOpen) {
-      this.setProps({ isModalOpen: newProps.isModalOpen });
-      return true;
-    }
     if (oldProps.selectedChatId !== newProps.selectedChatId) {
       const currentChatId = newProps.selectedChatId;
-      const newChatState = chatsData.find((chat) => chat.id === currentChatId);
+      const newChatState = this.props.chats.find((chat) => chat.id === currentChatId);
       this.setProps({
         selectedChatId: newProps.selectedChatId,
         activeChat: newChatState,
@@ -118,7 +123,15 @@ export class ChatHeaderBase extends Block<ChatHeaderProps> {
         userName: newChatState?.title || "UserName",
         userStatus: newChatState?.status || "offline",
       });
-      (this.children.avatar as Avatar).setProps({ src: newChatState?.avatar });
+      (this.children.avatar as Avatar).setProps({ src: newChatState?.avatar || AvatarsExports.AvatarBox });
+      return true;
+    }
+    if (oldProps.isModalOpen !== newProps.isModalOpen) {
+      this.setProps({ isModalOpen: newProps.isModalOpen });
+      return true;
+    }
+    if (oldProps.isSettingsOpen !== newProps.isSettingsOpen) {
+      this.setProps({ isSettingsOpen: newProps.isSettingsOpen });
       return true;
     }
     return false;
@@ -130,4 +143,4 @@ export class ChatHeaderBase extends Block<ChatHeaderProps> {
 }
 
 //@ts-ignore
-export const ChatHeader = withSelectedChatId(ChatHeaderBase);
+export const ChatHeader = withStore((state) => ({ ...state }))(ChatHeaderBase);

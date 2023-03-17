@@ -1,4 +1,4 @@
-import { withSelectedChatId } from "../../../../utils/Store";
+import store, { withSelectedChatId } from "../../../../utils/Store";
 import { Message } from "../../../../components/message";
 import Block from "../../../../utils/Block";
 import { chatsData, messagesData } from "../../../../utils/data";
@@ -25,20 +25,22 @@ export class ChatMainBase extends Block<ChatMainProps> {
     }
 
     if (this.props.activeChat) {
-      const currentMessages = messagesData.find((chat) => {
-        if (chat.authorID === this.props.activeChat?.id) {
-          return chat;
-        }
+      const currentMessages = messagesData.filter((message) => {
+        message.chat_id === this.props.activeChat?.id;
       });
       if (currentMessages) {
-        this.children.messages = currentMessages.messages.map((message) => {
+        this.children.messages = currentMessages.map((message) => {
           return new Message({
             className: "message-list",
-            from: message.from,
-            text: message.text,
-            time: message.time,
-            image: message.image,
-            my: message.my,
+            from:
+              message.user_id === store.getState().user.data?.id
+                ? "You"
+                : this.props.activeChat?.users?.find((child) => child.id === message.user_id)?.first_name ||
+                  "User Name",
+            text: message.content,
+            time: new Date(message.time).toLocaleString("ru", { hour: "numeric", minute: "numeric", weekday: "short" }),
+            file: message.file?.path,
+            my: message.user_id === store.getState().user.data?.id,
             events: {
               click: () => {},
             },
@@ -52,10 +54,8 @@ export class ChatMainBase extends Block<ChatMainProps> {
     if (oldProps.selectedChatId !== newProps.selectedChatId) {
       const currentChatId = newProps.selectedChatId;
       const newChatState = chatsData.find((chat) => chat.id === currentChatId);
-      const currentMessages = messagesData.find((chat) => {
-        if (chat.authorID === newChatState?.id) {
-          return chat;
-        }
+      const currentMessages = messagesData.filter((message) => {
+        message.chat_id === this.props.activeChat?.id;
       });
 
       this.setProps({
@@ -65,14 +65,18 @@ export class ChatMainBase extends Block<ChatMainProps> {
       });
 
       if (currentMessages) {
-        this.children.messages = currentMessages.messages.map((message) => {
+        this.children.messages = currentMessages.map((message) => {
           return new Message({
             className: "message-list",
-            from: message.from,
-            text: message.text,
-            time: message.time,
-            image: message.image,
-            my: message.my,
+            from:
+              message.user_id === store.getState().user.data?.id
+                ? "You"
+                : this.props.activeChat?.users?.find((child) => child.id === message.user_id)?.first_name ||
+                  "User Name",
+            text: message.content,
+            time: new Date(message.time).toLocaleString("ru", { hour: "numeric", minute: "numeric", weekday: "short" }),
+            file: message.file?.path,
+            my: message.user_id === store.getState().user.data?.id,
             events: {
               click: () => {},
             },

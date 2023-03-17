@@ -1,5 +1,5 @@
 import { Button } from "../../components/button";
-import { PopupFormAddFiles } from "../popup-form-add-files";
+import { PopupFormAddFiles } from "../add-files-popup";
 import { Field } from "../../components/field";
 import Block from "../../utils/Block";
 import template from "./message-input-form.hbs";
@@ -16,10 +16,9 @@ interface MessageInputFormProps {
 }
 
 class MessageInputFormBase extends Block<MessageInputFormProps> {
-  protected popIsOpen: boolean = false;
   constructor(props: MessageInputFormProps) {
     super(props);
-    this.props.popIsOpen = this.popIsOpen;
+    this.props.popIsOpen = false;
   }
 
   init() {
@@ -28,9 +27,7 @@ class MessageInputFormBase extends Block<MessageInputFormProps> {
     } else {
       this.props.isActive = false;
     }
-    this.children.popupFormAddFiles = new PopupFormAddFiles({
-      className: "popper-add-files",
-    });
+
     this.children.messageInput = new Field({
       id: "message",
       regex: /^[\w\W]*$/,
@@ -40,6 +37,28 @@ class MessageInputFormBase extends Block<MessageInputFormProps> {
       name: "message",
       required: false,
     });
+
+    this.children.sendButton = new Button({
+      className: "send message-input-form",
+      type: "submit",
+      label: "",
+    });
+
+    this.children.popupFormAddFiles = new PopupFormAddFiles({
+      className: "popper-add-files",
+    });
+
+    //Закрытие popup при клике на background
+    const handleModalClose: (e: Event) => void = (e) => {
+      e.preventDefault();
+      this.setProps({ popIsOpen: false });
+      return window.removeEventListener("mousedown", handleModalClose);
+    };
+
+    (this.children.popupFormAddFiles as PopupFormAddFiles).getContent()?.addEventListener("mousedown", (e) => {
+      e.stopPropagation();
+    });
+
     this.children.attachButton = new Button({
       className: "attachment message-input-form",
       label: "",
@@ -47,15 +66,10 @@ class MessageInputFormBase extends Block<MessageInputFormProps> {
       events: {
         click: (e) => {
           e.preventDefault();
-
           this.setProps({ popIsOpen: !this.props.popIsOpen });
+          window.addEventListener("mousedown", handleModalClose);
         },
       },
-    });
-    this.children.sendButton = new Button({
-      className: "send message-input-form",
-      type: "submit",
-      label: "",
     });
   }
 

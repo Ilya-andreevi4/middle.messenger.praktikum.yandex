@@ -8,7 +8,7 @@ interface MessageProps {
   className: string;
   text?: string;
   time: string;
-  image?: string;
+  file?: string;
   my?: boolean;
   events: {
     click: () => void;

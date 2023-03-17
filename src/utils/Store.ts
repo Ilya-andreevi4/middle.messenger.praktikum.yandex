@@ -11,7 +11,7 @@ export interface UserStateProps {
 }
 export interface StateProps {
   user: UserStateProps;
-  chats?: IChat[]; //TODO изменить тип
+  chats: IChat[];
   messages?: Record<number, Message[]>;
   selectedChatId?: number;
 }
@@ -23,6 +23,7 @@ export enum StoreEvents {
 export class Store extends EventBus {
   private state: StateProps = {
     user: {},
+    chats: [],
   };
 
   public set(keypath: string, data: unknown) {

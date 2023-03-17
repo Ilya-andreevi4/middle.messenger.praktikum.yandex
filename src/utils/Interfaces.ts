@@ -23,27 +23,6 @@ export interface IUser extends JsonObject {
   status?: userStatus;
 }
 
-// [
-//   {
-//     id: 123,
-//     title: "my-chat",
-//     avatar: "/123/avatar1.jpg",
-//     unread_count: 15,
-//     last_message: {
-//       user: {
-//         first_name: "Petya",
-//         second_name: "Pupkin",
-//         avatar: "/path/to/avatar.jpg",
-//         email: "my@email.com",
-//         login: "userLogin",
-//         phone: "8(911)-222-33-22",
-//       },
-//       time: "2020-01-02T14:22:22.000Z",
-//       content: "this is message content",
-//     },
-//   },
-// ];
-
 export interface ILastMessage extends JsonObject {
   user: IUser;
   time: string;
@@ -56,34 +35,33 @@ export interface IChat extends JsonObject {
   last_message?: ILastMessage;
   isActive?: boolean;
   unread_count?: number;
-  time?: string; //TODO лишнее
   status?: userStatus; //TODO лишнее
-  isGroup?: boolean; //TODO лишнее
+  isGroup?: boolean;
   users?: IUser[];
 }
 
-export interface IСhatting extends JsonObject {
-  author: string;
-  authorID: number;
-  messages: IMessages[];
-}
+// export interface IСhatting extends JsonObject {
+//   author: string;
+//   authorID: number;
+//   messages: IMessages[];
+// }
 
 // TODO trash
-export interface IMessages extends JsonObject {
-  from: string;
-  text?: string;
-  time: string;
-  image?: any;
-  my?: boolean;
-}
-//
+// export interface IMessages extends JsonObject {
+//   from: string;
+//   text?: string;
+//   time: string;
+//   image?: any;
+//   my?: boolean;
+// }
+// //
 
 export interface Message {
   chat_id: number;
   time: string;
   type: string;
   user_id: number;
-  content: string;
+  content?: string;
   file?: {
     id: number;
     user_id: number;

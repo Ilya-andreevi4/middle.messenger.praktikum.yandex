@@ -8,7 +8,8 @@ interface PopupItemProps {
   field: Field;
   className: string;
   events: {
-    change: (e: Event) => void;
+    change?: (e: Event) => void;
+    click?: (e: Event) => void;
   };
 }
 

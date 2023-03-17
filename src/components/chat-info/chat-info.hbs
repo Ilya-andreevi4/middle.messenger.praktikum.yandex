@@ -8,15 +8,15 @@
       {{ title }}
     </h2>
     <p class="last-message {{ className }}__last-message">
-      {{ lastMessage }}
+      {{ last_message.content }}
     </p>
   </div>
   <div class="status-chat {{ className }}__status-chat">
-    <span class="{{ className }}__number-messages {{#if numberNewMessages }} number-messages {{else}} number-messages_none {{/if}}">
-      {{ numberNewMessages }}
+    <span class="{{ className }}__number-messages {{#if unread_count }} number-messages {{else}} number-messages_none {{/if}}">
+      {{ unread_count }}
     </span>
     <span class="time-messages {{ className }}__time-messages">
-      {{ time }}
+      {{ last_message.time }}
     </span>
   </div>
 </li>

@@ -21,6 +21,14 @@ export class Avatar extends Block<AvatarProps> {
     }
   }
 
+  protected componentDidUpdate(oldProps: AvatarProps, newProps: AvatarProps): boolean {
+    if (oldProps.src !== newProps.src) {
+      this.setProps({ src: newProps.src });
+      return true;
+    }
+    return false;
+  }
+
   render() {
     return this.compile(template, this.props);
   }
