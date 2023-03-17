@@ -25,6 +25,46 @@ form.profile-page__form {
   z-index: 1200;
 }
 
+.invite-id-box {
+  position: absolute;
+  top: 64px;
+  right: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 8px 16px;
+
+  color: $accent-blue;
+
+  background-color: rgb(0 0 0/20%);
+}
+
+.invite__button {
+  width: fit-content;
+  height: fit-content;
+  margin: 0;
+  margin-left: 8px;
+  padding: 8px;
+
+  font-weight: bold;
+
+  background: $accent-blue;
+  border: none;
+
+  transition: 0.7 background ease-in-out;
+}
+
+.copied.invite__button {
+  background: $green;
+  transition: 0.7 background ease-in-out;
+}
+
+.button.copied.invite__button:hover {
+  background: $green;
+}
+
 .avatar-box__title {
   pointer-events: none;
   cursor: pointer;

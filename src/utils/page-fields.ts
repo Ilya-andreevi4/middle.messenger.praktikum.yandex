@@ -3,7 +3,8 @@ const { main, login, profile, registration, changePassword, changeProfile } = Na
 
 const REGULAR_EXPRESSON = {
   EMAIL: /^(.+)@(.+){2,}\.(.+){2,}$/,
-  LOGIN: /^[A-Za-z1-9\-_]{2,16}$/,
+  LOGIN: /^[A-Za-z0-9\-_]{2,16}$/,
+  ID: /^[\d]{2,16}$/,
   NAME: /^[A-ZА-Я]{1}[a-zа-я\-ъ]+$/,
   PHONE: /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/,
   PASSWORD: /^(?=.*[a-zа-я])(?=.*[A-ZА-Я])(?=.*\d)[A-Za-zА-Яа-я\d@$!%*?&_\-]{6,}$/,
@@ -12,6 +13,7 @@ const REGULAR_EXPRESSON = {
 
 const REGEX_ERRORS = {
   EMAIL: "E-mail введен не корректно",
+  ID: "Допускаются только цифры (от 2 до 16 символов).",
   LOGIN: "Допускаются только латинские буквы, цифры, знаки - и _ (от 2 до 16 символов).",
   NAME: "Первая буква- заглавная остальные строчные. Допускаются только буквы.",
   PHONE: "Введите корректный номер телефона",
@@ -35,6 +37,15 @@ const EMAIL = {
   name: "email",
   regex: REGULAR_EXPRESSON.EMAIL,
   errorText: REGEX_ERRORS.EMAIL,
+};
+
+const ID = {
+  id: "id",
+  label: "User ID",
+  type: "text",
+  name: "id",
+  regex: REGULAR_EXPRESSON.ID,
+  errorText: REGEX_ERRORS.ID,
 };
 
 const LOGIN = {
@@ -120,6 +131,7 @@ const REPEAT_PASSWORD = {
 
 const PAGE_FIELDS = {
   [main]: [MESSAGE],
+  invite: [ID],
   [login]: [LOGIN, PASSWORD],
   [registration]: [FIRST_NAME, SECOND_NAME, LOGIN, EMAIL, PHONE, PASSWORD, REPEAT_PASSWORD],
   [profile]: [EMAIL, LOGIN, DISPLAY_NAME, FIRST_NAME, SECOND_NAME, PHONE],

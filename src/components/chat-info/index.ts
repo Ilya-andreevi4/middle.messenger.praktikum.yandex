@@ -6,17 +6,17 @@ import { ILastMessage } from "../../utils/Interfaces";
 import { AvatarsExports } from "../../utils/media-exports";
 
 interface ChatInfoProps {
-  id: number;
+  id: number | undefined;
   title: string;
   lastMessage?: ILastMessage;
   avatar?: string;
   className: string;
   isActive?: boolean;
-  selectedChatId: number;
+  selectedChatId: number | undefined;
   isGroup?: boolean;
-  handleChangeChat: (id: number | undefined) => void;
-  events: {
-    click: (e: Event) => void;
+  handleChangeChat?: (id: number | undefined) => void;
+  events?: {
+    click?: (e: Event) => void;
   };
   unread_count?: number;
 }

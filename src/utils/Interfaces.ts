@@ -10,17 +10,9 @@ export interface JsonObject {
 
 export interface JsonArray extends Array<JsonValue> {}
 
-export interface IUser extends JsonObject {
-  id?: number;
-  avatar?: string;
-  email?: string;
-  login?: string;
-  first_name: string;
-  second_name: string;
-  display_name?: string;
-  phone?: string;
-  password?: string;
-  status?: userStatus;
+export interface AddUserToChat {
+  users: number[];
+  chatId: number;
 }
 
 export interface ILastMessage extends JsonObject {
@@ -37,24 +29,8 @@ export interface IChat extends JsonObject {
   unread_count?: number;
   status?: userStatus; //TODO лишнее
   isGroup?: boolean;
-  users?: IUser[];
+  users?: (IUser & { role: string })[];
 }
-
-// export interface IСhatting extends JsonObject {
-//   author: string;
-//   authorID: number;
-//   messages: IMessages[];
-// }
-
-// TODO trash
-// export interface IMessages extends JsonObject {
-//   from: string;
-//   text?: string;
-//   time: string;
-//   image?: any;
-//   my?: boolean;
-// }
-// //
 
 export interface Message {
   chat_id: number;
@@ -114,10 +90,21 @@ export interface User {
   id: number;
   first_name: string;
   second_name: string;
-  display_name?: string;
+  display_name?: string | undefined;
   login: string;
   email: string;
   password: string;
   phone: string;
+  avatar?: string | undefined;
+}
+export interface IUser extends JsonObject {
+  id: number;
+  login: string;
+  first_name: string;
+  second_name: string;
+  phone: string;
+  password: string;
+  display_name?: string;
   avatar?: string;
+  email: string;
 }

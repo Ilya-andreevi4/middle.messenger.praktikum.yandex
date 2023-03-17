@@ -4,9 +4,7 @@ import { ChatMain } from "./chat-main";
 import { MessageInputForm } from "../../../components/message-input-form";
 import template from "./chat-container.hbs";
 import { IChat } from "../../../utils/Interfaces";
-// import { AvatarsExports } from "../../../utils/media-exports";
 import { StateProps, withStore } from "../../../utils/Store";
-import { chatsData } from "../../../utils/data";
 import { Field } from "src/components/field";
 
 interface ChatContainerProps extends StateProps {
@@ -20,7 +18,7 @@ export class ChatContainerBase extends Block<ChatContainerProps> {
   }
 
   init() {
-    this.props.activeChat = chatsData.find((chat) => chat.id === this.props.selectedChatId);
+    this.props.activeChat = this.props.chats.find((chat) => chat.id === this.props.selectedChatId);
     if (this.props.activeChat) {
       this.props.isActive = true;
     } else {

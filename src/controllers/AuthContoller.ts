@@ -13,7 +13,6 @@ export class AuthController {
   async signin(data: SigninData) {
     store.set("user.isLoading", true);
     try {
-      console.log("user data in AuthController signin: ", data);
       await this.api.signin(data);
       await this.fetchUser();
       router.go(Routes.Chats);
@@ -27,7 +26,6 @@ export class AuthController {
   async signup(data: SignupData) {
     store.set("user.isLoading", true);
     try {
-      console.log("user data in AuthController: ", data);
       await this.api.signup(data);
       await this.fetchUser();
       router.go(Routes.Chats);
@@ -45,11 +43,12 @@ export class AuthController {
       if (!user.display_name) {
         user.display_name = user.login;
       }
+
       store.set("user.data", user);
+
       if (user.avatar) {
         store.set("user.data.avatar", `https://ya-praktikum.tech/api/v2/resources${user.avatar}`);
       }
-      console.log("user fetching success", user);
       store.set("user.error", undefined);
       store.set("user.isLoading", false);
     } catch (e) {

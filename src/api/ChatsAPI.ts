@@ -1,4 +1,4 @@
-import { IChat, User } from "../utils/Interfaces";
+import { IChat, IUser } from "../utils/Interfaces";
 import BaseAPI from "./BaseAPI";
 
 export class ChatsAPI extends BaseAPI {
@@ -18,12 +18,16 @@ export class ChatsAPI extends BaseAPI {
     return this.http.get("/");
   }
 
-  getUsers(id: number): Promise<Array<User & { role: string }>> {
+  getUsers(id: number): Promise<Array<IUser & { role: string }>> {
     return this.http.get(`/${id}/users`);
   }
 
   addUsers(id: number, users: number[]): Promise<unknown> {
     return this.http.put("/users", { users, chatId: id });
+  }
+
+  changeChatAvatar(data: FormData): Promise<unknown> {
+    return this.http.put("/avatar", data);
   }
 
   async getToken(id: number): Promise<string> {

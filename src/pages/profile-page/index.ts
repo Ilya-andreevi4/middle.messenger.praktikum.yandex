@@ -3,7 +3,6 @@ import { Avatar } from "../../components/avatar";
 import { Button } from "../../components/button";
 import { Field } from "../../components/field";
 import { Link } from "../../components/link";
-import { Nav } from "../../components/nav";
 import { Form } from "../../layouts/form";
 import Block from "../../utils/Block";
 import { AvatarsExports } from "../../utils/media-exports";
@@ -32,7 +31,6 @@ class ProfilePageBase extends Block<ProfileProps> {
   protected init(): void {
     this.props.isChangePassword = false;
     this.props.isChangeProfile = false;
-    this.children.navBar = new Nav("");
     this.children.loader = new Loader({});
 
     this.props.data.display_name = this.props.data.display_name
@@ -214,6 +212,28 @@ class ProfilePageBase extends Block<ProfileProps> {
       to: Routes.Chats,
     });
 
+    this.children.inviteIdButton = new Button({
+      className: "invite",
+      label: `${this.props.data.id}`,
+      type: "button",
+      events: {
+        click: (e) => {
+          e.preventDefault();
+          navigator.clipboard
+            .writeText(`${this.props.data.id}`)
+            .then(() => {
+              (this.children.inviteIdButton as Button).setProps({ className: "copied invite" });
+              setTimeout(() => {
+                (this.children.inviteIdButton as Button).setProps({ className: "invite" });
+              }, 5000);
+            })
+            .catch((err) => {
+              console.log("Something went wrong with copied id", err);
+            });
+        },
+      },
+    });
+
     //Закрытие модального окна при клике на background
     const handleModalClose: (e: Event) => void = (e) => {
       e.preventDefault();
@@ -255,6 +275,7 @@ class ProfilePageBase extends Block<ProfileProps> {
       });
 
       const valuesObjects = Object.fromEntries(values);
+
       // Проверяем пароли на совпедение в форме смены пароля
       if (formName === "changePasswordForm" && valuesObjects.confirm_new_password !== valuesObjects.newPassword) {
         inputFields

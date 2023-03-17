@@ -1,9 +1,9 @@
-import Avatar_1 from "../../static/media/avatar-1.jpg";
-import Avatar_2 from "../../static/media/avatar-2.jpg";
-import Avatar_3 from "../../static/media/avatar-3.jpg";
-import Avatar_4 from "../../static/media/avatar-4.jpg";
-import Avatar_5 from "../../static/media/avatar-5.jpg";
-import Avatar_6 from "../../static/media/avatar-6.jpg";
+// import Avatar_1 from "../../static/media/avatar-1.jpg";
+// import Avatar_2 from "../../static/media/avatar-2.jpg";
+// import Avatar_3 from "../../static/media/avatar-3.jpg";
+// import Avatar_4 from "../../static/media/avatar-4.jpg";
+// import Avatar_5 from "../../static/media/avatar-5.jpg";
+// import Avatar_6 from "../../static/media/avatar-6.jpg";
 import AvatarBox from "../../static/media/avatar-box.png";
 import ArrowBackIcon from "../../static/media/arrow-back.svg";
 import ArrowDownIcon from "../../static/media/arrow-down.svg";
@@ -20,17 +20,19 @@ import SendIcon from "../../static/media/send.svg";
 import SettingsIcon from "../../static/media/settings.svg";
 import UnionIcon from "../../static/media/union.svg";
 import UserIcon from "../../static/media/user-add.svg";
-import ChatPhoto from "../../static/media/chat-photo.jpg";
-import ChatPhoto_1 from "../../static/media/chat-photo-1.jpg";
-import ChatPhoto_2 from "../../static/media/chat-photo-2.jpg";
+import AddUserIcon from "../../static/media/profile-add.svg";
+import DeleteIcon from "../../static/media/delete_icon.svg";
+// import ChatPhoto from "../../static/media/chat-photo.jpg";
+// import ChatPhoto_1 from "../../static/media/chat-photo-1.jpg";
+// import ChatPhoto_2 from "../../static/media/chat-photo-2.jpg";
 
 export const AvatarsExports = {
-  Avatar_1,
-  Avatar_2,
-  Avatar_3,
-  Avatar_4,
-  Avatar_5,
-  Avatar_6,
+  // Avatar_1,
+  // Avatar_2,
+  // Avatar_3,
+  // Avatar_4,
+  // Avatar_5,
+  // Avatar_6,
   AvatarBox,
 };
 
@@ -38,6 +40,8 @@ export const IconsExports = {
   ArrowBackIcon,
   ArrowDownIcon,
   AttachmentIcon,
+  AddUserIcon,
+  DeleteIcon,
   DoneIcon,
   FileAddIcon,
   GroupIcon,
@@ -52,8 +56,8 @@ export const IconsExports = {
   UserIcon,
 };
 
-export const MediaExports = {
-  ChatPhoto,
-  ChatPhoto_1,
-  ChatPhoto_2,
-};
+// export const MediaExports = {
+//   ChatPhoto,
+//   ChatPhoto_1,
+//   ChatPhoto_2,
+// };
