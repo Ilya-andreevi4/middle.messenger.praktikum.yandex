@@ -1,11 +1,14 @@
-import { StateProps, withStore } from "../../../../utils/Store";
+import { withStore } from "../../../../utils/Store";
 import { Message } from "../../../../components/message";
 import Block from "../../../../utils/Block";
 import template from "./chat-main.hbs";
+import { IMessage } from "../../../../utils/Interfaces";
+import { isEqual } from "../../../../utils/helpers";
 
-interface ChatMainProps extends StateProps {
+interface ChatMainProps {
   selectedChatId: number | undefined;
   isActive: boolean;
+  messages: IMessage[];
   userId: number;
 }
 export class ChatMainBase extends Block<ChatMainProps> {
@@ -14,25 +17,14 @@ export class ChatMainBase extends Block<ChatMainProps> {
   }
 
   init() {
-    // this.props.activeChat = this.props.chats.find((chat) => chat.id === this.props.selectedChatId);
-
-    if (this.props.selectedChatId) {
-      this.props.isActive = true;
-    } else {
-      this.props.isActive = false;
-    }
-    console.log("active chatId: ", this.props.selectedChatId);
-    console.log("messages: ", this.props.messages);
+    this.props.isActive = this.props.selectedChatId ? true : false;
 
     if (this.props.selectedChatId) {
       const currentMessages = this.props.messages;
 
       if (currentMessages) {
-        console.log("messages: ", currentMessages);
-
-        this.children.messages = Object.values(currentMessages).map(([id, message]) => {
-          console.log("Id? ", id);
-
+        console.log("messages in this chat ", currentMessages);
+        this.children.messages = currentMessages.map((message) => {
           return new Message({
             className: "message-list",
             from:
@@ -42,7 +34,7 @@ export class ChatMainBase extends Block<ChatMainProps> {
                   "User Name",
             text: message.content,
             time: new Date(message.time).toLocaleString("ru", { hour: "numeric", minute: "numeric", weekday: "short" }),
-            file: message.file?.path,
+            file: message.file ? message.file.path : undefined,
             my: message.user_id === this.props.userId,
             events: {
               click: () => {},
@@ -54,18 +46,11 @@ export class ChatMainBase extends Block<ChatMainProps> {
   }
 
   protected componentDidUpdate(oldProps: ChatMainProps, newProps: ChatMainProps): boolean {
-    if (oldProps.selectedChatId !== newProps.selectedChatId) {
-      const currentChatId = newProps.selectedChatId;
-      const currentMessages = newProps.messages;
-      console.log(currentChatId);
-      this.setProps({
-        isActive: currentChatId && currentChatId >= 0 ? true : false,
-        selectedChatId: currentChatId,
-      });
-
-      if (currentMessages) {
-        this.children.messages = Object.values(currentMessages).map(([id, message]) => {
-          console.log("Id? ", id);
+    const currentChatId = newProps.selectedChatId;
+    const currentMessages = newProps.messages;
+    if (oldProps.selectedChatId) {
+      if (!isEqual(oldProps.messages, newProps.messages)) {
+        this.children.messages = currentMessages.map((message) => {
           return new Message({
             className: "message-list",
             from:
@@ -75,8 +60,37 @@ export class ChatMainBase extends Block<ChatMainProps> {
                   "User Name",
             text: message.content,
             time: new Date(message.time).toLocaleString("ru", { hour: "numeric", minute: "numeric", weekday: "short" }),
-            file: message.file?.path,
-            my: message.user_id === this.props.user.data?.id,
+            file: message.file ? message.file.path : undefined,
+            my: message.user_id === this.props.userId,
+            events: {
+              click: () => {},
+            },
+          });
+        });
+        return true;
+      }
+    }
+    if (oldProps.selectedChatId !== newProps.selectedChatId) {
+      console.log("current chat id ", currentChatId);
+      this.setProps({
+        isActive: currentChatId && currentChatId >= 0 ? true : false,
+        selectedChatId: currentChatId,
+      });
+
+      if (currentMessages && currentChatId) {
+        console.log("currentMessages", currentMessages);
+        this.children.messages = currentMessages.map((message) => {
+          return new Message({
+            className: "message-list",
+            from:
+              message.user_id === this.props.userId
+                ? "You"
+                : `User ${message.user_id}` || //TODO Добавить имя пользователя
+                  "User Name",
+            text: message.content,
+            time: new Date(message.time).toLocaleString("ru", { hour: "numeric", minute: "numeric", weekday: "short" }),
+            file: message.file ? message.file.path : undefined,
+            my: message.user_id === this.props.userId,
             events: {
               click: () => {},
             },

@@ -4,14 +4,18 @@ import { Avatar } from "../avatar";
 import store, { withSelectedChatId } from "../../utils/Store";
 import { ILastMessage } from "../../utils/Interfaces";
 import { AvatarsExports } from "../../utils/media-exports";
+import { Link } from "../link";
+import chatController from "../../controllers/ChatController";
+import { handleSliceText } from "../../utils/helpers";
 
 interface ChatInfoProps {
   id: number | undefined;
   title: string;
-  lastMessage?: ILastMessage;
+  last_message?: ILastMessage;
   avatar?: string;
   className: string;
   isActive?: boolean;
+  deleteLink?: Link;
   selectedChatId: number | undefined;
   isGroup?: boolean;
   handleChangeChat?: (id: number | undefined) => void;
@@ -23,23 +27,32 @@ interface ChatInfoProps {
 
 export class ChatInfoBase extends Block<ChatInfoProps> {
   constructor(props: ChatInfoProps) {
-    super(props);
+    super({
+      ...props,
+      last_message: props.last_message
+        ? {
+            ...props.last_message,
+            content: props.last_message.content ? handleSliceText(props.last_message.content, 16) : "",
+          }
+        : undefined,
+      events: props.events || {
+        click: async (e) => {
+          e.preventDefault();
+          const currentId = this.props.id;
+
+          if (currentId === this.props.selectedChatId) {
+            store.set("selectedChatId", undefined);
+          } else {
+            store.set("selectedChatId", currentId);
+
+            currentId && (await chatController.fetchChatUsers(currentId));
+          }
+        },
+      },
+    });
   }
 
   protected init(): void {
-    this.props.events = {
-      click: (e) => {
-        e.preventDefault();
-        const currentId = this.props.id;
-
-        if (currentId === this.props.selectedChatId) {
-          store.set("selectedChatId", undefined);
-        } else {
-          store.set("selectedChatId", currentId);
-        }
-      },
-    };
-
     this.props.isActive = this.props.id === this.props.selectedChatId;
     this.children.avatar = new Avatar({
       className: "friends",
@@ -55,7 +68,7 @@ export class ChatInfoBase extends Block<ChatInfoProps> {
 
   protected componentDidUpdate(oldProps: ChatInfoProps, newProps: ChatInfoProps): boolean {
     if (oldProps.selectedChatId !== newProps.selectedChatId) {
-      this.setProps({ isActive: this.props.id === newProps.selectedChatId });
+      this.setProps({ isActive: this.props.id === newProps.selectedChatId, deleteLink: newProps.deleteLink });
       return true;
     }
     return false;

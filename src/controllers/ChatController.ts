@@ -25,8 +25,11 @@ class ChatsController {
         chat.avatar = `https://ya-praktikum.tech/api/v2/resources${chat.avatar}`;
       }
       const token = await this.getToken(chat.id);
-
       await MessagesController.connect(chat.id, token);
+    });
+
+    chats.forEach(async (chat: IChat) => {
+      await this.fetchChatUsers(chat.id);
     });
 
     store.set("chats", chats);
@@ -72,21 +75,32 @@ class ChatsController {
           return chat;
         });
         store.set("chats", currentChats);
-
         console.log("users fetch success!", store.getState().chats, users);
+        store.set("user.isLoading", false);
       });
     } catch (err) {
       store.set("user.isLoading", false);
       throw new Error(`error with add user ${err}`);
     }
-    store.set("user.isLoading", false);
   }
 
   async delete(id: number) {
     await this.api.delete(id);
-
     store.set("selectedChatId", undefined);
+    store.set("user.data", undefined);
     this.fetchChats();
+  }
+
+  async deleteUserFromChat(data: AddUserToChat) {
+    store.set("user.isLoading", true);
+    try {
+      await this.api.deleteUserFromChat(data.chatId, data.users);
+      await this.fetchChatUsers(data.chatId);
+    } catch (err) {
+      store.set("user.isLoading", false);
+      throw new Error(`error with add user ${err}`);
+    }
+    store.set("user.isLoading", false);
   }
 
   getToken(id: number) {

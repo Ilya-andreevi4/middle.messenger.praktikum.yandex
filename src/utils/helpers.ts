@@ -7,7 +7,6 @@ export function merge(lhs: Indexed, rhs: Indexed): Indexed {
     if (!rhs.hasOwnProperty(p)) {
       continue;
     }
-
     try {
       if (rhs[p].constructor === Object) {
         rhs[p] = merge(lhs[p] as Indexed, rhs[p] as Indexed);
@@ -18,7 +17,6 @@ export function merge(lhs: Indexed, rhs: Indexed): Indexed {
       lhs[p] = rhs[p];
     }
   }
-
   return lhs;
 }
 
@@ -26,18 +24,15 @@ export function set(object: Indexed | unknown, path: string, value: unknown): In
   if (typeof object !== "object" || object === null) {
     return object;
   }
-
   if (typeof path !== "string") {
     throw new Error("path must be string");
   }
-
   const result = path.split(".").reduceRight<Indexed>(
     (acc, key) => ({
       [key]: acc,
     }),
     value as any,
   );
-
   return merge(object as Indexed, result);
 }
 
@@ -62,7 +57,6 @@ export function isEqual(lhs: Indexed, rhs: Indexed) {
   if (Object.keys(lhs).length !== Object.keys(rhs).length) {
     return false;
   }
-
   for (const [key, value] of Object.entries(lhs)) {
     const rightValue = rhs[key];
     if (isArrayOrObject(value) && isArrayOrObject(rightValue)) {
@@ -71,11 +65,33 @@ export function isEqual(lhs: Indexed, rhs: Indexed) {
       }
       return false;
     }
-
     if (value !== rightValue) {
       return false;
     }
   }
-
   return true;
 }
+
+export const handleSliceText = (content: string, maxSize: number): string => {
+  let sliced = content.slice(0, maxSize);
+  if (sliced.length < content.length) {
+    sliced += "...";
+  }
+  return sliced;
+};
+
+// export const handleStopPropagation: (e: Event) => void = (e) => {
+//   e.stopPropagation();
+// };
+
+// export function handleClose(block: Block, props: Record<string, boolean>, childBlock: Block | Block[]): any {
+//   block.setProps(props);
+//   return (
+//     window.removeEventListener("mousedown", handleClose(block, props, childBlock)),
+//     Array.isArray(childBlock)
+//       ? childBlock.forEach((child) =>
+//           child.getContent()?.removeEventListener("mousedown", handleClose(block, props, childBlock)),
+//         )
+//       : childBlock.getContent()?.removeEventListener("mousedown", handleStopPropagation)
+//   );
+// }

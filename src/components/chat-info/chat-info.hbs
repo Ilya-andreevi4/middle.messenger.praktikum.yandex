@@ -15,6 +15,9 @@
     <span class="{{ className }}__number-messages {{#if unread_count }} number-messages {{else}} number-messages_none {{/if}}">
       {{ unread_count }}
     </span>
+      {{#if deleteLink}}
+        {{{deleteLink}}}
+      {{/if}}
     <span class="time-messages {{ className }}__time-messages">
       {{ last_message.time }}
     </span>

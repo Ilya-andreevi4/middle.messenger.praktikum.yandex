@@ -1,8 +1,9 @@
 import WSTransport, { WSTransportEvents } from "../utils/WSTransport";
 import store from "../utils/Store";
-import { Message } from "src/utils/Interfaces";
+import { IMessage } from "../utils/Interfaces";
+import chatController from "./ChatController";
 
-class MessagesController {
+class MessagesControllerBase {
   private sockets: Map<number, WSTransport> = new Map();
 
   async connect(id: number, token: string) {
@@ -22,12 +23,8 @@ class MessagesController {
     this.fetchOldMessages(id);
   }
 
-  sendMessage(id: number, message: string) {
-    const socket = this.sockets.get(id);
-
-    if (!socket) {
-      throw new Error(`Chat ${id} is not connected`);
-    }
+  async sendMessage(id: number, message: string) {
+    const socket = await this.getSocket(id);
 
     socket.send({
       type: "message",
@@ -35,22 +32,33 @@ class MessagesController {
     });
   }
 
-  fetchOldMessages(id: number) {
+  fetchOldMessages(id: number, page: number = 0) {
     const socket = this.sockets.get(id);
 
     if (!socket) {
       throw new Error(`Chat ${id} is not connected`);
     }
 
-    socket.send({ type: "get old", content: "0" });
+    socket.send({ type: "get old", content: page.toString() });
   }
 
   closeAll() {
+    console.log("all sockets: ", this.sockets);
+
     Array.from(this.sockets.values()).forEach((socket) => socket.close());
   }
 
-  private onMessage(id: number, messages: Message | Message[]) {
-    let messagesToAdd: Message[] = [];
+  async getSocket(id: number) {
+    const socket = this.sockets.get(id);
+    if (!socket) {
+      await this.connect(id, await chatController.getToken(id));
+      return this.sockets.get(id)!;
+    }
+    return socket;
+  }
+
+  private onMessage(id: number, messages: IMessage | IMessage[]) {
+    let messagesToAdd: IMessage[] = [];
 
     if (Array.isArray(messages)) {
       messagesToAdd = messages.reverse();
@@ -75,9 +83,9 @@ class MessagesController {
   }
 }
 
-const controller = new MessagesController();
+const MessagesController = new MessagesControllerBase();
 
 // @ts-ignore
-window.messagesController = controller;
+window.messagesController = MessagesController;
 
-export default controller;
+export default MessagesController;

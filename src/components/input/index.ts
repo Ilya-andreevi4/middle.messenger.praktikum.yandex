@@ -27,6 +27,10 @@ export class Input extends Block<InputProps> {
     return (this.element as HTMLInputElement).value;
   }
 
+  setValue(newValue: string) {
+    return ((this.element as HTMLInputElement).value = newValue);
+  }
+
   getFile() {
     return (this.element as HTMLInputElement).files![0];
   }

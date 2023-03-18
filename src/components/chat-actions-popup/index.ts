@@ -68,6 +68,8 @@ class PopupFormChatActionsBase extends Block<PopupFormChatActionsProps> {
         }),
         events: {
           change: async (e) => {
+            console.log("change");
+
             e.preventDefault();
             if (item.id === PopupId.ChangeAvatar && this.props.selectedChatId) {
               const file = ((this.children.popupListItems as PopupItem[])[i].children.field as Field).getFile();
@@ -82,6 +84,8 @@ class PopupFormChatActionsBase extends Block<PopupFormChatActionsProps> {
                 this.props.handleOpenModal();
               }
               if (item.id === PopupId.DeleteChat) {
+                console.log("click ");
+
                 e.preventDefault();
                 try {
                   chatController.delete(this.props.selectedChatId);

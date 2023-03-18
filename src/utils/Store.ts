@@ -1,7 +1,7 @@
 import { set } from "./helpers";
 import { EventBus } from "./EventBus";
 import Block from "./Block";
-import { IChat, Message, User } from "./Interfaces";
+import { IChat, IMessage, User } from "./Interfaces";
 
 export interface UserStateProps {
   data?: User;
@@ -12,7 +12,7 @@ export interface UserStateProps {
 export interface StateProps {
   user: UserStateProps;
   chats: IChat[];
-  messages?: Record<number, Message[]>;
+  messages?: Record<number, IMessage[]>;
   selectedChatId?: number;
 }
 

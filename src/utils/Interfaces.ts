@@ -32,7 +32,7 @@ export interface IChat extends JsonObject {
   users?: (IUser & { role: string })[];
 }
 
-export interface Message {
+export interface IMessage {
   chat_id: number;
   time: string;
   type: string;

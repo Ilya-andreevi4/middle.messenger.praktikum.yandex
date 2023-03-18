@@ -12,6 +12,8 @@ import { StateProps, withStore } from "../../../../utils/Store";
 import { PopupFormChatActions } from "../../../../components/chat-actions-popup";
 import chatController from "../../../../controllers/ChatController";
 import { ChatInfoBase } from "../../../../components/chat-info";
+import { Link } from "../../../../components/link";
+// import { isEqual } from "../../../../utils/helpers";
 
 interface ChatHeaderProps extends StateProps {
   activeChat?: IChat;
@@ -32,10 +34,45 @@ export class ChatHeaderBase extends Block<ChatHeaderProps> {
   }
 
   init() {
-    this.props.isActive = this.props.activeChat ? true : false;
+    this.props.activeChat = this.props.chats.find((chat) => chat.id === this.props.selectedChatId);
 
-    this.props.userName = this.props.activeChat?.title || "UserName";
-    this.props.userStatus = this.props.activeChat?.status || "offline";
+    this.props.isActive = this.props.selectedChatId ? true : false;
+    if (this.props.activeChat) {
+      this.props.userName = this.props.activeChat.title || "ChatName";
+      this.props.userStatus = this.props.activeChat.status || `${this.props.activeChat.users?.length} users`;
+      this.children.userList = this.props.activeChat?.users
+        ? this.props.activeChat.users.map((user) => {
+            return new ChatInfoBase({
+              deleteLink:
+                user.id !== this.props.user.data?.id
+                  ? new Link({
+                      className: "error user-delete",
+                      label: "kick out",
+                      events: {
+                        click: async (e) => {
+                          e.preventDefault();
+                          if (this.props.selectedChatId) {
+                            const data = {
+                              users: [user.id],
+                              chatId: this.props.selectedChatId,
+                            };
+                            await chatController.deleteUserFromChat(data);
+                            console.log("delete user from chat success! users:", this.props.activeChat?.users);
+                          }
+                        },
+                      },
+                    })
+                  : undefined,
+              avatar: `https://ya-praktikum.tech/api/v2/resources${user.avatar}`,
+              isActive: false,
+              title: user.display_name || user.first_name,
+              className: "user-info",
+              id: user.id,
+              selectedChatId: this.props.selectedChatId,
+            });
+          })
+        : [];
+    }
 
     const handleUserListClose: (e: Event) => void = (e) => {
       e.preventDefault();
@@ -54,11 +91,9 @@ export class ChatHeaderBase extends Block<ChatHeaderProps> {
       events: {
         click: async (e) => {
           e.preventDefault();
-          console.log("click");
-          if (this.props.selectedChatId) {
-            await chatController.fetchChatUsers(this.props.selectedChatId);
-          }
-
+          // if (this.props.selectedChatId) {
+          //   await chatController.fetchChatUsers(this.props.selectedChatId);
+          // }
           this.setProps({ isUserListOpen: true });
           window.addEventListener("mousedown", handleUserListClose);
           (this.children.userList as Block[]).forEach((child) =>
@@ -75,10 +110,8 @@ export class ChatHeaderBase extends Block<ChatHeaderProps> {
       events: {
         submit: async (e: Event) => {
           e.preventDefault();
-          console.log("trying add user...");
 
           if ((this.children.inviteModal as Form).isValid() && this.props.selectedChatId) {
-            console.log("values is valid...");
             const inputFields = (this.children.inviteModal as Form).children.inputFields as Field[];
             const usersID = inputFields.map((child) => {
               return Number((child as Field).getValue());
@@ -114,7 +147,6 @@ export class ChatHeaderBase extends Block<ChatHeaderProps> {
     });
 
     //Закрытие окна с приглашением и попапа с настройками чата при клике на background
-
     const handleStopPropagation: (e: Event) => void = (e) => {
       e.stopPropagation();
     };
@@ -166,31 +198,33 @@ export class ChatHeaderBase extends Block<ChatHeaderProps> {
   }
 
   protected componentDidUpdate(oldProps: ChatHeaderProps, newProps: ChatHeaderProps): boolean {
-    if (oldProps.selectedChatId !== newProps.selectedChatId) {
-      console.log("change chat");
+    const currentChatId = newProps.selectedChatId;
+    const newChatState = newProps.chats.find((chat) => chat.id === currentChatId);
 
-      const currentChatId = newProps.selectedChatId;
-      const newChatState = newProps.chats.find((chat) => chat.id === currentChatId);
+    if (oldProps.selectedChatId !== newProps.selectedChatId) {
       this.setProps({
         selectedChatId: newProps.selectedChatId,
         activeChat: newChatState,
         isActive: newChatState ? true : false,
-        userName: newChatState?.title || "UserName",
-        userStatus: newChatState?.status || "offline",
+        userName: newChatState?.title || "ChatName",
+        userStatus: newChatState?.status || `${newChatState?.users?.length} users`,
         chats: newProps.chats,
       });
       (this.children.avatar as Avatar).setProps({ src: newChatState?.avatar || AvatarsExports.AvatarBox });
 
       return true;
     }
+
     if (oldProps.isModalOpen !== newProps.isModalOpen) {
       this.setProps({ isModalOpen: newProps.isModalOpen });
       return true;
     }
+
     if (oldProps.isSettingsOpen !== newProps.isSettingsOpen) {
       this.setProps({ isSettingsOpen: newProps.isSettingsOpen });
       return true;
     }
+
     if (oldProps.isUserListOpen !== newProps.isUserListOpen) {
       this.setProps({ isUserListOpen: newProps.isUserListOpen });
       this.children.userList = newProps.activeChat?.users
@@ -201,12 +235,39 @@ export class ChatHeaderBase extends Block<ChatHeaderProps> {
               title: user.display_name || user.first_name,
               className: "user-info",
               id: user.id,
+              events: {
+                click(e) {
+                  e.preventDefault();
+                  alert(`user id: ${user.id}`);
+                },
+              },
               selectedChatId: this.props.selectedChatId,
+              deleteLink:
+                user.id !== this.props.user.data?.id
+                  ? new Link({
+                      className: "link_red user-delete",
+                      label: "kick out",
+                      events: {
+                        click: async (e) => {
+                          e.stopPropagation();
+                          if (this.props.selectedChatId) {
+                            const data = {
+                              users: [user.id],
+                              chatId: this.props.selectedChatId,
+                            };
+                            await chatController.deleteUserFromChat(data);
+                            console.log("delete user from chat success! users:", this.props.activeChat?.users);
+                          }
+                        },
+                      },
+                    })
+                  : undefined,
             });
           })
         : [];
       return true;
     }
+
     return false;
   }
 

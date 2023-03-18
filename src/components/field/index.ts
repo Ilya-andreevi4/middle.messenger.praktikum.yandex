@@ -59,6 +59,11 @@ export class Field extends Block<FieldProps> {
     return value;
   }
 
+  setValue(newValue: string) {
+    const input = this.children.input as Input;
+    return input.setValue(newValue);
+  }
+
   getFile() {
     const value = (this.children.input as Input).getFile();
     return value;

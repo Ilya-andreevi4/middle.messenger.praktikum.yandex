@@ -77,7 +77,7 @@ class ProfilePageBase extends Block<ProfileProps> {
             label: "Change password",
           }),
           new Link({
-            className: "profile-page__link_red profile-page",
+            className: "link_red profile-page",
             label: "Quit from account",
             events: {
               click: async () => {

@@ -5,7 +5,8 @@ import { MessageInputForm } from "../../../components/message-input-form";
 import template from "./chat-container.hbs";
 import { IChat } from "../../../utils/Interfaces";
 import { StateProps, withStore } from "../../../utils/Store";
-import { Field } from "src/components/field";
+import { Field } from "../../../components/field";
+import MessagesController from "../../../controllers/MessagesController";
 
 interface ChatContainerProps extends StateProps {
   isActive: boolean;
@@ -19,11 +20,7 @@ export class ChatContainerBase extends Block<ChatContainerProps> {
 
   init() {
     this.props.activeChat = this.props.chats.find((chat) => chat.id === this.props.selectedChatId);
-    if (this.props.activeChat) {
-      this.props.isActive = true;
-    } else {
-      this.props.isActive = false;
-    }
+    this.props.isActive = this.props.activeChat ? true : false;
 
     this.children.chatHeader = new ChatHeader({});
 
@@ -36,7 +33,14 @@ export class ChatContainerBase extends Block<ChatContainerProps> {
       events: {
         submit: (e: Event) => {
           e.preventDefault();
-          console.log("message: ", ((this.children.messageForm as Block).children.messageInput as Field).getValue());
+          if (!this.props.selectedChatId) {
+            throw new Error("Select some chat.");
+          }
+          const input = (this.children.messageForm as Block).children.messageInput as Field;
+          const message = input.getValue();
+          console.log("message: ", message);
+          input.setValue("");
+          MessagesController.sendMessage(this.props.selectedChatId, message);
         },
       },
     });

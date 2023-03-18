@@ -2,6 +2,7 @@ import API, { AuthAPI } from "../api/AuthAPI";
 import store from "../utils/Store";
 import router from "../utils/Router";
 import { Routes, SigninData, SignupData } from "../utils/Interfaces";
+import MessagesController from "./MessagesController";
 
 export class AuthController {
   private readonly api: AuthAPI;
@@ -61,9 +62,13 @@ export class AuthController {
   async logout() {
     store.set("user.isLoading", true);
     try {
+      MessagesController.closeAll();
       await this.api.logout();
 
       store.set("user.data", {});
+      store.set("chat", []);
+      store.set("messages", undefined);
+      store.set("selectedChatId", undefined);
 
       router.go(Routes.Index);
       store.set("user.isLoading", false);
