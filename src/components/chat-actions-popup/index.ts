@@ -84,8 +84,6 @@ class PopupFormChatActionsBase extends Block<PopupFormChatActionsProps> {
                 this.props.handleOpenModal();
               }
               if (item.id === PopupId.DeleteChat) {
-                console.log("click ");
-
                 e.preventDefault();
                 try {
                   chatController.delete(this.props.selectedChatId);
@@ -95,7 +93,7 @@ class PopupFormChatActionsBase extends Block<PopupFormChatActionsProps> {
                 }
               }
             } else {
-              console.log("Чат не выбран");
+              console.error("Чат не выбран");
             }
           },
         },

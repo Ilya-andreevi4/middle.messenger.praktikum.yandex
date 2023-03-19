@@ -41,7 +41,6 @@ export class ChatInfoBase extends Block<ChatInfoProps> {
 
           if (currentId === this.props.selectedChatId) {
             chatController.selectChat(undefined);
-            // store.set("selectedChatId", undefined);
           } else {
             if (this.props.unread_count && this.props.unread_count > 0) {
               this.props.unread_count = undefined;

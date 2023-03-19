@@ -43,8 +43,6 @@ class MessagesControllerBase {
   }
 
   closeAll() {
-    console.log("all sockets: ", this.sockets);
-
     Array.from(this.sockets.values()).forEach((socket) => socket.close());
   }
 

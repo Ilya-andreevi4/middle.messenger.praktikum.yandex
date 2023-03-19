@@ -11,8 +11,6 @@ export class AuthAPI extends BaseAPI {
   }
 
   signup(data: SignupData) {
-    console.log("signup Data in Auth Api: ", data);
-
     return this.http.post("/signup", data);
   }
 

@@ -18,8 +18,6 @@ class LoginPageBase extends Block<LoginPageProps> {
     super(props);
   }
   init() {
-    console.log("data in login page: ", this.props.data);
-
     this.children.navBar = new Nav("");
     this.children.loader = new Loader({});
     this.children.loginModal = new Form({
@@ -70,16 +68,6 @@ class LoginPageBase extends Block<LoginPageProps> {
     const data = Object.fromEntries(values);
     AuthController.signin(data as SignupData);
   }
-
-  // protected componentDidUpdate(_oldProps: UserStateProps, _newProps: UserStateProps): boolean {
-  //   console.log("data in login page: ", _oldProps, _newProps);
-
-  //   if (_oldProps.isLoading || _newProps.isLoading) {
-  //     (this.children.loader as Block).setProps({ isLoading: _newProps.isLoading });
-  //     return false;
-  //   }
-  //   return !isEqual(_oldProps.data!, _newProps.data!);
-  // }
 
   render() {
     return this.compile(template, this.props);

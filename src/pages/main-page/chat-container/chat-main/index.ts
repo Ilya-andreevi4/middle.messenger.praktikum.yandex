@@ -27,8 +27,6 @@ export class ChatMainBase extends Block<ChatMainProps> {
       const users = currentChat?.users;
 
       if (currentMessages) {
-        console.log("messages in this chat ", currentMessages);
-        console.log("currentChat 1", currentChat);
         this.children.messages = currentMessages.map((message) => {
           const currentUser = users?.find((user) => user.id === message.user_id);
           return new Message({
@@ -116,11 +114,8 @@ export class ChatMainBase extends Block<ChatMainProps> {
         selectedChatId: newProps.selectedChatId,
         chats: newProps.chats,
       });
-
-      console.log("2");
       return true;
     }
-    console.log("3");
     return false;
   }
 

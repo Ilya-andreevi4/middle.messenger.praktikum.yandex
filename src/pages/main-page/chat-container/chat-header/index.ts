@@ -35,7 +35,6 @@ export class ChatHeaderBase extends Block<ChatHeaderProps> {
 
   init() {
     this.props.activeChat = this.props.chats.find((chat) => chat.id === this.props.selectedChatId);
-    console.log("trying fetch users: ", this.props.chats[1].users);
 
     this.props.isActive = this.props.selectedChatId ? true : false;
     if (this.props.activeChat) {

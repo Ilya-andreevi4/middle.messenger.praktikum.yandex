@@ -32,12 +32,6 @@ export class FriendsContainerBase extends Block<FriendsContainerProps> {
         chatsIsLoaded: true,
       });
     });
-    console.log("chats", this.props.chats);
-    console.log("current chat", this.props.chats[0]);
-    console.log("chat id", this.props.chats[0].id);
-    console.log("1st chat users", this.props.chats[0].users);
-
-    // this.props.chats.find((chat) => chat.id === this.props.selectedChatId);
 
     this.props.chats?.forEach((chat: IChat) => {
       if (!chat.users || chat.users?.length <= 1) {
@@ -140,7 +134,6 @@ export class FriendsContainerBase extends Block<FriendsContainerProps> {
             return (child as Field).getValue();
           });
           await chatController.create(values[0]);
-          console.log("created new chat: ", values[0]);
           this.setProps({ createChatModalIsOpen: false });
         },
       },
@@ -184,29 +177,20 @@ export class FriendsContainerBase extends Block<FriendsContainerProps> {
     if (!isEqual(oldProps.chats, newProps.chats)) {
       this.children.friends = [];
       this.children.groups = [];
-      console.log("new chats", this.props.chats);
-      const friendsChats = this.props.chats.map((chat) => {
-        const currentChat = { ...chat };
-        console.log("raspred chats", currentChat);
-        if (!chat.users || chat.users?.length < 2) {
-          return chat;
-        }
-        return;
-      });
-      const groupsChats = this.props.chats.map((chat) => {
-        const currentChat = { ...chat };
-        console.log("raspred chats", currentChat);
-        if (chat.users && chat.users?.length > 2) {
-          return chat;
-        }
-        return;
-      });
-      console.log(friendsChats, groupsChats);
+      // const friendsChats = this.props.chats.map((chat) => {
+      //   if (!chat.users || chat.users?.length < 2) {
+      //     return chat;
+      //   }
+      //   return;
+      // });
+      // const groupsChats = this.props.chats.map((chat) => {
+      //   if (chat.users && chat.users?.length > 2) {
+      //     return chat;
+      //   }
+      //   return;
+      // });
 
       newProps.chats.forEach((chat) => {
-        console.log("current Chat", chat);
-        console.log("current Users", chat.users);
-
         if (!chat.users || chat.users.length <= 1) {
           (this.children.friends as any[]).push(
             new ChatInfo({

@@ -36,7 +36,6 @@ export class ChatContainerBase extends Block<ChatContainerProps> {
           }
           const input = (this.children.messageForm as Block).children.messageInput as Field;
           const message = input.getValue();
-          console.log("message: ", message);
           input.setValue("");
           MessagesController.sendMessage(this.props.selectedChatId, message);
         },
