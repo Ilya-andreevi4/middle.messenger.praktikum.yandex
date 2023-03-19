@@ -1,7 +1,7 @@
 import Block from "../../utils/Block";
 import template from "./chat-info.hbs";
 import { Avatar } from "../avatar";
-import store, { withSelectedChatId } from "../../utils/Store";
+import { withSelectedChatId } from "../../utils/Store";
 import { ILastMessage } from "../../utils/Interfaces";
 import { AvatarsExports } from "../../utils/media-exports";
 import { Link } from "../link";
@@ -17,7 +17,6 @@ interface ChatInfoProps {
   isActive?: boolean;
   deleteLink?: Link;
   selectedChatId: number | undefined;
-  isGroup?: boolean;
   handleChangeChat?: (id: number | undefined) => void;
   events?: {
     click?: (e: Event) => void;
@@ -41,10 +40,13 @@ export class ChatInfoBase extends Block<ChatInfoProps> {
           const currentId = this.props.id;
 
           if (currentId === this.props.selectedChatId) {
-            store.set("selectedChatId", undefined);
+            chatController.selectChat(undefined);
+            // store.set("selectedChatId", undefined);
           } else {
-            store.set("selectedChatId", currentId);
-
+            if (this.props.unread_count && this.props.unread_count > 0) {
+              this.props.unread_count = undefined;
+            }
+            chatController.selectChat(currentId);
             currentId && (await chatController.fetchChatUsers(currentId));
           }
         },

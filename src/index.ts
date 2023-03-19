@@ -1,4 +1,5 @@
 import AuthController from "./controllers/AuthContoller";
+import chatController from "./controllers/ChatController";
 import { LoginPage } from "./pages/login-page";
 import { MainPage } from "./pages/main-page";
 import { NotFoundPage } from "./pages/not-found-page";
@@ -28,6 +29,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   try {
     await AuthController.fetchUser();
+    await chatController.fetchChats();
     Router.start();
 
     if (store.getState().user.data) {

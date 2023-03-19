@@ -2,7 +2,7 @@ import { withStore } from "../../../../utils/Store";
 import { Message } from "../../../../components/message";
 import Block from "../../../../utils/Block";
 import template from "./chat-main.hbs";
-import { IMessage } from "../../../../utils/Interfaces";
+import { IChat, IMessage } from "../../../../utils/Interfaces";
 import { isEqual } from "../../../../utils/helpers";
 
 interface ChatMainProps {
@@ -10,6 +10,8 @@ interface ChatMainProps {
   isActive: boolean;
   messages: IMessage[];
   userId: number;
+  selectedChat: IChat | undefined;
+  chats: IChat[];
 }
 export class ChatMainBase extends Block<ChatMainProps> {
   constructor(props: ChatMainProps) {
@@ -21,17 +23,20 @@ export class ChatMainBase extends Block<ChatMainProps> {
 
     if (this.props.selectedChatId) {
       const currentMessages = this.props.messages;
+      const currentChat = this.props.selectedChat;
+      const users = currentChat?.users;
 
       if (currentMessages) {
         console.log("messages in this chat ", currentMessages);
+        console.log("currentChat 1", currentChat);
         this.children.messages = currentMessages.map((message) => {
+          const currentUser = users?.find((user) => user.id === message.user_id);
           return new Message({
             className: "message-list",
             from:
               message.user_id === this.props.userId
                 ? "You"
-                : `User ${message.user_id}` || //TODO Добавить имя пользователя
-                  "User Name",
+                : `${currentUser?.first_name} ${currentUser?.second_name}` || "User Name",
             text: message.content,
             time: new Date(message.time).toLocaleString("ru", { hour: "numeric", minute: "numeric", weekday: "short" }),
             file: message.file ? message.file.path : undefined,
@@ -46,18 +51,21 @@ export class ChatMainBase extends Block<ChatMainProps> {
   }
 
   protected componentDidUpdate(oldProps: ChatMainProps, newProps: ChatMainProps): boolean {
-    const currentChatId = newProps.selectedChatId;
     const currentMessages = newProps.messages;
-    if (oldProps.selectedChatId) {
+    if (newProps.selectedChatId) {
       if (!isEqual(oldProps.messages, newProps.messages)) {
         this.children.messages = currentMessages.map((message) => {
+          const currentUser = newProps.chats
+            .find((chat) => chat.id === newProps.selectedChatId)
+            ?.users?.find((user) => user.id === message.user_id);
           return new Message({
             className: "message-list",
             from:
               message.user_id === this.props.userId
                 ? "You"
-                : `User ${message.user_id}` || //TODO Добавить имя пользователя
-                  "User Name",
+                : currentUser
+                ? `${currentUser?.first_name} ${currentUser?.second_name}`
+                : `User ${message.user_id}`,
             text: message.content,
             time: new Date(message.time).toLocaleString("ru", { hour: "numeric", minute: "numeric", weekday: "short" }),
             file: message.file ? message.file.path : undefined,
@@ -71,24 +79,25 @@ export class ChatMainBase extends Block<ChatMainProps> {
       }
     }
     if (oldProps.selectedChatId !== newProps.selectedChatId) {
-      console.log("current chat id ", currentChatId);
-      this.setProps({
-        isActive: currentChatId && currentChatId >= 0 ? true : false,
-        selectedChatId: currentChatId,
-      });
-
-      if (currentMessages && currentChatId) {
-        console.log("currentMessages", currentMessages);
-        this.children.messages = currentMessages.map((message) => {
+      if (newProps.messages && newProps.selectedChatId) {
+        this.children.messages = newProps.messages.map((message) => {
+          const currentUser = newProps.chats
+            .find((chat) => chat.id === newProps.selectedChatId)
+            ?.users?.find((user) => user.id === message.user_id);
           return new Message({
             className: "message-list",
             from:
               message.user_id === this.props.userId
                 ? "You"
-                : `User ${message.user_id}` || //TODO Добавить имя пользователя
-                  "User Name",
+                : currentUser
+                ? `${currentUser?.first_name} ${currentUser?.second_name}`
+                : `User ${message.user_id}`,
             text: message.content,
-            time: new Date(message.time).toLocaleString("ru", { hour: "numeric", minute: "numeric", weekday: "short" }),
+            time: new Date(message.time).toLocaleString("ru", {
+              hour: "numeric",
+              minute: "numeric",
+              weekday: "short",
+            }),
             file: message.file ? message.file.path : undefined,
             my: message.user_id === this.props.userId,
             events: {
@@ -99,8 +108,19 @@ export class ChatMainBase extends Block<ChatMainProps> {
       } else {
         this.children.messages = [];
       }
+      this.setProps({
+        isActive: newProps.selectedChatId && newProps.selectedChatId >= 0 ? true : false,
+        selectedChat: newProps.selectedChat,
+        messages: newProps.messages,
+        userId: newProps.userId,
+        selectedChatId: newProps.selectedChatId,
+        chats: newProps.chats,
+      });
+
+      console.log("2");
       return true;
     }
+    console.log("3");
     return false;
   }
 
@@ -117,6 +137,8 @@ const withSelectedChatMessages = withStore((state) => {
       messages: [],
       selectedChatId: undefined,
       userId: state.user.data?.id,
+      selectedChat: undefined,
+      chats: state.chats,
     };
   }
 
@@ -124,6 +146,8 @@ const withSelectedChatMessages = withStore((state) => {
     messages: (state.messages || {})[chatId] || [],
     selectedChatId: state.selectedChatId,
     userId: state.user.data?.id,
+    selectedChat: state.chats.find((chat) => chat.id === chatId),
+    chats: state.chats,
   };
 });
 

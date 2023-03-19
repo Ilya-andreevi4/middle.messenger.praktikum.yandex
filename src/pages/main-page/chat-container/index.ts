@@ -24,9 +24,7 @@ export class ChatContainerBase extends Block<ChatContainerProps> {
 
     this.children.chatHeader = new ChatHeader({});
 
-    this.children.chatMain = new ChatMain({
-      ...this.props,
-    });
+    this.children.chatMain = new ChatMain({});
 
     this.children.messageForm = new MessageInputForm({
       ...this.props,

@@ -27,12 +27,10 @@ class ChatsController {
       const token = await this.getToken(chat.id);
       await MessagesController.connect(chat.id, token);
     });
-
-    chats.forEach(async (chat: IChat) => {
-      await this.fetchChatUsers(chat.id);
-    });
-
     store.set("chats", chats);
+    chats.forEach((chat: IChat) => {
+      this.fetchChatUsers(chat.id);
+    });
     store.set("user.isLoading", false);
   }
 
@@ -74,8 +72,8 @@ class ChatsController {
           }
           return chat;
         });
+
         store.set("chats", currentChats);
-        console.log("users fetch success!", store.getState().chats, users);
         store.set("user.isLoading", false);
       });
     } catch (err) {
@@ -87,7 +85,6 @@ class ChatsController {
   async delete(id: number) {
     await this.api.delete(id);
     store.set("selectedChatId", undefined);
-    store.set("user.data", undefined);
     this.fetchChats();
   }
 
@@ -95,7 +92,7 @@ class ChatsController {
     store.set("user.isLoading", true);
     try {
       await this.api.deleteUserFromChat(data.chatId, data.users);
-      await this.fetchChatUsers(data.chatId);
+      await this.fetchChats();
     } catch (err) {
       store.set("user.isLoading", false);
       throw new Error(`error with add user ${err}`);
@@ -107,7 +104,7 @@ class ChatsController {
     return this.api.getToken(id);
   }
 
-  selectChat(id: number) {
+  selectChat(id: number | undefined) {
     store.set("selectedChatId", id);
   }
 }

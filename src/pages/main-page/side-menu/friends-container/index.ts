@@ -24,17 +24,23 @@ export class FriendsContainerBase extends Block<FriendsContainerProps> {
   }
 
   init() {
-    this.children.friends = [] as any[];
-    this.children.groups = [] as any[];
+    this.children.friends = ([] as Block[]) || [];
+    this.children.groups = ([] as Block[]) || [];
 
     chatController.fetchChats().finally(() => {
       this.setProps({
         chatsIsLoaded: true,
       });
     });
+    console.log("chats", this.props.chats);
+    console.log("current chat", this.props.chats[0]);
+    console.log("chat id", this.props.chats[0].id);
+    console.log("1st chat users", this.props.chats[0].users);
+
+    // this.props.chats.find((chat) => chat.id === this.props.selectedChatId);
 
     this.props.chats?.forEach((chat: IChat) => {
-      if (!chat.users || chat.users?.length < 2) {
+      if (!chat.users || chat.users?.length <= 1) {
         (this.children.friends as any[]).push(
           new ChatInfo({
             ...chat,
@@ -52,7 +58,7 @@ export class FriendsContainerBase extends Block<FriendsContainerProps> {
             className: "chats-list",
           }),
         );
-      } else {
+      } else if (chat.users.length > 2) {
         (this.children.groups as any[]).push(
           new ChatInfo({
             ...chat,
@@ -174,14 +180,34 @@ export class FriendsContainerBase extends Block<FriendsContainerProps> {
       this.setProps({ createChatModalIsOpen: newProps.createChatModalIsOpen });
       return true;
     }
-    if (oldProps.chatsIsLoaded !== newProps.chatsIsLoaded) {
-      return true;
-    }
+
     if (!isEqual(oldProps.chats, newProps.chats)) {
       this.children.friends = [];
       this.children.groups = [];
-      this.props.chats?.forEach((chat: IChat) => {
+      console.log("new chats", this.props.chats);
+      const friendsChats = this.props.chats.map((chat) => {
+        const currentChat = { ...chat };
+        console.log("raspred chats", currentChat);
         if (!chat.users || chat.users?.length < 2) {
+          return chat;
+        }
+        return;
+      });
+      const groupsChats = this.props.chats.map((chat) => {
+        const currentChat = { ...chat };
+        console.log("raspred chats", currentChat);
+        if (chat.users && chat.users?.length > 2) {
+          return chat;
+        }
+        return;
+      });
+      console.log(friendsChats, groupsChats);
+
+      newProps.chats.forEach((chat) => {
+        console.log("current Chat", chat);
+        console.log("current Users", chat.users);
+
+        if (!chat.users || chat.users.length <= 1) {
           (this.children.friends as any[]).push(
             new ChatInfo({
               ...chat,
@@ -199,7 +225,7 @@ export class FriendsContainerBase extends Block<FriendsContainerProps> {
               className: "chats-list",
             }),
           );
-        } else {
+        } else if (chat.users.length > 2) {
           (this.children.groups as any[]).push(
             new ChatInfo({
               ...chat,
@@ -219,6 +245,10 @@ export class FriendsContainerBase extends Block<FriendsContainerProps> {
           );
         }
       });
+      this.setProps(newProps);
+      return true;
+    }
+    if (oldProps.chatsIsLoaded !== newProps.chatsIsLoaded) {
       return true;
     }
     return false;

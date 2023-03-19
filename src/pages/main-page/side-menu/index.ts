@@ -28,7 +28,8 @@ class SideMenuBase extends Block<SideMenuProps> {
   }
 
   protected componentDidUpdate(oldProps: SideMenuProps, newProps: SideMenuProps): boolean {
-    if (!isEqual(oldProps, newProps)) {
+    if (!isEqual(oldProps.data, newProps.data)) {
+      this.setProps({ data: newProps.data });
       return true;
     }
     return false;
