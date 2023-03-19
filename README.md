@@ -2,7 +2,7 @@
 
 ## Проект размещён на домене: https://messenger-by-orekhov-ilya.netlify.app/
 
-## Ссылка на pull request: https://github.com/Ilya-andreevi4/middle.messenger.praktikum.yandex/pull/4
+## Ссылка на pull request: https://github.com/Ilya-andreevi4/middle.messenger.praktikum.yandex/pull/7
 
 ## О проекте
 
