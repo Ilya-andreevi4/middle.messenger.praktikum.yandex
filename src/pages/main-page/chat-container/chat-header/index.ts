@@ -210,45 +210,53 @@ export class ChatHeaderBase extends Block<ChatHeaderProps> {
         activeChat: newChatState,
         isActive: !!newChatState,
         userName: newChatState?.title || "ChatName",
-        userStatus: newChatState?.status || `${newChatState?.users?.length} users`,
         chats: newProps.chats
       });
       (this.children.avatar as Avatar).setProps({
         src: newProps.activeChat?.avatar || AvatarsExports.AvatarBox
       });
+      if (newChatState?.users?.length) {
+        this.setProps({ userStatus: `${newChatState?.users?.length} users` });
+      }
 
       return true;
     }
 
     if (oldProps.isModalOpen !== newProps.isModalOpen) {
       this.setProps({
-        isModalOpen: newProps.isModalOpen,
-        userStatus: newChatState?.status || `${newChatState?.users?.length} users`
+        isModalOpen: newProps.isModalOpen
       });
       (this.children.avatar as Avatar).setProps({
         src: newProps.activeChat?.avatar || AvatarsExports.AvatarBox
       });
+      if (newChatState?.users?.length) {
+        this.setProps({ userStatus: `${newChatState?.users?.length} users` });
+      }
 
       return true;
     }
 
     if (oldProps.isSettingsOpen !== newProps.isSettingsOpen) {
       this.setProps({
-        isSettingsOpen: newProps.isSettingsOpen,
-        userStatus: newChatState?.status || `${newChatState?.users?.length} users`
+        isSettingsOpen: newProps.isSettingsOpen
       });
       (this.children.avatar as Avatar).setProps({
         src: newProps.activeChat?.avatar || AvatarsExports.AvatarBox
       });
+      if (newChatState?.users?.length) {
+        this.setProps({ userStatus: `${newChatState?.users?.length} users` });
+      }
 
       return true;
     }
 
     if (oldProps.isUserListOpen !== newProps.isUserListOpen) {
       this.setProps({
-        isUserListOpen: newProps.isUserListOpen,
-        userStatus: newChatState?.status || `${newChatState?.users?.length} users`
+        isUserListOpen: newProps.isUserListOpen
       });
+      if (newChatState?.users?.length) {
+        this.setProps({ userStatus: `${newChatState?.users?.length} users` });
+      }
       (this.children.avatar as Avatar).setProps({
         src: newProps.activeChat?.avatar || AvatarsExports.AvatarBox
       });
@@ -301,9 +309,11 @@ export class ChatHeaderBase extends Block<ChatHeaderProps> {
         selectedChatId: newProps.selectedChatId,
         activeChat: newChatState,
         isActive: !!newChatState,
-        userName: newChatState?.title || "ChatName",
-        userStatus: newChatState?.status || `${newChatState?.users?.length} users`
+        userName: newChatState?.title || "ChatName"
       });
+      if (newChatState?.users?.length) {
+        this.setProps({ userStatus: `${newChatState?.users?.length} users` });
+      }
       (this.children.avatar as Avatar).setProps({
         src: newChatState?.avatar || AvatarsExports.AvatarBox
       });
@@ -311,7 +321,7 @@ export class ChatHeaderBase extends Block<ChatHeaderProps> {
       return true;
     }
 
-    if (oldChatState?.users?.length !== newChatState?.users?.length) {
+    if (newChatState?.users?.length && oldChatState?.users?.length !== newChatState.users.length) {
       this.setProps({
         userStatus: `${newChatState?.users?.length} users`
       });
