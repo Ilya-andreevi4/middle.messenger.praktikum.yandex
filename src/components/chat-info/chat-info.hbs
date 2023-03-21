@@ -1,6 +1,6 @@
 <li class="chat-info chats-list__chat-info {{#if isActive }} chats-list__chat-info_active {{/if}}">
   <div class="avatar-container chat-info__avatar-container {{#if isActive }} chat-info__avatar-container_active {{/if}}">
-    {{{avatar}}}
+    {{{ avatar }}}
   </div>
 
   <div class="friends-info {{ className }}__friends-info">
@@ -16,7 +16,7 @@
       {{ unread_count }}
     </span>
       {{#if deleteLink}}
-        {{{deleteLink}}}
+        {{{ deleteLink }}}
       {{/if}}
     <span class="time-messages {{ className }}__time-messages">
       {{ last_message.time }}
