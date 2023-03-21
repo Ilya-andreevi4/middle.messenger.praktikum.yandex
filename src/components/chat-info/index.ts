@@ -1,12 +1,12 @@
-import Block from "../../utils/Block";
 import template from "./chat-info.hbs";
-import { Avatar } from "../avatar";
-import { withSelectedChatId } from "../../utils/Store";
+import chatController from "../../controllers/ChatController";
+import Block from "../../utils/Block";
+import { handleSliceText } from "../../utils/helpers";
 import { ILastMessage } from "../../utils/Interfaces";
 import { AvatarsExports } from "../../utils/media-exports";
+import { withSelectedChatId } from "../../utils/Store";
+import { Avatar } from "../avatar";
 import { Link } from "../link";
-import chatController from "../../controllers/ChatController";
-import { handleSliceText } from "../../utils/helpers";
 
 interface ChatInfoProps {
   id: number | undefined;
@@ -31,7 +31,9 @@ export class ChatInfoBase extends Block<ChatInfoProps> {
       last_message: props.last_message
         ? {
             ...props.last_message,
-            content: props.last_message.content ? handleSliceText(props.last_message.content, 16) : "",
+            content: props.last_message.content
+              ? handleSliceText(props.last_message.content, 16)
+              : ""
           }
         : undefined,
       events: props.events || {
@@ -46,10 +48,11 @@ export class ChatInfoBase extends Block<ChatInfoProps> {
               this.props.unread_count = undefined;
             }
             chatController.selectChat(currentId);
-            currentId && (await chatController.fetchChatUsers(currentId));
+            if (!currentId) return;
+            await chatController.fetchChatUsers(currentId);
           }
-        },
-      },
+        }
+      }
     });
   }
 
@@ -58,9 +61,9 @@ export class ChatInfoBase extends Block<ChatInfoProps> {
     this.children.avatar = new Avatar({
       className: "friends",
       events: {
-        click: () => {},
+        click: () => {}
       },
-      src: this.props.avatar || AvatarsExports.AvatarBox,
+      src: this.props.avatar || AvatarsExports.AvatarBox
     });
     if (!this.props.unread_count || this.props.unread_count < 1) {
       this.props.unread_count = undefined;
@@ -69,7 +72,10 @@ export class ChatInfoBase extends Block<ChatInfoProps> {
 
   protected componentDidUpdate(oldProps: ChatInfoProps, newProps: ChatInfoProps): boolean {
     if (oldProps.selectedChatId !== newProps.selectedChatId) {
-      this.setProps({ isActive: this.props.id === newProps.selectedChatId, deleteLink: newProps.deleteLink });
+      this.setProps({
+        isActive: this.props.id === newProps.selectedChatId,
+        deleteLink: newProps.deleteLink
+      });
       return true;
     }
     return false;
@@ -80,5 +86,5 @@ export class ChatInfoBase extends Block<ChatInfoProps> {
   }
 }
 
-//@ts-ignore
+// @ts-ignore
 export const ChatInfo = withSelectedChatId(ChatInfoBase);

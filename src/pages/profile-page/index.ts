@@ -1,18 +1,18 @@
-import AuthController from "../../controllers/AuthContoller";
+import template from "./profile-page.hbs";
 import { Avatar } from "../../components/avatar";
 import { Button } from "../../components/button";
 import { Field } from "../../components/field";
 import { Link } from "../../components/link";
+import AuthController from "../../controllers/AuthContoller";
+import ProfileController from "../../controllers/ProfileController";
 import { Form } from "../../layouts/form";
+import { Loader } from "../../layouts/loader";
 import Block from "../../utils/Block";
+import { isEqual } from "../../utils/helpers";
+import { ChangePasswordProps, ChangeProfileProps, Routes, User } from "../../utils/Interfaces";
 import { AvatarsExports } from "../../utils/media-exports";
 import PAGE_FIELDS from "../../utils/page-fields";
-import template from "./profile-page.hbs";
-import { ChangePasswordProps, ChangeProfileProps, Routes, User } from "../../utils/Interfaces";
 import { withUser } from "../../utils/Store";
-import ProfileController from "../../controllers/ProfileController";
-import { Loader } from "../../layouts/loader";
-import { isEqual } from "../../utils/helpers";
 
 interface ProfileProps {
   data: User;
@@ -28,6 +28,7 @@ class ProfilePageBase extends Block<ProfileProps> {
     super(props);
     this.props.isChangeAvatar = false;
   }
+
   protected init(): void {
     this.props.isChangePassword = false;
     this.props.isChangeProfile = false;
@@ -35,46 +36,45 @@ class ProfilePageBase extends Block<ProfileProps> {
 
     this.props.data.display_name = this.props.data.display_name
       ? this.props.data.display_name
-      : this.props.data.first_name + "_" + this.props.data.second_name;
+      : `${this.props.data.first_name}_${this.props.data.second_name}`;
 
     this.children.profileForm = new Form({
       className: "profile-page",
       title: this.props.data.display_name,
       isPopup: false,
       children: {
-        inputFields: PAGE_FIELDS["profile"].map((field) => {
-          return new Field({
-            ...field,
-            className: "profile-page",
-            attributes: [
-              {
-                key: "placeholder",
-                value: () => {
-                  return this.props.data[field.name as keyof User];
+        inputFields: PAGE_FIELDS.profile.map(
+          (field) =>
+            new Field({
+              ...field,
+              className: "profile-page",
+              attributes: [
+                {
+                  key: "placeholder",
+                  value: () => this.props.data[field.name as keyof User]
                 },
-              },
-              { key: "readonly", value: true },
-            ],
-          });
-        }),
+                { key: "readonly", value: true }
+              ]
+            })
+        ),
         links: [
           new Link({
             className: "profile-page",
             events: {
               click: () => {
                 this.setProps({ isChangeProfile: true });
-              },
+              }
             },
-            label: "Change profile",
+            label: "Change profile"
           }),
           new Link({
             className: "profile-page",
             events: {
               click: () => {
                 this.setProps({ isChangePassword: true });
-              },
+              }
             },
-            label: "Change password",
+            label: "Change password"
           }),
           new Link({
             className: "link_red profile-page",
@@ -82,14 +82,14 @@ class ProfilePageBase extends Block<ProfileProps> {
             events: {
               click: async () => {
                 await AuthController.logout();
-              },
-            },
-          }),
-        ],
+              }
+            }
+          })
+        ]
       },
       events: {
-        submit: () => {},
-      },
+        submit: () => {}
+      }
     });
 
     this.children.changeProfileForm = new Form({
@@ -97,26 +97,25 @@ class ProfilePageBase extends Block<ProfileProps> {
       title: this.props.data.display_name,
       isPopup: false,
       children: {
-        inputFields: PAGE_FIELDS["changeProfile"].map((field) => {
-          return new Field({
-            ...field,
-            required: true,
-            className: "modal",
-            attributes: [
-              {
-                key: "value",
-                value: () => {
-                  return this.props.data[field.name as keyof User];
-                },
-              },
-            ],
-          });
-        }),
+        inputFields: PAGE_FIELDS.changeProfile.map(
+          (field) =>
+            new Field({
+              ...field,
+              required: true,
+              className: "modal",
+              attributes: [
+                {
+                  key: "value",
+                  value: () => this.props.data[field.name as keyof User]
+                }
+              ]
+            })
+        ),
         submitButton: new Button({
           label: "Save",
           className: "modal",
-          type: "submit",
-        }),
+          type: "submit"
+        })
       },
       events: {
         submit: async (e: Event) => {
@@ -126,12 +125,12 @@ class ProfilePageBase extends Block<ProfileProps> {
               await this.handleSubmit("changeProfileForm");
 
               this.setProps({ isChangeProfile: false });
-            } catch (e) {
-              console.error(e);
+            } catch (err) {
+              throw new Error(`Не удалось поменять профиль ${err}`);
             }
           }
-        },
-      },
+        }
+      }
     });
 
     this.children.changePasswordForm = new Form({
@@ -139,18 +138,19 @@ class ProfilePageBase extends Block<ProfileProps> {
       title: this.props.data.display_name,
       isPopup: false,
       children: {
-        inputFields: PAGE_FIELDS["changePassword"].map((field) => {
-          return new Field({
-            ...field,
-            required: true,
-            className: "modal",
-          });
-        }),
+        inputFields: PAGE_FIELDS.changePassword.map(
+          (field) =>
+            new Field({
+              ...field,
+              required: true,
+              className: "modal"
+            })
+        ),
         submitButton: new Button({
           label: "Save",
           className: "modal",
-          type: "submit",
-        }),
+          type: "submit"
+        })
       },
       events: {
         submit: async (e: Event) => {
@@ -159,12 +159,12 @@ class ProfilePageBase extends Block<ProfileProps> {
             try {
               await this.handleSubmit("changePasswordForm");
               this.setProps({ isChangePassword: false });
-            } catch (e) {
-              console.error(e);
+            } catch (err) {
+              throw new Error(`Не удалось поменять пароли ${err}`);
             }
           }
-        },
-      },
+        }
+      }
     });
 
     this.children.changeAvatarModal = new Form({
@@ -177,10 +177,10 @@ class ProfilePageBase extends Block<ProfileProps> {
           try {
             await this.handleSubmit("changeAvatarModal");
             this.setProps({ isChangeAvatar: false });
-          } catch (e) {
-            console.error(e);
+          } catch (err) {
+            throw new Error(`Не удалось поменять аватар ${err}`);
           }
-        },
+        }
       },
       children: {
         inputFields: [
@@ -192,24 +192,24 @@ class ProfilePageBase extends Block<ProfileProps> {
             label: "Download image",
             errorText: "You should select the file",
             required: true,
-            regex: /^[A-Za-z]{1,18}\.[A-Za-z]{1,5}$/,
-          }),
+            regex: /^[A-Za-z]{1,18}\.[A-Za-z]{1,5}$/
+          })
         ],
 
         submitButton: new Button({
           label: "Change",
           className: "modal",
-          type: "submit",
+          type: "submit"
         }),
-        links: undefined,
-      },
+        links: undefined
+      }
     });
 
     this.children.sideButton = new Button({
       className: "side-panel",
       label: "",
       type: "button",
-      to: Routes.Chats,
+      to: Routes.Chats
     });
 
     this.children.inviteIdButton = new Button({
@@ -228,17 +228,19 @@ class ProfilePageBase extends Block<ProfileProps> {
               }, 5000);
             })
             .catch((err) => {
-              console.log("Something went wrong with copied id", err);
+              throw new Error("Something went wrong with copied id", err);
             });
-        },
-      },
+        }
+      }
     });
 
-    //Закрытие модального окна при клике на background
+    // Закрытие модального окна при клике на background
     const handleModalClose: (e: Event) => void = (e) => {
       e.preventDefault();
       this.setProps({ isChangeAvatar: false });
-      return (this.children.changeAvatarModal as Form).getContent()?.removeEventListener("click", handleModalClose);
+      return (this.children.changeAvatarModal as Form)
+        .getContent()
+        ?.removeEventListener("click", handleModalClose);
     };
 
     this.children.avatar = new Avatar({
@@ -248,63 +250,69 @@ class ProfilePageBase extends Block<ProfileProps> {
         click: (e) => {
           e.preventDefault();
           this.setProps({ isChangeAvatar: true });
-          (this.children.changeAvatarModal as Form).getContent()?.addEventListener("click", handleModalClose);
-        },
-      },
+          (this.children.changeAvatarModal as Form)
+            .getContent()
+            ?.addEventListener("click", handleModalClose);
+        }
+      }
     });
 
-    (this.children.changeAvatarModal as Form).getContent()?.firstElementChild?.addEventListener("click", (e) => {
-      e.stopPropagation();
-    });
+    (this.children.changeAvatarModal as Form)
+      .getContent()
+      ?.firstElementChild?.addEventListener("click", (e) => {
+        e.stopPropagation();
+      });
   }
 
   handleSubmit = (formName: "changeAvatarModal" | "changePasswordForm" | "changeProfileForm") => {
-    //Находим у соответсвующей формы все её инпуты
+    // Находим у соответсвующей формы все её инпуты
     const inputFields = (this.children[formName] as Form).children.inputFields as Field[];
 
     if (formName === "changeAvatarModal") {
       // Отправка аватара
-      const file = inputFields.map((child) => {
-        return (child as Field).getFile();
-      });
+      const file = inputFields.map((child) => (child as Field).getFile());
       return ProfileController.changeAvatar(file[0]);
-    } else {
-      // Отправка текстовых данных
-      const values = inputFields.map((child) => {
-        return [(child as Field).getName(), (child as Field).getValue()];
-      });
-
-      const valuesObjects = Object.fromEntries(values);
-
-      // Проверяем пароли на совпедение в форме смены пароля
-      if (formName === "changePasswordForm" && valuesObjects.confirm_new_password !== valuesObjects.newPassword) {
-        inputFields
-          .filter((field) => field.props.id === "newPassword" || field.props.id === "confirm_new_password")
-          .forEach((field) => {
-            field.element!.classList.add("error");
-          });
-        alert("Введённые пароли не совпадают");
-        throw new Error("Введённые пароли не совпадают");
-      } else {
-        inputFields
-          .filter((field) => field.props.id === "password" || field.props.id === "confirm_new_password")
-          .forEach((field) => {
-            field.element!.classList.remove("error");
-          });
-      }
-
-      const data = Object.fromEntries(
-        values.filter((keyValue) => {
-          return keyValue[0] !== "confirm_new_password";
-        }),
-      );
-
-      if (formName === "changeProfileForm") {
-        return ProfileController.changeProfile(data as ChangeProfileProps);
-      } else {
-        return ProfileController.changePassword(data as ChangePasswordProps);
-      }
     }
+    // Отправка текстовых данных
+    const values = inputFields.map((child) => [
+      (child as Field).getName(),
+      (child as Field).getValue()
+    ]);
+
+    const valuesObjects = Object.fromEntries(values);
+
+    // Проверяем пароли на совпедение в форме смены пароля
+    if (
+      formName === "changePasswordForm" &&
+      valuesObjects.confirm_new_password !== valuesObjects.newPassword
+    ) {
+      inputFields
+        .filter(
+          (field) => field.props.id === "newPassword" || field.props.id === "confirm_new_password"
+        )
+        .forEach((field) => {
+          field.props.errorText = "Введённые пароли не совпадают";
+          field.element!.classList.add("error");
+        });
+      throw new Error("Введённые пароли не совпадают");
+    } else {
+      inputFields
+        .filter(
+          (field) => field.props.id === "password" || field.props.id === "confirm_new_password"
+        )
+        .forEach((field) => {
+          field.element!.classList.remove("error");
+        });
+    }
+
+    const data = Object.fromEntries(
+      values.filter((keyValue) => keyValue[0] !== "confirm_new_password")
+    );
+
+    if (formName === "changeProfileForm") {
+      return ProfileController.changeProfile(data as ChangeProfileProps);
+    }
+    return ProfileController.changePassword(data as ChangePasswordProps);
   };
 
   protected componentDidUpdate(oldProps: ProfileProps, newProps: ProfileProps): boolean {
@@ -314,7 +322,9 @@ class ProfilePageBase extends Block<ProfileProps> {
       return true;
     }
     if (oldProps.isChangeAvatar !== newProps.isChangeAvatar) {
-      this.setProps({ isChangeAvatar: newProps.isChangeAvatar });
+      this.setProps({ isChangeAvatar: newProps.isChangeAvatar, data: newProps.data });
+      (this.children.avatar as Avatar).setProps({ src: newProps.data.avatar });
+      return true;
     }
     if (
       oldProps.isChangePassword !== newProps.isChangePassword ||
@@ -327,39 +337,38 @@ class ProfilePageBase extends Block<ProfileProps> {
           title: this.props.data.display_name,
           isPopup: false,
           children: {
-            inputFields: PAGE_FIELDS["profile"].map((field) => {
-              return new Field({
-                ...field,
-                className: "profile-page",
-                attributes: [
-                  {
-                    key: "placeholder",
-                    value: () => {
-                      return this.props.data[field.name as keyof User];
+            inputFields: PAGE_FIELDS.profile.map(
+              (field) =>
+                new Field({
+                  ...field,
+                  className: "profile-page",
+                  attributes: [
+                    {
+                      key: "placeholder",
+                      value: () => this.props.data[field.name as keyof User]
                     },
-                  },
-                  { key: "readonly", value: true },
-                ],
-              });
-            }),
+                    { key: "readonly", value: true }
+                  ]
+                })
+            ),
             links: [
               new Link({
                 className: "profile-page",
                 events: {
                   click: () => {
                     this.setProps({ isChangeProfile: true });
-                  },
+                  }
                 },
-                label: "Change profile",
+                label: "Change profile"
               }),
               new Link({
                 className: "profile-page",
                 events: {
                   click: () => {
                     this.setProps({ isChangePassword: true });
-                  },
+                  }
                 },
-                label: "Change password",
+                label: "Change password"
               }),
               new Link({
                 className: "profile-page__link_red profile-page",
@@ -367,16 +376,19 @@ class ProfilePageBase extends Block<ProfileProps> {
                 events: {
                   click: async () => {
                     await AuthController.logout();
-                  },
-                },
-              }),
-            ],
+                  }
+                }
+              })
+            ]
           },
           events: {
-            submit: () => {},
-          },
+            submit: () => {}
+          }
         });
-        this.setProps({ isChangeProfile: newProps.isChangeProfile, isChangePassword: newProps.isChangePassword });
+        this.setProps({
+          isChangeProfile: newProps.isChangeProfile,
+          isChangePassword: newProps.isChangePassword
+        });
         return true;
       }
     }
@@ -391,5 +403,5 @@ class ProfilePageBase extends Block<ProfileProps> {
   }
 }
 
-//@ts-ignore
+// @ts-ignore
 export const ProfilePage = withUser(ProfilePageBase);

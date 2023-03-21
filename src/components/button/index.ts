@@ -1,6 +1,6 @@
-import Router from "../../utils/Router";
-import Block from "../../utils/Block";
 import template from "./button.hbs";
+import Block from "../../utils/Block";
+import Router from "../../utils/Router";
 
 interface ButtonProps {
   label: string;
@@ -17,13 +17,15 @@ export class Button extends Block<ButtonProps> {
     super({
       ...props,
       events: props.events || {
-        click: () => this.navigate(),
-      },
+        click: () => this.navigate()
+      }
     });
   }
 
   navigate() {
-    this.props.to && Router.go(this.props.to);
+    if (this.props.to) {
+      Router.go(this.props.to);
+    }
   }
 
   render() {

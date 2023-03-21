@@ -1,16 +1,16 @@
-import { IChat } from "../../../../utils/Interfaces";
-import Block from "../../../../utils/Block";
 import template from "./friends-container.hbs";
-import { IconsExports } from "../../../../utils/media-exports";
-import { Icon } from "../../../../components/icon";
-import { Field } from "../../../../components/field";
-import { ChatInfo } from "../../../../components/chat-info";
-import PAGE_FIELDS from "../../../../utils/page-fields";
-import { Form } from "../../../../layouts/form";
 import { Button } from "../../../../components/button";
+import { ChatInfo } from "../../../../components/chat-info";
+import { Field } from "../../../../components/field";
+import { Icon } from "../../../../components/icon";
 import chatController from "../../../../controllers/ChatController";
-import { StateProps, withStore } from "../../../../utils/Store";
+import { Form } from "../../../../layouts/form";
+import Block from "../../../../utils/Block";
 import { isEqual } from "../../../../utils/helpers";
+import { IChat } from "../../../../utils/Interfaces";
+import { IconsExports } from "../../../../utils/media-exports";
+import PAGE_FIELDS from "../../../../utils/page-fields";
+import { StateProps, withStore } from "../../../../utils/Store";
 
 interface FriendsContainerProps extends StateProps {
   createChatModalIsOpen?: boolean;
@@ -27,14 +27,143 @@ export class FriendsContainerBase extends Block<FriendsContainerProps> {
     this.children.friends = ([] as Block[]) || [];
     this.children.groups = ([] as Block[]) || [];
 
+    this.children.createChatModal = new Form({
+      className: "modal",
+      isPopup: true,
+      title: "Create new chat",
+      events: {
+        submit: async (e: Event) => {
+          e.preventDefault();
+          const inputFields = (this.children.createChatModal as Form).children
+            .inputFields as Field[];
+          const values = inputFields.map((child) => (child as Field).getValue());
+          await chatController.create(values[0]);
+          this.setProps({ createChatModalIsOpen: false });
+        }
+      },
+      children: {
+        inputFields: PAGE_FIELDS.main.map(
+          (field) =>
+            new Field({
+              ...field,
+              label: "Title",
+              id: "title",
+              name: "title",
+              className: "modal",
+              type: "text",
+              required: false
+            })
+        ),
+        submitButton: new Button({
+          label: "Invite",
+          className: "modal",
+          type: "submit"
+        })
+      }
+    });
+
     chatController.fetchChats().finally(() => {
       this.setProps({
-        chatsIsLoaded: true,
+        chatsIsLoaded: true
       });
     });
 
-    this.props.chats?.forEach((chat: IChat) => {
-      if (!chat.users || chat.users?.length <= 1) {
+    this.generateChats(this.props.chats);
+
+    this.children.searchInput = PAGE_FIELDS.main.map(
+      (field) =>
+        new Field({
+          ...field,
+          id: "search",
+          name: "search",
+          className: "chats-header",
+          type: "text",
+          required: false,
+          label: "Search..."
+        })
+    );
+
+    this.children.searchIcon = new Icon({
+      src: IconsExports.SearchIcon,
+      className: "chats-header",
+      alt: "search",
+      events: {
+        click: () => {
+          // TODO this.children.searchInput SUBMIT
+        }
+      }
+    });
+
+    // Закрытие модального окна при клике на background
+    (this.children.createChatModal as Form)
+      .getContent()
+      ?.firstElementChild?.addEventListener("click", (e) => {
+        e.stopPropagation();
+      });
+
+    const handleModalClose: (e: Event) => void = (e) => {
+      e.preventDefault();
+      this.setProps({ createChatModalIsOpen: false });
+      return (this.children.createChatModal as Form)
+        .getContent()
+        ?.removeEventListener("click", handleModalClose);
+    };
+
+    this.children.userIcon = new Icon({
+      src: IconsExports.UserIcon,
+      className: "chats-header",
+      alt: "add user",
+      events: {
+        click: (e) => {
+          e.preventDefault();
+          this.setProps({ createChatModalIsOpen: true });
+          (this.children.createChatModal as Form)
+            .getContent()
+            ?.addEventListener("click", handleModalClose);
+        }
+      }
+    });
+
+    this.children.groupIcon = new Icon({
+      src: IconsExports.GroupIcon,
+      className: "chats-header",
+      alt: "add group",
+      events: {
+        click: (e) => {
+          e.preventDefault();
+          this.setProps({ createChatModalIsOpen: true });
+          (this.children.createChatModal as Form)
+            .getContent()
+            ?.addEventListener("click", handleModalClose);
+        }
+      }
+    });
+  }
+
+  protected componentDidUpdate(
+    oldProps: FriendsContainerProps,
+    newProps: FriendsContainerProps
+  ): boolean {
+    if (oldProps.createChatModalIsOpen !== newProps.createChatModalIsOpen) {
+      this.setProps({ createChatModalIsOpen: newProps.createChatModalIsOpen });
+      return true;
+    }
+
+    if (!isEqual(oldProps.chats, newProps.chats)) {
+      this.children.friends = [];
+      this.children.groups = [];
+      this.generateChats(newProps.chats);
+      return true;
+    }
+    if (oldProps.chatsIsLoaded !== newProps.chatsIsLoaded) {
+      return true;
+    }
+    return false;
+  }
+
+  generateChats(chats: IChat[]) {
+    chats.forEach((chat) => {
+      if (!chat.users || chat.users.length <= 1) {
         (this.children.friends as any[]).push(
           new ChatInfo({
             ...chat,
@@ -44,13 +173,13 @@ export class FriendsContainerBase extends Block<FriendsContainerProps> {
                   time: new Date(chat.last_message.time).toLocaleString("ru", {
                     hour: "numeric",
                     minute: "numeric",
-                    weekday: "short",
-                  }),
+                    weekday: "short"
+                  })
                 }
               : undefined,
             avatarSrc: chat.avatar,
-            className: "chats-list",
-          }),
+            className: "chats-list"
+          })
         );
       } else if (chat.users.length > 2) {
         (this.children.groups as any[]).push(
@@ -62,180 +191,16 @@ export class FriendsContainerBase extends Block<FriendsContainerProps> {
                   time: new Date(chat.last_message.time).toLocaleString("ru", {
                     hour: "numeric",
                     minute: "numeric",
-                    weekday: "short",
-                  }),
+                    weekday: "short"
+                  })
                 }
               : undefined,
             avatarSrc: chat.avatar,
-            className: "chats-list",
-          }),
+            className: "chats-list"
+          })
         );
       }
     });
-
-    this.children.searchInput = PAGE_FIELDS["main"].map((field) => {
-      return new Field({
-        ...field,
-        id: "search",
-        name: "search",
-        className: "chats-header",
-        type: "text",
-        required: false,
-        label: "Search...",
-      });
-    });
-
-    this.children.searchIcon = new Icon({
-      src: IconsExports.SearchIcon,
-      className: "chats-header",
-      alt: "search",
-      events: {
-        click: () => {
-          //TODO this.children.searchInput SUBMIT
-        },
-      },
-    });
-
-    this.children.userIcon = new Icon({
-      src: IconsExports.UserIcon,
-      className: "chats-header",
-      alt: "add user",
-      events: {
-        click: (e) => {
-          e.preventDefault();
-          this.setProps({ createChatModalIsOpen: true });
-          (this.children.createChatModal as Form).getContent()?.addEventListener("click", handleModalClose);
-        },
-      },
-    });
-
-    this.children.groupIcon = new Icon({
-      src: IconsExports.GroupIcon,
-      className: "chats-header",
-      alt: "add group",
-      events: {
-        click: (e) => {
-          e.preventDefault();
-          this.setProps({ createChatModalIsOpen: true });
-          (this.children.createChatModal as Form).getContent()?.addEventListener("click", handleModalClose);
-        },
-      },
-    });
-
-    this.children.createChatModal = new Form({
-      className: "modal",
-      isPopup: true,
-      title: "Create new chat",
-      events: {
-        submit: async (e: Event) => {
-          e.preventDefault();
-          const inputFields = (this.children.createChatModal as Form).children.inputFields as Field[];
-          const values = inputFields.map((child) => {
-            return (child as Field).getValue();
-          });
-          await chatController.create(values[0]);
-          this.setProps({ createChatModalIsOpen: false });
-        },
-      },
-      children: {
-        inputFields: PAGE_FIELDS["main"].map(
-          (field) =>
-            new Field({
-              ...field,
-              label: "Title",
-              id: "title",
-              name: "title",
-              className: "modal",
-              type: "text",
-              required: false,
-            }),
-        ),
-        submitButton: new Button({
-          label: "Invite",
-          className: "modal",
-          type: "submit",
-        }),
-      },
-    });
-    //Закрытие модального окна при клике на background
-    const handleModalClose: (e: Event) => void = (e) => {
-      e.preventDefault();
-      this.setProps({ createChatModalIsOpen: false });
-      return (this.children.createChatModal as Form).getContent()?.removeEventListener("click", handleModalClose);
-    };
-    (this.children.createChatModal as Form).getContent()?.firstElementChild?.addEventListener("click", (e) => {
-      e.stopPropagation();
-    });
-  }
-
-  protected componentDidUpdate(oldProps: FriendsContainerProps, newProps: FriendsContainerProps): boolean {
-    if (oldProps.createChatModalIsOpen !== newProps.createChatModalIsOpen) {
-      this.setProps({ createChatModalIsOpen: newProps.createChatModalIsOpen });
-      return true;
-    }
-
-    if (!isEqual(oldProps.chats, newProps.chats)) {
-      this.children.friends = [];
-      this.children.groups = [];
-      // const friendsChats = this.props.chats.map((chat) => {
-      //   if (!chat.users || chat.users?.length < 2) {
-      //     return chat;
-      //   }
-      //   return;
-      // });
-      // const groupsChats = this.props.chats.map((chat) => {
-      //   if (chat.users && chat.users?.length > 2) {
-      //     return chat;
-      //   }
-      //   return;
-      // });
-
-      newProps.chats.forEach((chat) => {
-        if (!chat.users || chat.users.length <= 1) {
-          (this.children.friends as any[]).push(
-            new ChatInfo({
-              ...chat,
-              last_message: chat.last_message
-                ? {
-                    ...chat.last_message,
-                    time: new Date(chat.last_message.time).toLocaleString("ru", {
-                      hour: "numeric",
-                      minute: "numeric",
-                      weekday: "short",
-                    }),
-                  }
-                : undefined,
-              avatarSrc: chat.avatar,
-              className: "chats-list",
-            }),
-          );
-        } else if (chat.users.length > 2) {
-          (this.children.groups as any[]).push(
-            new ChatInfo({
-              ...chat,
-              last_message: chat.last_message
-                ? {
-                    ...chat.last_message,
-                    time: new Date(chat.last_message.time).toLocaleString("ru", {
-                      hour: "numeric",
-                      minute: "numeric",
-                      weekday: "short",
-                    }),
-                  }
-                : undefined,
-              avatarSrc: chat.avatar,
-              className: "chats-list",
-            }),
-          );
-        }
-      });
-      this.setProps(newProps);
-      return true;
-    }
-    if (oldProps.chatsIsLoaded !== newProps.chatsIsLoaded) {
-      return true;
-    }
-    return false;
   }
 
   render() {
@@ -243,5 +208,5 @@ export class FriendsContainerBase extends Block<FriendsContainerProps> {
   }
 }
 
-//@ts-ignore
+// @ts-ignore
 export const FriendsContainer = withStore((state) => ({ ...state }))(FriendsContainerBase);

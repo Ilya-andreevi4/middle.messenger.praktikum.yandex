@@ -1,7 +1,7 @@
-import { Routes } from "../../utils/Interfaces";
-import Block from "../../utils/Block";
-import { Link } from "../link";
 import template from "./nav.hbs";
+import Block from "../../utils/Block";
+import { Routes } from "../../utils/Interfaces";
+import { Link } from "../link";
 
 export class Nav extends Block {
   protected init(): void {
@@ -9,13 +9,13 @@ export class Nav extends Block {
       new Link({
         label: "505 Error Page",
         to: Routes.NetworkError,
-        className: "nav",
+        className: "nav"
       }),
       new Link({
         label: "404 Error Page",
         to: Routes.NotFound,
-        className: "nav",
-      }),
+        className: "nav"
+      })
     ];
   }
 

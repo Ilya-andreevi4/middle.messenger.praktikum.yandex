@@ -21,7 +21,11 @@ function render(query: string, block: Block) {
 class Route {
   private block: Block | null = null;
 
-  constructor(private pathname: string, private readonly blockClass: typeof Block, private readonly query: string) {}
+  constructor(
+    private pathname: string,
+    private readonly blockClass: typeof Block,
+    private readonly query: string
+  ) {}
 
   leave() {
     if (this.block) {
@@ -44,18 +48,19 @@ class Route {
 
 class Router {
   private static __instance: Router;
+
   private routes: Route[] = [];
+
   private currentRoute: Route | null = null;
+
   private history = window.history;
 
   constructor(private readonly rootQuery: string) {
-    if (Router.__instance) {
-      return Router.__instance;
+    if (!Router.__instance) {
+      this.routes = [];
+      Router.__instance = this;
     }
-
-    this.routes = [];
-
-    Router.__instance = this;
+    return Router.__instance;
   }
 
   public use(pathname: string, block: typeof Block) {

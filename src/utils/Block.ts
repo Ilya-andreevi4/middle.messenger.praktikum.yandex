@@ -1,5 +1,5 @@
-import { EventBus } from "./EventBus";
 import { nanoid } from "nanoid";
+import { EventBus } from "./EventBus";
 
 type Props<P extends Record<string, unknown> = any> = {
   events?: Record<string, (...args: any) => void>;
@@ -10,12 +10,17 @@ class Block<P extends Record<string, any> = any> {
     INIT: "init",
     FLOW_CDM: "flow:component-did-mount",
     FLOW_CDU: "flow:component-did-update",
-    FLOW_RENDER: "flow:render",
+    FLOW_RENDER: "flow:render"
   } as const;
+
   public id = nanoid(8);
+
   props: Props<P>;
+
   public children: Record<string, Block | Block[]>;
+
   private eventBus: () => EventBus;
+
   private _element: HTMLElement | null = null;
 
   /** JSDoc
@@ -205,7 +210,7 @@ class Block<P extends Record<string, any> = any> {
       },
       deleteProperty() {
         throw new Error("Нет доступа");
-      },
+      }
     });
   }
 

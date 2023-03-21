@@ -1,5 +1,5 @@
-import { IChat, IUser } from "../utils/Interfaces";
 import BaseAPI from "./BaseAPI";
+import { IChat, IUser } from "../utils/Interfaces";
 
 export class ChatsAPI extends BaseAPI {
   constructor() {

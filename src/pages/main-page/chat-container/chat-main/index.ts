@@ -1,9 +1,9 @@
-import { withStore } from "../../../../utils/Store";
+import template from "./chat-main.hbs";
 import { Message } from "../../../../components/message";
 import Block from "../../../../utils/Block";
-import template from "./chat-main.hbs";
-import { IChat, IMessage } from "../../../../utils/Interfaces";
 import { isEqual } from "../../../../utils/helpers";
+import { IChat, IMessage } from "../../../../utils/Interfaces";
+import { withStore } from "../../../../utils/Store";
 
 interface ChatMainProps {
   selectedChatId: number | undefined;
@@ -19,7 +19,7 @@ export class ChatMainBase extends Block<ChatMainProps> {
   }
 
   init() {
-    this.props.isActive = this.props.selectedChatId ? true : false;
+    this.props.isActive = !!this.props.selectedChatId;
 
     if (this.props.selectedChatId) {
       const currentMessages = this.props.messages;
@@ -36,12 +36,16 @@ export class ChatMainBase extends Block<ChatMainProps> {
                 ? "You"
                 : `${currentUser?.first_name} ${currentUser?.second_name}` || "User Name",
             text: message.content,
-            time: new Date(message.time).toLocaleString("ru", { hour: "numeric", minute: "numeric", weekday: "short" }),
+            time: new Date(message.time).toLocaleString("ru", {
+              hour: "numeric",
+              minute: "numeric",
+              weekday: "short"
+            }),
             file: message.file ? message.file.path : undefined,
             my: message.user_id === this.props.userId,
             events: {
-              click: () => {},
-            },
+              click: () => {}
+            }
           });
         });
       }
@@ -65,12 +69,16 @@ export class ChatMainBase extends Block<ChatMainProps> {
                 ? `${currentUser?.first_name} ${currentUser?.second_name}`
                 : `User ${message.user_id}`,
             text: message.content,
-            time: new Date(message.time).toLocaleString("ru", { hour: "numeric", minute: "numeric", weekday: "short" }),
+            time: new Date(message.time).toLocaleString("ru", {
+              hour: "numeric",
+              minute: "numeric",
+              weekday: "short"
+            }),
             file: message.file ? message.file.path : undefined,
             my: message.user_id === this.props.userId,
             events: {
-              click: () => {},
-            },
+              click: () => {}
+            }
           });
         });
         return true;
@@ -94,25 +102,25 @@ export class ChatMainBase extends Block<ChatMainProps> {
             time: new Date(message.time).toLocaleString("ru", {
               hour: "numeric",
               minute: "numeric",
-              weekday: "short",
+              weekday: "short"
             }),
             file: message.file ? message.file.path : undefined,
             my: message.user_id === this.props.userId,
             events: {
-              click: () => {},
-            },
+              click: () => {}
+            }
           });
         });
       } else {
         this.children.messages = [];
       }
       this.setProps({
-        isActive: newProps.selectedChatId && newProps.selectedChatId >= 0 ? true : false,
+        isActive: !!(newProps.selectedChatId && newProps.selectedChatId >= 0),
         selectedChat: newProps.selectedChat,
         messages: newProps.messages,
         userId: newProps.userId,
         selectedChatId: newProps.selectedChatId,
-        chats: newProps.chats,
+        chats: newProps.chats
       });
       return true;
     }
@@ -133,7 +141,7 @@ const withSelectedChatMessages = withStore((state) => {
       selectedChatId: undefined,
       userId: state.user.data?.id,
       selectedChat: undefined,
-      chats: state.chats,
+      chats: state.chats
     };
   }
 
@@ -142,9 +150,9 @@ const withSelectedChatMessages = withStore((state) => {
     selectedChatId: state.selectedChatId,
     userId: state.user.data?.id,
     selectedChat: state.chats.find((chat) => chat.id === chatId),
-    chats: state.chats,
+    chats: state.chats
   };
 });
 
-//@ts-ignore
+// @ts-ignore
 export const ChatMain = withSelectedChatMessages(ChatMainBase);

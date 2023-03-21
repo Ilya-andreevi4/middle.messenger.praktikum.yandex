@@ -6,7 +6,7 @@ enum ROUTES_NAMES {
   registration = "registration",
   profile = "profile",
   changeProfile = "changeProfile",
-  changePassword = "changePassword",
+  changePassword = "changePassword"
 }
 
 export default ROUTES_NAMES;

@@ -1,12 +1,13 @@
-import Block from "../../../utils/Block";
+import template from "./chat-container.hbs";
 import { ChatHeader } from "./chat-header";
 import { ChatMain } from "./chat-main";
+import { Field } from "../../../components/field";
 import { MessageInputForm } from "../../../components/message-input-form";
-import template from "./chat-container.hbs";
+import chatController from "../../../controllers/ChatController";
+import MessagesController from "../../../controllers/MessagesController";
+import Block from "../../../utils/Block";
 import { IChat } from "../../../utils/Interfaces";
 import { StateProps, withStore } from "../../../utils/Store";
-import { Field } from "../../../components/field";
-import MessagesController from "../../../controllers/MessagesController";
 
 interface ChatContainerProps extends StateProps {
   isActive: boolean;
@@ -20,7 +21,7 @@ export class ChatContainerBase extends Block<ChatContainerProps> {
 
   init() {
     this.props.activeChat = this.props.chats.find((chat) => chat.id === this.props.selectedChatId);
-    this.props.isActive = this.props.activeChat ? true : false;
+    this.props.isActive = !!this.props.activeChat;
 
     this.children.chatHeader = new ChatHeader({});
 
@@ -29,17 +30,22 @@ export class ChatContainerBase extends Block<ChatContainerProps> {
     this.children.messageForm = new MessageInputForm({
       ...this.props,
       events: {
-        submit: (e: Event) => {
+        submit: async (e: Event) => {
           e.preventDefault();
           if (!this.props.selectedChatId) {
             throw new Error("Select some chat.");
           }
+
           const input = (this.children.messageForm as Block).children.messageInput as Field;
-          const message = input.getValue();
-          input.setValue("");
-          MessagesController.sendMessage(this.props.selectedChatId, message);
-        },
-      },
+          input.isValid();
+          if (input.isValid()) {
+            const message = input.getValue();
+            input.setValue("");
+            await MessagesController.sendMessage(this.props.selectedChatId, message);
+            await chatController.fetchChats();
+          }
+        }
+      }
     });
   }
 
@@ -48,5 +54,5 @@ export class ChatContainerBase extends Block<ChatContainerProps> {
   }
 }
 
-//@ts-ignore
+// @ts-ignore
 export const ChatContainer = withStore((state) => ({ ...state }))(ChatContainerBase);

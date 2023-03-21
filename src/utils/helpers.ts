@@ -3,7 +3,7 @@ export type Indexed<T = any> = {
 };
 
 export function merge(lhs: Indexed, rhs: Indexed): Indexed {
-  for (let p in rhs) {
+  for (const p in rhs) {
     if (!rhs.hasOwnProperty(p)) {
       continue;
     }
@@ -29,9 +29,9 @@ export function set(object: Indexed | unknown, path: string, value: unknown): In
   }
   const result = path.split(".").reduceRight<Indexed>(
     (acc, key) => ({
-      [key]: acc,
+      [key]: acc
     }),
-    value as any,
+    value as any
   );
   return merge(object as Indexed, result);
 }
@@ -60,10 +60,9 @@ export function isEqual(lhs: Indexed, rhs: Indexed) {
   for (const [key, value] of Object.entries(lhs)) {
     const rightValue = rhs[key];
     if (isArrayOrObject(value) && isArrayOrObject(rightValue)) {
-      if (isEqual(value, rightValue)) {
-        continue;
+      if (!isEqual(value, rightValue)) {
+        return false;
       }
-      return false;
     }
     if (value !== rightValue) {
       return false;
@@ -79,19 +78,3 @@ export const handleSliceText = (content: string, maxSize: number): string => {
   }
   return sliced;
 };
-
-// export const handleStopPropagation: (e: Event) => void = (e) => {
-//   e.stopPropagation();
-// };
-
-// export function handleClose(block: Block, props: Record<string, boolean>, childBlock: Block | Block[]): any {
-//   block.setProps(props);
-//   return (
-//     window.removeEventListener("mousedown", handleClose(block, props, childBlock)),
-//     Array.isArray(childBlock)
-//       ? childBlock.forEach((child) =>
-//           child.getContent()?.removeEventListener("mousedown", handleClose(block, props, childBlock)),
-//         )
-//       : childBlock.getContent()?.removeEventListener("mousedown", handleStopPropagation)
-//   );
-// }

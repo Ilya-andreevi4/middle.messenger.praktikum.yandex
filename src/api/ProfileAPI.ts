@@ -1,5 +1,5 @@
-import { User, ChangeProfileProps, ChangePasswordProps } from "../utils/Interfaces";
 import BaseAPI from "./BaseAPI";
+import { User, ChangeProfileProps, ChangePasswordProps } from "../utils/Interfaces";
 
 export class ProfileAPI extends BaseAPI {
   constructor() {
@@ -23,7 +23,9 @@ export class ProfileAPI extends BaseAPI {
   }
 
   update = undefined;
+
   create = undefined;
+
   delete = undefined;
 }
 

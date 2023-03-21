@@ -1,7 +1,7 @@
+import template from "./form.hbs";
 import { Button } from "../../components/button";
 import { Field } from "../../components/field";
 import Block from "../../utils/Block";
-import template from "./form.hbs";
 
 interface FormProps {
   title?: string;
@@ -17,9 +17,9 @@ interface FormProps {
   };
 }
 export class Form extends Block<FormProps> {
-  constructor(props: FormProps) {
-    super(props);
-  }
+  // constructor(props: FormProps) {
+  //   super(props);
+  // }
 
   protected init(): void {
     if (this.props.children?.submitButton) {

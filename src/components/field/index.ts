@@ -1,5 +1,5 @@
-import Block from "../../utils/Block";
 import template from "./field.hbs";
+import Block from "../../utils/Block";
 import { Input } from "../input";
 
 interface Attribute {
@@ -35,8 +35,8 @@ export class Field extends Block<FieldProps> {
       events: {
         blur: () => {
           this.isValid();
-        },
-      },
+        }
+      }
     });
   }
 

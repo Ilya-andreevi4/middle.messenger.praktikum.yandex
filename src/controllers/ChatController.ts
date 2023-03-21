@@ -1,7 +1,7 @@
 import { AddUserToChat, IChat } from "src/utils/Interfaces";
+import MessagesController from "./MessagesController";
 import API, { ChatsAPI } from "../api/ChatsAPI";
 import store from "../utils/Store";
-import MessagesController from "./MessagesController";
 
 class ChatsController {
   private readonly api: ChatsAPI;
@@ -18,20 +18,45 @@ class ChatsController {
 
   async fetchChats() {
     store.set("user.isLoading", true);
-    const chats = await this.api.read();
+    try {
+      const chats = await this.api.read();
+      chats.map(async (chat: IChat) => {
+        if (chat.avatar) {
+          chat.avatar = `https://ya-praktikum.tech/api/v2/resources${chat.avatar}`;
+        }
+        const token = await this.getToken(chat.id);
+        await MessagesController.connect(chat.id, token);
+      });
+      store.set("chats", chats);
+      await Promise.all(
+        chats.map(async (chat: IChat) => {
+          await this.fetchChatUsers(chat.id);
+        })
+      );
+      store.set("user.isLoading", false);
+    } catch (err) {
+      store.set("user.isLoading", false);
+      throw new Error(`Ошибка при запросе к чатам ${err}`);
+    }
+  }
 
-    chats.map(async (chat: IChat) => {
-      if (chat.avatar) {
-        chat.avatar = `https://ya-praktikum.tech/api/v2/resources${chat.avatar}`;
-      }
-      const token = await this.getToken(chat.id);
-      await MessagesController.connect(chat.id, token);
-    });
-    store.set("chats", chats);
-    chats.forEach((chat: IChat) => {
-      this.fetchChatUsers(chat.id);
-    });
-    store.set("user.isLoading", false);
+  async fetchChatUsers(id: number) {
+    store.set("user.isLoading", true);
+    try {
+      await this.api.getUsers(id).then((users) => {
+        const currentChats = store.getState().chats.map((chat) => {
+          if (chat.id === id) {
+            chat.users = users;
+          }
+          return chat;
+        });
+        store.set("chats", currentChats);
+        store.set("user.isLoading", false);
+      });
+    } catch (err) {
+      store.set("user.isLoading", false);
+      throw new Error(`error with add user ${err}`);
+    }
   }
 
   async addUserToChat(data: AddUserToChat) {
@@ -54,32 +79,11 @@ class ChatsController {
     try {
       await this.api.changeChatAvatar(fileData);
       await this.fetchChats();
-      console.log("chat avatar changed success!");
     } catch (err) {
       store.set("user.isLoading", false);
       throw new Error(`error with add user ${err}`);
     }
     store.set("user.isLoading", false);
-  }
-
-  async fetchChatUsers(id: number) {
-    store.set("user.isLoading", true);
-    try {
-      await this.api.getUsers(id).then((users) => {
-        const currentChats = store.getState().chats.map((chat) => {
-          if (chat.id === id) {
-            chat.users = users;
-          }
-          return chat;
-        });
-
-        store.set("chats", currentChats);
-        store.set("user.isLoading", false);
-      });
-    } catch (err) {
-      store.set("user.isLoading", false);
-      throw new Error(`error with add user ${err}`);
-    }
   }
 
   async delete(id: number) {
@@ -92,12 +96,12 @@ class ChatsController {
     store.set("user.isLoading", true);
     try {
       await this.api.deleteUserFromChat(data.chatId, data.users);
-      await this.fetchChats();
+      await this.fetchChatUsers(data.chatId);
+      store.set("user.isLoading", false);
     } catch (err) {
       store.set("user.isLoading", false);
       throw new Error(`error with add user ${err}`);
     }
-    store.set("user.isLoading", false);
   }
 
   getToken(id: number) {

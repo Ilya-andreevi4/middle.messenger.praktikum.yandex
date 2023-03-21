@@ -1,7 +1,7 @@
-import Block from "../../utils/Block";
 import template from "./message.hbs";
-import { Icon } from "../icon";
+import Block from "../../utils/Block";
 import { IconsExports } from "../../utils/media-exports";
+import { Icon } from "../icon";
 
 interface MessageProps {
   from: string;
@@ -26,16 +26,16 @@ export class Message extends Block<MessageProps> {
       src: IconsExports.ArrowDownIcon,
       alt: "arrow",
       events: {
-        click: () => {},
-      },
+        click: () => {}
+      }
     });
     this.children.icon = new Icon({
       src: IconsExports.MailIcon,
       alt: "opened",
       className: "message",
       events: {
-        click: () => {},
-      },
+        click: () => {}
+      }
     });
   }
 

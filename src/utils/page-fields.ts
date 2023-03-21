@@ -1,4 +1,5 @@
 import NamePages from "./routes";
+
 const { main, login, profile, registration, changePassword, changeProfile } = NamePages;
 
 const REGULAR_EXPRESSON = {
@@ -6,9 +7,9 @@ const REGULAR_EXPRESSON = {
   LOGIN: /^[A-Za-z0-9\-_]{2,16}$/,
   ID: /^[\d]{2,16}$/,
   NAME: /^[A-ZА-Я]{1}[a-zа-я\-ъ]+$/,
-  PHONE: /^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/,
-  PASSWORD: /^(?=.*[a-zа-я])(?=.*[A-ZА-Я])(?=.*\d)[A-Za-zА-Яа-я\d@$!%*?&_\-]{6,}$/,
-  MESSAGE: /^[\w\W]*$/,
+  PHONE: /^(\+7|7|8)?[\s-]?\(?[489][0-9]{2}\)?[\s-]?[0-9]{3}[\s-]?[0-9]{2}[\s-]?[0-9]{2}$/,
+  PASSWORD: /^(?=.*[a-zа-я])(?=.*[A-ZА-Я])(?=.*\d)[A-Za-zА-Яа-я\d@$!%*?&_-]{6,}$/,
+  MESSAGE: /^[\w\W]{1,}$/
 };
 
 const REGEX_ERRORS = {
@@ -18,7 +19,7 @@ const REGEX_ERRORS = {
   NAME: "Первая буква- заглавная остальные строчные. Допускаются только буквы.",
   PHONE: "Введите корректный номер телефона",
   PASSWORD: "Минимум 6 символов. Введите хотя бы одну заглавную букву, одну строчную букву и цифру",
-  MESSAGE: "Это поле не должно быть пустым...",
+  MESSAGE: "Это поле не должно быть пустым..."
 };
 
 const MESSAGE = {
@@ -27,7 +28,7 @@ const MESSAGE = {
   type: "message",
   name: "message",
   regex: REGULAR_EXPRESSON.MESSAGE,
-  errorText: REGEX_ERRORS.MESSAGE,
+  errorText: REGEX_ERRORS.MESSAGE
 };
 
 const EMAIL = {
@@ -36,7 +37,7 @@ const EMAIL = {
   type: "email",
   name: "email",
   regex: REGULAR_EXPRESSON.EMAIL,
-  errorText: REGEX_ERRORS.EMAIL,
+  errorText: REGEX_ERRORS.EMAIL
 };
 
 const ID = {
@@ -45,7 +46,7 @@ const ID = {
   type: "text",
   name: "id",
   regex: REGULAR_EXPRESSON.ID,
-  errorText: REGEX_ERRORS.ID,
+  errorText: REGEX_ERRORS.ID
 };
 
 const LOGIN = {
@@ -54,7 +55,7 @@ const LOGIN = {
   type: "text",
   name: "login",
   regex: REGULAR_EXPRESSON.LOGIN,
-  errorText: REGEX_ERRORS.LOGIN,
+  errorText: REGEX_ERRORS.LOGIN
 };
 
 const DISPLAY_NAME = {
@@ -63,7 +64,7 @@ const DISPLAY_NAME = {
   type: "text",
   name: "display_name",
   regex: REGULAR_EXPRESSON.LOGIN,
-  errorText: REGEX_ERRORS.LOGIN,
+  errorText: REGEX_ERRORS.LOGIN
 };
 
 const FIRST_NAME = {
@@ -72,7 +73,7 @@ const FIRST_NAME = {
   label: "First Name",
   name: "first_name",
   regex: REGULAR_EXPRESSON.NAME,
-  errorText: REGEX_ERRORS.NAME,
+  errorText: REGEX_ERRORS.NAME
 };
 
 const SECOND_NAME = {
@@ -81,7 +82,7 @@ const SECOND_NAME = {
   label: "Second Name",
   name: "second_name",
   regex: REGULAR_EXPRESSON.NAME,
-  errorText: REGEX_ERRORS.NAME,
+  errorText: REGEX_ERRORS.NAME
 };
 
 const PHONE = {
@@ -90,7 +91,7 @@ const PHONE = {
   label: "Phone",
   name: "phone",
   regex: REGULAR_EXPRESSON.PHONE,
-  errorText: REGEX_ERRORS.PHONE,
+  errorText: REGEX_ERRORS.PHONE
 };
 
 const PASSWORD = {
@@ -99,7 +100,7 @@ const PASSWORD = {
   label: "Password",
   name: "password",
   regex: REGULAR_EXPRESSON.PASSWORD,
-  errorText: REGEX_ERRORS.PASSWORD,
+  errorText: REGEX_ERRORS.PASSWORD
 };
 
 const OLD_PASSWORD = {
@@ -108,7 +109,7 @@ const OLD_PASSWORD = {
   label: "Old password",
   name: "oldPassword",
   regex: REGULAR_EXPRESSON.PASSWORD,
-  errorText: REGEX_ERRORS.PASSWORD,
+  errorText: REGEX_ERRORS.PASSWORD
 };
 
 const NEW_PASSWORD = {
@@ -117,7 +118,7 @@ const NEW_PASSWORD = {
   label: "New password",
   name: "newPassword",
   regex: REGULAR_EXPRESSON.PASSWORD,
-  errorText: REGEX_ERRORS.PASSWORD,
+  errorText: REGEX_ERRORS.PASSWORD
 };
 
 const REPEAT_PASSWORD = {
@@ -126,7 +127,7 @@ const REPEAT_PASSWORD = {
   label: "Repeate new password",
   name: "confirm_new_password",
   regex: REGULAR_EXPRESSON.PASSWORD,
-  errorText: REGEX_ERRORS.PASSWORD,
+  errorText: REGEX_ERRORS.PASSWORD
 };
 
 const PAGE_FIELDS = {
@@ -136,7 +137,7 @@ const PAGE_FIELDS = {
   [registration]: [FIRST_NAME, SECOND_NAME, LOGIN, EMAIL, PHONE, PASSWORD, REPEAT_PASSWORD],
   [profile]: [EMAIL, LOGIN, DISPLAY_NAME, FIRST_NAME, SECOND_NAME, PHONE],
   [changePassword]: [OLD_PASSWORD, NEW_PASSWORD, REPEAT_PASSWORD],
-  [changeProfile]: [EMAIL, LOGIN, DISPLAY_NAME, FIRST_NAME, SECOND_NAME, PHONE],
+  [changeProfile]: [EMAIL, LOGIN, DISPLAY_NAME, FIRST_NAME, SECOND_NAME, PHONE]
 };
 
 export default PAGE_FIELDS;

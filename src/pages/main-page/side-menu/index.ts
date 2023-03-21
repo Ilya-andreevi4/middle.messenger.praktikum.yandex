@@ -1,10 +1,10 @@
-import Block from "../../../utils/Block";
 import { FriendsContainer } from "./friends-container";
 import { ProfileBlock } from "./profile-block";
 import template from "./side-menu.hbs";
-import { withUser } from "../../../utils/Store";
-import { User } from "../../../utils/Interfaces";
+import Block from "../../../utils/Block";
 import { isEqual } from "../../../utils/helpers";
+import { User } from "../../../utils/Interfaces";
+import { withUser } from "../../../utils/Store";
 
 interface SideMenuProps {
   data: User;
@@ -22,7 +22,7 @@ class SideMenuBase extends Block<SideMenuProps> {
     this.children.profileBlock = new ProfileBlock({
       avatarSrc: this.props.data.avatar,
       userName: `${this.props.data.first_name} ${this.props.data.second_name}`,
-      userStatus: "online",
+      userStatus: "online"
     });
     this.children.friendsContainer = new FriendsContainer({});
   }
@@ -39,5 +39,5 @@ class SideMenuBase extends Block<SideMenuProps> {
     return this.compile(template, this.props);
   }
 }
-//@ts-ignore
+// @ts-ignore
 export const SideMenu = withUser(SideMenuBase);

@@ -1,5 +1,5 @@
-import Block from "../../utils/Block";
 import template from "./avatar.hbs";
+import Block from "../../utils/Block";
 import { AvatarsExports } from "../../utils/media-exports";
 
 interface AvatarProps {
@@ -19,14 +19,6 @@ export class Avatar extends Block<AvatarProps> {
     if (!this.props.src) {
       this.props.src = AvatarsExports.AvatarBox;
     }
-  }
-
-  protected componentDidUpdate(oldProps: AvatarProps, newProps: AvatarProps): boolean {
-    if (oldProps.src !== newProps.src) {
-      this.setProps({ src: newProps.src });
-      return true;
-    }
-    return false;
   }
 
   render() {

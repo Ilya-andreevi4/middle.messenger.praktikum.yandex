@@ -18,22 +18,25 @@ window.addEventListener("DOMContentLoaded", async () => {
     .use(Routes.NotFound, NotFoundPage)
     .use(Routes.NetworkError, ErrorPage);
 
+  const path = window.location.pathname;
+
   let isProtectedRoute = true;
 
-  switch (window.location.pathname) {
+  switch (path) {
     case Routes.Index:
     case Routes.Registation:
       isProtectedRoute = false;
       break;
   }
-
   try {
     await AuthController.fetchUser();
     await chatController.fetchChats();
     Router.start();
-
     if (store.getState().user.data) {
-      Router.go(Routes.Chats);
+      if (!isProtectedRoute) {
+        Router.go(Routes.Chats);
+      }
+      Router.go(path);
     } else {
       Router.go(Routes.Index);
     }
@@ -41,7 +44,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     Router.start();
 
     if (isProtectedRoute) {
-      Router.go(window.location.pathname);
+      Router.go(Routes.Index);
     }
   }
 });

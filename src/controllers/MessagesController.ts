@@ -1,7 +1,7 @@
-import WSTransport, { WSTransportEvents } from "../utils/WSTransport";
-import store from "../utils/Store";
-import { IMessage } from "../utils/Interfaces";
 import chatController from "./ChatController";
+import { IMessage } from "../utils/Interfaces";
+import store from "../utils/Store";
+import WSTransport, { WSTransportEvents } from "../utils/WSTransport";
 
 class MessagesControllerBase {
   private sockets: Map<number, WSTransport> = new Map();
@@ -13,7 +13,9 @@ class MessagesControllerBase {
 
     const userId = store.getState().user.data?.id;
 
-    const wsTransport = new WSTransport(`wss://ya-praktikum.tech/ws/chats/${userId}/${id}/${token}`);
+    const wsTransport = new WSTransport(
+      `wss://ya-praktikum.tech/ws/chats/${userId}/${id}/${token}`
+    );
 
     this.sockets.set(id, wsTransport);
 
@@ -28,7 +30,7 @@ class MessagesControllerBase {
 
     socket.send({
       type: "message",
-      content: message,
+      content: message
     });
   }
 

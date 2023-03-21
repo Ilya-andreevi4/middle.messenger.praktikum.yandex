@@ -1,5 +1,5 @@
-import Block from "../../utils/Block";
 import template from "./input.hbs";
+import Block from "../../utils/Block";
 
 interface InputProps {
   id: string;
@@ -28,7 +28,7 @@ export class Input extends Block<InputProps> {
   }
 
   setValue(newValue: string) {
-    return ((this.element as HTMLInputElement).value = newValue);
+    (this.element as HTMLInputElement).value = newValue;
   }
 
   getFile() {

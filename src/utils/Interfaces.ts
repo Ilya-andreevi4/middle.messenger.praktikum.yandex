@@ -27,7 +27,7 @@ export interface IChat extends JsonObject {
   last_message?: ILastMessage;
   isActive?: boolean;
   unread_count?: number;
-  status?: userStatus; //TODO лишнее
+  status?: userStatus; // TODO лишнее
   isGroup?: boolean;
   users?: (IUser & { role: string })[];
 }
@@ -51,11 +51,11 @@ export interface IMessage {
 
 export const enum Routes {
   Index = "/",
-  Chats = "/chats",
+  Chats = "/messenger",
   NotFound = "/404",
   NetworkError = "/505",
-  Registation = "/reg",
-  Profile = "/profile",
+  Registation = "/sign-up",
+  Profile = "/settings"
 }
 
 export interface SigninData extends JsonObject {

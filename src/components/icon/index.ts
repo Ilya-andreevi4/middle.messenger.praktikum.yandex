@@ -1,5 +1,5 @@
-import Block from "../../utils/Block";
 import template from "./icon.hbs";
+import Block from "../../utils/Block";
 
 interface IconProps {
   src: string;

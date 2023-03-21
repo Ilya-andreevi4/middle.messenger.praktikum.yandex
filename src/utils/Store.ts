@@ -1,6 +1,6 @@
-import { set } from "./helpers";
-import { EventBus } from "./EventBus";
 import Block from "./Block";
+import { EventBus } from "./EventBus";
+import { set } from "./helpers";
 import { IChat, IMessage, User } from "./Interfaces";
 
 export interface UserStateProps {
@@ -17,13 +17,13 @@ export interface StateProps {
 }
 
 export enum StoreEvents {
-  Updated = "updated",
+  Updated = "updated"
 }
 
 export class Store extends EventBus {
   private state: StateProps = {
     user: {},
-    chats: [],
+    chats: []
   };
 
   public set(keypath: string, data: unknown) {

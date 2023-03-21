@@ -5,7 +5,7 @@ enum METHODS {
   PUT = "PUT",
   POST = "POST",
   DELETE = "DELETE",
-  PATCH = "PATCH",
+  PATCH = "PATCH"
 }
 
 type Options = {
@@ -23,7 +23,8 @@ type Options = {
 //   let res: string[] = [];
 //   data.forEach((p: string) => {
 //     const key = prefix ? `${prefix}[${p}]` : p;
-//     const value = data[key] === null || data[key] === undefined || Number.isNaN(data[key]) ? "" : data[key];
+//     const value = data[key] === null || data[key] === undefined
+// || Number.isNaN(data[key]) ? "" : data[key];
 //     res.push(
 //       typeof value === "object"
 //         ? queryStringify(value, key)
@@ -35,6 +36,7 @@ type Options = {
 
 export default class HTTPTransport {
   static API_URL = "https://ya-praktikum.tech/api/v2";
+
   protected endpoint: string;
 
   constructor(endpoint: string) {
@@ -42,7 +44,7 @@ export default class HTTPTransport {
   }
 
   public get<Response>(path = "/", id?: number): Promise<Response> {
-    const currentPath = id && path !== "/" ? path + `/${id}` : path;
+    const currentPath = id && path !== "/" ? `${path}/${id}` : path;
 
     return this.request(this.endpoint + currentPath, { method: METHODS.GET });
   }
@@ -63,11 +65,14 @@ export default class HTTPTransport {
     return this.request(this.endpoint + path, { method: METHODS.DELETE, data });
   }
 
-  private request<Response>(url: string, options: Options = { method: METHODS.GET }): Promise<Response> {
+  private request<Response>(
+    url: string,
+    options: Options = { method: METHODS.GET }
+  ): Promise<Response> {
     const { headers, method = METHODS.GET, timeout = 5000, data } = options;
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
-      xhr.open(method ? method : METHODS.GET, url);
+      xhr.open(method || METHODS.GET, url);
 
       xhr.onreadystatechange = () => {
         if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -111,7 +116,11 @@ type FetchWithRetriyOptions = Options & {
   retries: number;
 };
 
-export function fetchWithRetry(endpoint: string, url: string, options: FetchWithRetriyOptions): Promise<any> {
+export function fetchWithRetry(
+  endpoint: string,
+  url: string,
+  options: FetchWithRetriyOptions
+): Promise<any> {
   const { retries = 5, ...fetchOptions } = options;
 
   function onError(e: any) {
@@ -120,19 +129,21 @@ export function fetchWithRetry(endpoint: string, url: string, options: FetchWith
     }
     return fetchWithRetry(endpoint, url, {
       ...fetchOptions,
-      ...{ retries: retries - 1 },
+      ...{ retries: retries - 1 }
     });
   }
   const currentMethod = options.method?.toLowerCase() || "get";
   if (currentMethod === "post") {
     return new HTTPTransport(endpoint).post(url, fetchOptions.data).catch((e) => onError(e));
-  } else if (currentMethod === "delete") {
-    return new HTTPTransport(endpoint).delete(url).catch((e) => onError(e));
-  } else if (currentMethod === "put") {
-    return new HTTPTransport(endpoint).put(url, fetchOptions.data).catch((e) => onError(e));
-  } else if (currentMethod === "patch") {
-    return new HTTPTransport(endpoint).patch(url, fetchOptions.data).catch((e) => onError(e));
-  } else {
-    return new HTTPTransport(endpoint).get(url, fetchOptions.id).catch((e) => onError(e));
   }
+  if (currentMethod === "delete") {
+    return new HTTPTransport(endpoint).delete(url).catch((e) => onError(e));
+  }
+  if (currentMethod === "put") {
+    return new HTTPTransport(endpoint).put(url, fetchOptions.data).catch((e) => onError(e));
+  }
+  if (currentMethod === "patch") {
+    return new HTTPTransport(endpoint).patch(url, fetchOptions.data).catch((e) => onError(e));
+  }
+  return new HTTPTransport(endpoint).get(url, fetchOptions.id).catch((e) => onError(e));
 }

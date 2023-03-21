@@ -1,9 +1,9 @@
-import { Button } from "../../components/button";
-import { PopupFormAddFiles } from "../add-files-popup";
-import { Field } from "../../components/field";
-import Block from "../../utils/Block";
 import template from "./message-input-form.hbs";
+import Block from "../../utils/Block";
 import { withSelectedChatId } from "../../utils/Store";
+import { PopupFormAddFiles } from "../add-files-popup";
+import { Button } from "../button";
+import { Field } from "../field";
 
 interface MessageInputFormProps {
   selectedChatId: number | undefined;
@@ -29,35 +29,38 @@ class MessageInputFormBase extends Block<MessageInputFormProps> {
     }
 
     this.children.messageInput = new Field({
+      errorText: "Write something...",
       id: "message",
-      regex: /^[\w\W]*$/,
+      regex: /^[\w\W]{1,}$/,
       type: "text",
-      className: "message",
+      className: "message-input-chat message",
       label: "Message...",
       name: "message",
-      required: false,
+      required: true
     });
 
     this.children.sendButton = new Button({
       className: "send message-input-form",
       type: "submit",
-      label: "",
+      label: ""
     });
 
     this.children.popupFormAddFiles = new PopupFormAddFiles({
-      className: "popper-add-files",
+      className: "popper-add-files"
     });
 
-    //Закрытие popup при клике на background
+    // Закрытие popup при клике на background
     const handleModalClose: (e: Event) => void = (e) => {
       e.preventDefault();
       this.setProps({ popIsOpen: false });
       return window.removeEventListener("mousedown", handleModalClose);
     };
 
-    (this.children.popupFormAddFiles as PopupFormAddFiles).getContent()?.addEventListener("mousedown", (e) => {
-      e.stopPropagation();
-    });
+    (this.children.popupFormAddFiles as PopupFormAddFiles)
+      .getContent()
+      ?.addEventListener("mousedown", (e) => {
+        e.stopPropagation();
+      });
 
     this.children.attachButton = new Button({
       className: "attachment message-input-form",
@@ -68,8 +71,8 @@ class MessageInputFormBase extends Block<MessageInputFormProps> {
           e.preventDefault();
           this.setProps({ popIsOpen: !this.props.popIsOpen });
           window.addEventListener("mousedown", handleModalClose);
-        },
-      },
+        }
+      }
     });
   }
 
@@ -78,13 +81,17 @@ class MessageInputFormBase extends Block<MessageInputFormProps> {
   }
 
   logData() {
+    // eslint-disable-next-line
     console.log("New message: ", this.data);
   }
 
-  protected componentDidUpdate(oldProps: MessageInputFormProps, newProps: MessageInputFormProps): boolean {
+  protected componentDidUpdate(
+    oldProps: MessageInputFormProps,
+    newProps: MessageInputFormProps
+  ): boolean {
     if (oldProps.selectedChatId !== newProps.selectedChatId) {
       const currentChatId = newProps.selectedChatId;
-      this.setProps({ isActive: currentChatId !== undefined ? true : false });
+      this.setProps({ isActive: currentChatId !== undefined });
       return true;
     }
     if (oldProps.popIsOpen !== newProps.popIsOpen) {
@@ -99,5 +106,5 @@ class MessageInputFormBase extends Block<MessageInputFormProps> {
   }
 }
 
-//@ts-ignore
+// @ts-ignore
 export const MessageInputForm = withSelectedChatId(MessageInputFormBase);

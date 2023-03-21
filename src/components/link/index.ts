@@ -1,5 +1,5 @@
-import Block from "../../utils/Block";
 import template from "./link.hbs";
+import Block from "../../utils/Block";
 import Router from "../../utils/Router";
 
 interface LinkProps {
@@ -16,13 +16,14 @@ export class Link extends Block<LinkProps> {
     super({
       ...props,
       events: props.events || {
-        click: () => this.navigate(),
-      },
+        click: () => this.navigate()
+      }
     });
   }
 
   navigate() {
-    this.props.to && Router.go(this.props.to);
+    if (!this.props.to) return;
+    Router.go(this.props.to);
   }
 
   render() {
