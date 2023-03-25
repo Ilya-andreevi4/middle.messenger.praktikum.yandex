@@ -7,7 +7,9 @@
     "build": "rm -rf dist && parcel build static/index.html --no-cache",
     "start": "parcel build static/index.html && node server.js",
     "dev": "parcel static/index.html --no-cache --open",
-    "lint": "npx eslint --fix ./ . --ext .js,.ts && node_modules/.bin/stylelint ."
+    "lint:css": "stylelint **/*.css",
+    "lint:js": "eslint .",
+    "lint": "npm run lint:css & npm run lint:js"
   },
   "author": "Ilya Orekhov",
   "license": "ISC",
@@ -41,7 +43,9 @@
     "stylelint": "15.2.0",
     "stylelint-config-clean-order": "5.0.0",
     "stylelint-config-standard": "30.0.1",
-    "typescript": "4.9.5"
+    "typescript": "4.9.5",
+    "webpack": "^5.76.3",
+    "webpack-cli": "^5.0.1"
   },
   "dependencies": {
     "express": "4.18.2",
