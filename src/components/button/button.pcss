@@ -1,22 +1,20 @@
 .button {
-  margin: 0px 30px;
-  font-size: 13px;
-  line-height: 10px;
-  font-weight: 400;
-  letter-spacing: 1.5;
-  color: white;
   width: 280px;
   height: 37px;
+  margin: 0 30px;
+
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 10px;
+  color: white;
+  letter-spacing: 1.5;
+
   background: $accent-blue;
-  border: 1px solid #000000;
-  box-shadow: inset 0px 0px 3px 1px #000000;
+  border: 1px solid #000;
+  box-shadow: inset 0 0 3px 1px #000;
 }
 
 .button:hover {
   cursor: pointer;
-  background: linear-gradient(
-    91deg,
-    rgba(11, 217, 251, 0.9) 100%,
-    rgba(11, 183, 223, 0.8) 0%
-  );
+  background: linear-gradient(91deg, rgb(11 217 251 / 90%) 100%, rgb(11 183 223 / 80%) 0%);
 }

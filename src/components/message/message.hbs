@@ -20,10 +20,10 @@
             {{ from }}
         </h2>
       {{/if}}
-      {{#if image }}
+      {{#if file }}
         <div class="image-box message-body__image-box">
           {{{arrowDownIcon}}}
-          <img class="image image-box__image" src={{ image }} alt="image"/>
+          <img class="image image-box__image" src={{ file }} alt="image"/>
           <span class="time-message image-box__time-message">
             {{ time }}
           </span>
@@ -36,7 +36,7 @@
       {{/if}}
     </div>
     {{#unless my }}
-      {{#unless image }}
+      {{#unless file }}
           <span class="time-message message__time-message">
             {{ time }}
           </span>

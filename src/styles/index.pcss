@@ -1,35 +1,38 @@
-@import "../components/icon/icon.pcss";
-@import "./color-vars.pcss";
-@import "../components/nav/nav.pcss";
-@import "../components/link/link.pcss";
-@import "../components/button/button.pcss";
-@import "../components/input/input.pcss";
-@import "../components/avatar/avatar.pcss";
-@import "../components/field/field.pcss";
-@import "../components/message/message.pcss";
-@import "../components/message-input-form/message-input-form.pcss";
-@import "../components/popup-form-add-files/popup-form-add-files.pcss";
-@import "../components/chat-info/chat-info.pcss";
-@import "../layouts/form/form.pcss";
-@import "../pages/main-page/side-menu/side-menu.pcss";
-@import "../pages/main-page/side-menu/profile-block/profile-block.pcss";
-@import "../pages/main-page/side-menu/friends-container/friends-container.pcss";
-@import "../pages/main-page/chat-container/chat-container.pcss";
-@import "../pages/main-page/chat-container/chat-header/chat-header.pcss";
-@import "../pages/main-page/chat-container/chat-main/chat-main.pcss";
-@import "../pages/login-page/login-page.pcss";
-@import "../pages/server-error-page/error-page.pcss";
-@import "../pages/profile-page/profile-page.pcss";
+@import url("../components/icon/icon.pcss");
+@import url("./color-vars.pcss");
+@import url("../components/nav/nav.pcss");
+@import url("../components/link/link.pcss");
+@import url("../components/button/button.pcss");
+@import url("../components/input/input.pcss");
+@import url("../components/avatar/avatar.pcss");
+@import url("../components/field/field.pcss");
+@import url("../components/message/message.pcss");
+@import url("../components/message-input-form/message-input-form.pcss");
+@import url("../components/add-files-popup/popup-form-add-files.pcss");
+@import url("../components/chat-actions-popup/popup-form-chat-action.pcss");
+@import url("../components/chat-info/chat-info.pcss");
+@import url("../layouts/form/form.pcss");
+@import url("../layouts/loader/loader.pcss");
+@import url("../pages/main-page/side-menu/side-menu.pcss");
+@import url("../pages/main-page/side-menu/profile-block/profile-block.pcss");
+@import url("../pages/main-page/side-menu/friends-container/friends-container.pcss");
+@import url("../pages/main-page/chat-container/chat-container.pcss");
+@import url("../pages/main-page/chat-container/chat-header/chat-header.pcss");
+@import url("../pages/main-page/chat-container/chat-main/chat-main.pcss");
+@import url("../pages/login-page/login-page.pcss");
+@import url("../pages/server-error-page/error-page.pcss");
+@import url("../pages/profile-page/profile-page.pcss");
 
 *,
 *::before,
 *::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
+
   font-family: Arial, Helvetica, sans-serif;
-  box-sizing: border-box;
-  text-shadow: 0 0 4 rgba(0, 0, 0, 0.25);
   color: $white;
+  text-shadow: 0 0 4 rgb(0 0 0 / 25%);
 }
 
 ul,
@@ -43,37 +46,51 @@ a {
 
 .text {
   font-size: 16px;
-  color: $white;
   font-weight: lighter;
+  color: $white;
 }
 
 .text.text_uploaded {
-  opacity: 60%;
   margin-bottom: 20px;
+  opacity: 0.6;
 }
 
 .popper {
+  z-index: 4000;
+
   display: flex;
   justify-content: space-around;
+
   background: $lighter-bg;
-  border: 2px solid #000000;
-  box-shadow: 2px -5px 10px rgba(0, 0, 0, 0.25),
-    inset 0px 0px 16px 1px rgba(0, 0, 0, 0.25);
+  border: 2px solid #000;
+  box-shadow: 2px -5px 10px rgb(0 0 0 / 25%), inset 0 0 16px 1px rgb(0 0 0 / 25%);
 }
 
 form {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
 }
 
 .container {
   display: flex;
-  height: 100vh;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 100vh;
+
   background: $grey-bg;
+}
+
+.display_none {
+  display: none;
+}
+
+.link_red {
+  font-weight: bold;
+  color: $warning-red;
+  border-bottom: none;
 }

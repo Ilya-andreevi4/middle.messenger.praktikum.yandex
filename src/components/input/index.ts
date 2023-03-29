@@ -1,5 +1,5 @@
-import Block from "../../utils/Block";
 import template from "./input.hbs";
+import Block from "../../utils/Block";
 
 interface InputProps {
   id: string;
@@ -10,7 +10,6 @@ interface InputProps {
   required?: boolean;
   events?: {
     blur: () => void;
-    focus: () => void;
   };
 }
 
@@ -18,6 +17,22 @@ export class Input extends Block<InputProps> {
   constructor(props: InputProps) {
     super(props);
     this.props = { ...props };
+  }
+
+  getName() {
+    return (this.element as HTMLInputElement).name;
+  }
+
+  getValue() {
+    return (this.element as HTMLInputElement).value;
+  }
+
+  setValue(newValue: string) {
+    (this.element as HTMLInputElement).value = newValue;
+  }
+
+  getFile() {
+    return (this.element as HTMLInputElement).files![0];
   }
 
   render() {

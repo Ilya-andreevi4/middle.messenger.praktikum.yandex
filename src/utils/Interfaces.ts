@@ -1,11 +1,4 @@
-export type Primitive =
-  | bigint
-  | boolean
-  | null
-  | number
-  | string
-  | symbol
-  | undefined;
+export type Primitive = bigint | boolean | null | number | string | symbol | undefined;
 
 export type userStatus = "online" | "offline" | "invisible";
 
@@ -16,42 +9,102 @@ export interface JsonObject {
 }
 
 export interface JsonArray extends Array<JsonValue> {}
-export interface IUser {
-  id: number;
-  avatar: string;
-  email?: string;
-  login?: string;
-  firstName: string;
-  lastName: string;
-  chatName?: string;
-  phone?: string;
-  password?: string;
-  status: userStatus;
+
+export interface AddUserToChat {
+  users: number[];
+  chatId: number;
 }
 
-export interface IChat {
-  id: number;
-  avatar: string;
-  title: string;
-  lastMessage: string;
-  isActive: boolean;
-  numberNewMessages?: number;
+export interface ILastMessage extends JsonObject {
+  user: IUser;
   time: string;
-  status?: userStatus;
-  isGroup: boolean;
-  users?: IUser[];
+  content: string;
+}
+export interface IChat extends JsonObject {
+  id: number;
+  avatar?: string;
+  title?: string;
+  last_message?: ILastMessage;
+  isActive?: boolean;
+  unread_count?: number;
+  status?: userStatus; // TODO лишнее
+  isGroup?: boolean;
+  users?: (IUser & { role: string })[];
 }
 
-export interface IСhatting {
-  author: string;
-  authorID: number;
-  messages: IMessages[];
-}
-
-export interface IMessages {
-  from: string;
-  text?: string;
+export interface IMessage {
+  chat_id: number;
   time: string;
-  image?: any;
-  my?: boolean;
+  type: string;
+  user_id: number;
+  content?: string;
+  file?: {
+    id: number;
+    user_id: number;
+    path: string;
+    filename: string;
+    content_type: string;
+    content_size: number;
+    upload_date: string;
+  };
+}
+
+export const enum Routes {
+  Index = "/",
+  Chats = "/messenger",
+  NotFound = "/404",
+  NetworkError = "/505",
+  Registation = "/sign-up",
+  Profile = "/settings"
+}
+
+export interface SigninData extends JsonObject {
+  login: string;
+  password: string;
+}
+
+export interface SignupData extends JsonObject {
+  first_name: string;
+  second_name: string;
+  login: string;
+  email: string;
+  password: string;
+  phone: string;
+}
+
+export interface ChangeProfileProps extends JsonObject {
+  first_name: string;
+  second_name: string;
+  display_name: string;
+  login: string;
+  email: string;
+  phone: string;
+}
+
+export interface ChangePasswordProps extends JsonObject {
+  oldPassword: string;
+  newPassword: string;
+}
+
+export interface User {
+  id: number;
+  first_name: string;
+  second_name: string;
+  display_name?: string | undefined;
+  login: string;
+  email: string;
+  password: string;
+  phone: string;
+  avatar?: string | undefined;
+}
+export interface IUser extends JsonObject {
+  id: number;
+  login: string;
+  first_name: string;
+  second_name: string;
+  phone: string;
+  password: string;
+  display_name?: string;
+  avatar?: string;
+  email: string;
 }

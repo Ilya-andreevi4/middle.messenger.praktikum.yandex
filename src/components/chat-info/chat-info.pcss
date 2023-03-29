@@ -1,12 +1,15 @@
 .chat-info {
+  overflow: hidden;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+
   width: 100%;
   height: 64px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  overflow: hidden;
+
   white-space: nowrap;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+
+  border-bottom: 2px solid rgb(255 255 255 / 30%);
 }
 
 .chat-info:hover {
@@ -14,14 +17,60 @@
 }
 
 .chats-list__chat-info_active {
+  padding-left: -4px;
   color: white;
-  background: rgba(0, 0, 0, 0.15);
+  background: rgb(0 0 0 / 15%);
   border-left: 4px solid $accent-blue;
 }
 
-.chats-list__chat-info_active .avatar {
+.chat-info__avatar-container_active {
   margin-left: -4px;
 }
+
+.chat-info__avatar-container {
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 64px;
+  height: 64px;
+}
+
+.last-message {
+  font-size: 16px;
+  color: $transparent-white;
+}
+
+.time-messages {
+  color: $transparent-white;
+}
+
+.friends-name {
+  font-size: 20px;
+  font-weight: 400;
+  color: $white;
+  opacity: 0.8;
+}
+
+.status-chat {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-self: flex-end;
+  justify-content: flex-end;
+
+  width: 80px;
+  margin-right: 8px;
+  margin-bottom: 6px;
+  margin-left: 8px;
+
+  font-size: 16px;
+  color: $white;
+  text-align: end;
+  white-space: nowrap;
+}
+
 .chats-list__chat-info_active .time-messages,
 .chats-list__chat-info_active .last-message,
 .chats-list__chat-info_active .friends-name {
@@ -29,77 +78,45 @@
   opacity: 1;
 }
 
-.last-message {
-  font-size: 16px;
-  color: $transparent-white;
-}
-
-.status-chat {
-  font-size: 16px;
-  color: $white;
-  display: flex;
-  margin-left: 24px;
-  flex-direction: column;
-  gap: 8px;
-  align-items: flex-end;
-}
-
 .chats-list__number-messages {
-  padding: 4px;
   display: block;
+
   width: 24px;
   height: 24px;
-  font-weight: bold;
-  border-radius: 50px;
-  background-color: $orange;
-}
+  padding: 4px;
 
-.time-messages {
-  color: $transparent-white;
+  font-weight: bold;
+
+  background-color: $orange;
+  border-radius: 50px;
 }
 
 .friends-info {
-  width: 288px;
+  z-index: 1000;
+
   display: flex;
   flex-direction: column;
   align-content: flex-start;
+
+  width: 38%;
+  padding: 0;
+
   text-align: left;
-  padding: 0px;
-  z-index: 1000;
-}
-
-.friends-name {
-  color: $white;
-  font-size: 20px;
-  font-weight: 400;
-  opacity: 80%;
-}
-
-.last-message {
-  font-size: 16px;
-  color: $transparent-white;
-}
-
-.status-chat {
-  align-self: flex-end;
-  margin-bottom: 6px;
-  display: flex;
-  max-width: 10px;
-  margin-right: 8px;
-  flex-direction: column;
-  justify-content: flex-end;
-  white-space: nowrap;
 }
 
 .number-messages {
-  align-items: center;
-  justify-content: center;
   display: flex;
+  align-items: center;
+  align-self: end;
+  justify-content: center;
+
   width: 24px;
   height: 24px;
+
   font-weight: bold;
-  border-radius: 50px;
+
   background-color: $orange;
+  border-radius: 50px;
 }
 
 .number-messages_none {

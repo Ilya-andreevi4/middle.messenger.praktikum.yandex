@@ -11,7 +11,20 @@
     </div>
   </div>
   {{{moreIcon}}}
-{{#if isModalOpen}}
-  {{{inviteModal}}}
+  {{#if isUserListOpen}}
+  <div class="user-list__chat-header">
+    <ul>
+      {{#each userList}}
+        {{{this}}}
+      {{/each }}
+
+    </ul>
+  </div>
+  {{/if}}
+  {{#if isSettingsOpen}}
+   {{{settingsPopup}}}
+  {{/if}}
+  {{#if isModalOpen}}
+    {{{inviteModal}}}
   {{/if}}
 </header>

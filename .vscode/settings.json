@@ -1,0 +1,14 @@
+{
+  // Форматирование кода с помощью prettier
+  "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
+
+  // Форматирование при сохранении файла
+  "editor.formatOnSave": true,
+
+  // Использование локальных правил для StyleLint
+  "stylelint.useLocal": true,
+  "stylelint.autoFixOnSave": true,
+
+  // Использование одной темы в проекте)
+  "workbench.colorTheme": "Default Dark+"
+}

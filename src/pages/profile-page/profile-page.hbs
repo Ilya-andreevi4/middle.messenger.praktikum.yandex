@@ -1,5 +1,4 @@
 <main class="container">
-  {{{navBar}}}
   <div class="avatar-box profile-page__avatar-box">
     {{{avatar}}}
     <h2 class="title avatar-box__title">
@@ -13,12 +12,17 @@
     {{#if isChangePassword}}
       {{{changePasswordForm}}}
     {{else}}
+      <div class="invite-id-box">
+        Your ID for invite:
+        {{{inviteIdButton}}}
+      </div>
       {{{profileForm}}}
     {{/if}}
   {{/if}}
-  {{#if modalIsOpen}}
+  {{#if isChangeAvatar}}
     {{{changeAvatarModal}}}
   {{/if}}
+  {{{loader}}}
   <div class="side-panel">
     {{{sideButton}}}
   </div>

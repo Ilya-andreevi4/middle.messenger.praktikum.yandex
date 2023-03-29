@@ -1,21 +1,14 @@
+import template from "./server-error-page.hbs";
 import { Link } from "../../components/link";
 import Block from "../../utils/Block";
-import template from "./server-error-page.hbs";
+import { Routes } from "../../utils/Interfaces";
 
 export class ErrorPage extends Block {
-  constructor() {
-    super();
-  }
-
   protected init(): void {
     this.children.link = new Link({
       className: "error-page",
       label: "Back to chats",
-      events: {
-        click: () => {
-          window.renderDom("main");
-        },
-      },
+      to: Routes.Chats
     });
   }
 

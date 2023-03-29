@@ -1,20 +1,14 @@
+import template from "./not-found-page.hbs";
 import { Link } from "../../components/link";
 import Block from "../../utils/Block";
-import template from "./not-found-page.hbs";
+import { Routes } from "../../utils/Interfaces";
 
 export class NotFoundPage extends Block {
-  constructor() {
-    super();
-  }
   protected init(): void {
     this.children.link = new Link({
       className: "error-page",
       label: "Back to chats",
-      events: {
-        click: () => {
-          window.renderDom("main");
-        },
-      },
+      to: Routes.Chats
     });
   }
 

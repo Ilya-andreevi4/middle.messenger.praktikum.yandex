@@ -1,0 +1,22 @@
+{
+  "printWidth": 100,
+  "tabWidth": 2,
+  "semi": true,
+  "singleQuote": false,
+  "quoteProps": "as-needed",
+  "jsxSingleQuote": false,
+  "trailingComma": "none",
+  "bracketSpacing": true,
+  "arrowParens": "always",
+  "endOfLine": "auto",
+  "insertFinalNewline": true,
+  "overrides": [
+    {
+      "files": "*.hbs",
+      "options": {
+        "singleQuote": false,
+        "insertFinalNewline": true
+      }
+    }
+  ]
+}

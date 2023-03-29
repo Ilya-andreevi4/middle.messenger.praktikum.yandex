@@ -7,30 +7,35 @@
 
 .container.container_darker {
   z-index: 8500;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgb(0 0 0 / 40%);
 }
 
 .modal {
-  padding: 50px 30px 0px 30px;
-  display: flex;
   position: relative;
-  color: $white;
+
+  display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  height: fit-content;
+  justify-content: center;
+
   width: 340px;
+  height: fit-content;
+  padding: 50px 30px 0;
+
+  color: $white;
+
   background: $darker-bg;
-  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0 6px rgb(0 0 0 / 25%);
 }
+
 .modal.profile-page__modal {
-  padding: 0px;
+  padding: 0;
 }
 
 .modal .title {
+  margin-bottom: 32px;
   font-size: 20px;
   font-weight: 400;
-  margin-bottom: 32px;
 }
 
 .add-user__title {
@@ -39,24 +44,29 @@
 
 .fields-container {
   position: relative;
+
   display: flex;
-  width: 100%;
-  gap: 48px;
   flex-direction: column;
+  gap: 48px;
   justify-content: center;
+
+  width: 100%;
   padding-top: 14px;
   padding-bottom: 64px;
 }
+
 .fields-container.profile-page__fields-container {
   gap: 32px;
 }
 
 .links-container {
   position: relative;
+
   display: flex;
-  gap: 16px;
   flex-direction: column;
+  gap: 16px;
   justify-content: center;
+
   padding-top: 14px;
   padding-bottom: 32px;
 }
@@ -70,7 +80,7 @@
 }
 
 .modal__link {
+  margin-bottom: 30px;
   font-size: 11px;
   color: $accent-blue;
-  margin-bottom: 30px;
 }

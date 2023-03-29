@@ -1,17 +1,20 @@
-import Block from "../../../../utils/Block";
 import template from "./profile-block.hbs";
 import { Avatar } from "../../../../components/avatar";
-import { AvatarsExports, IconsExports } from "../../../../utils/media-exports";
 import { Icon } from "../../../../components/icon";
-import { userStatus } from "../../../../utils/Interfaces";
+import Block from "../../../../utils/Block";
+import { Routes, userStatus } from "../../../../utils/Interfaces";
+import { AvatarsExports, IconsExports } from "../../../../utils/media-exports";
+import Router from "../../../../utils/Router";
 
 interface ProfileBlockProps {
-  avatarSrc: string;
-  userName: string;
-  userStatus: userStatus;
+  avatarSrc?: string;
+  userName?: string;
+  userStatus?: userStatus;
+  arrowDownIcon?: string;
+  settingsIcon?: string;
 }
 
-export class ProfileBlock extends Block {
+export class ProfileBlock extends Block<ProfileBlockProps> {
   constructor(props: ProfileBlockProps) {
     super(props);
   }
@@ -25,18 +28,18 @@ export class ProfileBlock extends Block {
       alt: "settings",
       events: {
         click: () => {
-          window.renderDom("profile");
-        },
-      },
+          Router.go(Routes.Profile);
+        }
+      }
     });
     this.children.avatar = new Avatar({
-      src: AvatarsExports.Avatar_1,
+      src: this.props.avatarSrc || AvatarsExports.AvatarBox,
       className: "profile-header",
       events: {
         click: () => {
-          window.renderDom("profile");
-        },
-      },
+          Router.go(Routes.Profile);
+        }
+      }
     });
   }
 

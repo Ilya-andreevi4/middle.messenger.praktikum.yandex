@@ -1,5 +1,5 @@
-import Block from "../../utils/Block";
 import template from "./field.hbs";
+import Block from "../../utils/Block";
 import { Input } from "../input";
 
 interface Attribute {
@@ -35,22 +35,16 @@ export class Field extends Block<FieldProps> {
       events: {
         blur: () => {
           this.isValid();
-        },
-        focus: () => {
-          this.isValid();
-        },
-      },
+        }
+      }
     });
   }
 
   isValid() {
     const value: string = this.getValue();
 
-    const regexError: boolean =
-      !!this.props.regex && !new RegExp(this.props.regex).test(value);
-    const error = this.props.required
-      ? !value || regexError
-      : !!value && regexError;
+    const regexError: boolean = !!this.props.regex && !new RegExp(this.props.regex).test(value);
+    const error = this.props.required ? !value || regexError : !!value && regexError;
     if (error) {
       this.element!.classList.add("error");
     } else {
@@ -61,10 +55,23 @@ export class Field extends Block<FieldProps> {
   }
 
   getValue() {
-    const currentInput = this.getContent()?.querySelector(
-      `[name=${this.props.id}]`
-    ) as HTMLInputElement;
-    return currentInput.value;
+    const value = (this.children.input as Input).getValue();
+    return value;
+  }
+
+  setValue(newValue: string) {
+    const input = this.children.input as Input;
+    return input.setValue(newValue);
+  }
+
+  getFile() {
+    const value = (this.children.input as Input).getFile();
+    return value;
+  }
+
+  getName() {
+    const name = (this.children.input as Input).getName();
+    return name;
   }
 
   render() {

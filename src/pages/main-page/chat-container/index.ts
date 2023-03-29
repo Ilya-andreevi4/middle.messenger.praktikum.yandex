@@ -1,41 +1,51 @@
-import Block from "../../../utils/Block";
+import template from "./chat-container.hbs";
 import { ChatHeader } from "./chat-header";
 import { ChatMain } from "./chat-main";
+import { Field } from "../../../components/field";
 import { MessageInputForm } from "../../../components/message-input-form";
-import template from "./chat-container.hbs";
+import chatController from "../../../controllers/ChatController";
+import MessagesController from "../../../controllers/MessagesController";
+import Block from "../../../utils/Block";
 import { IChat } from "../../../utils/Interfaces";
-import { AvatarsExports } from "../../../utils/media-exports";
+import { StateProps, withStore } from "../../../utils/Store";
 
-interface ChatContainerProps {
+interface ChatContainerProps extends StateProps {
   isActive: boolean;
   activeChat?: IChat;
 }
-export class ChatContainer extends Block<ChatContainerProps> {
+export class ChatContainerBase extends Block<ChatContainerProps> {
   constructor(props: ChatContainerProps) {
     super(props);
+    this.props = { ...props };
   }
 
   init() {
-    if (this.props.activeChat) {
-      this.props.isActive = true;
-    }
-    this.children.chatHeader = new ChatHeader({
-      isActive: this.props.isActive,
-      avatarSrc: this.props.activeChat?.avatar || AvatarsExports.AvatarBox,
-      userName: this.props.activeChat?.title || "UserName",
-      userStatus: this.props.activeChat?.status || "offline",
-    });
-    this.children.chatMain = new ChatMain({
-      ...this.props,
-    });
+    this.props.activeChat = this.props.chats.find((chat) => chat.id === this.props.selectedChatId);
+    this.props.isActive = !!this.props.activeChat;
+
+    this.children.chatHeader = new ChatHeader({});
+
+    this.children.chatMain = new ChatMain({});
+
     this.children.messageForm = new MessageInputForm({
       ...this.props,
       events: {
-        submit: (e: Event) => {
+        submit: async (e: Event) => {
           e.preventDefault();
-          (this.children.messageForm as MessageInputForm).logData();
-        },
-      },
+          if (!this.props.selectedChatId) {
+            throw new Error("Select some chat.");
+          }
+
+          const input = (this.children.messageForm as Block).children.messageInput as Field;
+          input.isValid();
+          if (input.isValid()) {
+            const message = input.getValue();
+            input.setValue("");
+            await MessagesController.sendMessage(this.props.selectedChatId, message);
+            await chatController.fetchChats();
+          }
+        }
+      }
     });
   }
 
@@ -43,3 +53,6 @@ export class ChatContainer extends Block<ChatContainerProps> {
     return this.compile(template, this.props);
   }
 }
+
+// @ts-ignore
+export const ChatContainer = withStore((state) => ({ ...state }))(ChatContainerBase);

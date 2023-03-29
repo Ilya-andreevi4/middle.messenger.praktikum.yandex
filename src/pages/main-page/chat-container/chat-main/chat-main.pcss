@@ -1,12 +1,13 @@
 .chat-main {
+  overflow: auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+
   width: calc(100vw - 288px);
   height: 100%;
   padding-top: 28px;
   padding-bottom: 64px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  overflow: auto;
 }
 
 .chat-main_active {
@@ -29,42 +30,43 @@
 }
 
 .text.chat-main__text {
-  opacity: 80%;
+  align-self: center;
+  opacity: 0.8;
 }
 
 .date-line {
+  position: relative;
   display: flex;
   justify-content: center;
-  position: relative;
   margin-bottom: 16px;
 }
 
-.date-line:before {
+.date-line::before {
   content: "";
-  display: block;
-  height: 2px;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 1) 0%,
-    rgba(255, 255, 255, 0) 100%
-  );
+
+  position: absolute;
+  top: 50%;
   right: 16px;
   left: calc(50% + 40px);
-  top: 50%;
-  position: absolute;
+
+  display: block;
+
+  height: 2px;
+
+  background: linear-gradient(90deg, rgb(255 255 255 / 100%) 0%, rgb(255 255 255 / 0%) 100%);
 }
 
-.date-line:after {
+.date-line::after {
   content: "";
-  display: block;
-  height: 2px;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 1) 100%
-  );
+
+  position: absolute;
+  top: 50%;
   right: calc(50% + 40px);
   left: 16px;
-  top: 50%;
-  position: absolute;
+
+  display: block;
+
+  height: 2px;
+
+  background: linear-gradient(90deg, rgb(255 255 255 / 0%) 0%, rgb(255 255 255 / 100%) 100%);
 }

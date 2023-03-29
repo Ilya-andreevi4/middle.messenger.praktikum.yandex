@@ -5,117 +5,111 @@ enum METHODS {
   PUT = "PUT",
   POST = "POST",
   DELETE = "DELETE",
+  PATCH = "PATCH"
 }
 
 type Options = {
   headers?: Record<string, string>;
   method?: METHODS;
   timeout?: number;
-  data?: JsonObject;
+  id?: number;
+  data?: JsonObject | FormData;
 };
 
-function queryStringify(data: any, prefix?: string): string {
-  if (typeof data !== "object") {
-    throw new Error("Query data must be object");
+// function queryStringify(data: any, prefix?: string): string {
+//   if (typeof data !== "object") {
+//     throw new Error("Query data must be object");
+//   }
+//   let res: string[] = [];
+//   data.forEach((p: string) => {
+//     const key = prefix ? `${prefix}[${p}]` : p;
+//     const value = data[key] === null || data[key] === undefined
+// || Number.isNaN(data[key]) ? "" : data[key];
+//     res.push(
+//       typeof value === "object"
+//         ? queryStringify(value, key)
+//         : `${encodeURIComponent(key)}=${encodeURIComponent(value)}`,
+//     );
+//   });
+//   return `${!prefix && "?"}${res.join("&")}`;
+// }
+
+export default class HTTPTransport {
+  static API_URL = "https://ya-praktikum.tech/api/v2";
+
+  protected endpoint: string;
+
+  constructor(endpoint: string) {
+    this.endpoint = `${HTTPTransport.API_URL}${endpoint}`;
   }
-  let res: string[] = [];
-  data.forEach((p: string) => {
-    const key = prefix ? `${prefix}[${p}]` : p;
-    const value =
-      data[key] === null || data[key] === undefined || Number.isNaN(data[key])
-        ? ""
-        : data[key];
-    res.push(
-      typeof value === "object"
-        ? queryStringify(value, key)
-        : `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
-    );
-  });
-  return `${!prefix && "?"}${res.join("&")}`;
-}
 
-type HTTPMethod = (
-  url: string,
-  options?: Omit<Options, "method">
-) => Promise<XMLHttpRequest>;
+  public get<Response>(path = "/", id?: number): Promise<Response> {
+    const currentPath = id && path !== "/" ? `${path}/${id}` : path;
 
-export class HTTPTransport {
-  get: HTTPMethod = (url, options) => {
-    return this.request(
-      url,
-      { ...options, method: METHODS.GET },
-      options?.timeout
-    );
-  };
+    return this.request(this.endpoint + currentPath, { method: METHODS.GET });
+  }
 
-  post: HTTPMethod = (url, options) => {
-    return this.request(
-      url,
-      { ...options, method: METHODS.POST },
-      options?.timeout
-    );
-  };
+  public post<Response = void>(path: string, data?: JsonObject | FormData): Promise<Response> {
+    return this.request(this.endpoint + path, { method: METHODS.POST, data });
+  }
 
-  put: HTTPMethod = (url, options) => {
-    return this.request(
-      url,
-      { ...options, method: METHODS.PUT },
-      options?.timeout
-    );
-  };
+  public put<Response = void>(path: string, data?: JsonObject | FormData): Promise<Response> {
+    return this.request(this.endpoint + path, { method: METHODS.PUT, data });
+  }
 
-  delete: HTTPMethod = (url, options) => {
-    return this.request(
-      url,
-      { ...options, method: METHODS.DELETE },
-      options?.timeout
-    );
-  };
+  public patch<Response = void>(path: string, data?: JsonObject | FormData): Promise<Response> {
+    return this.request<Response>(this.endpoint + path, { method: METHODS.PATCH, data });
+  }
 
-  request = (
+  public delete<Response>(path: string, data?: JsonObject | FormData): Promise<Response> {
+    return this.request(this.endpoint + path, { method: METHODS.DELETE, data });
+  }
+
+  private request<Response>(
     url: string,
-    options: Options,
-    timeout = 5000
-  ): Promise<XMLHttpRequest> => {
-    const { headers = {}, method, data } = options;
-
-    return new Promise(function (resolve, reject) {
-      if (!method) {
-        reject("No method");
-        return;
-      }
-
+    options: Options = { method: METHODS.GET }
+  ): Promise<Response> {
+    const { headers, method = METHODS.GET, timeout = 5000, data } = options;
+    return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
-      const isGet = method === METHODS.GET;
-      if (isGet) {
-        const newUrl = url + queryStringify(data);
-        xhr.open(method, newUrl);
-      } else {
-        xhr.open(method, url);
+      xhr.open(method || METHODS.GET, url);
+
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status < 400) {
+            resolve(xhr.response);
+          } else {
+            reject(xhr.response);
+          }
+        }
+      };
+      if (!(data instanceof FormData)) {
+        xhr.setRequestHeader("Content-Type", "application/json");
       }
 
-      Object.keys(headers).forEach((key) => {
-        xhr.setRequestHeader(key, headers[key]);
-      });
+      if (headers) {
+        Object.keys(headers).forEach((key: string) => {
+          xhr.setRequestHeader(key, headers[key]);
+        });
+      }
+
+      xhr.onabort = () => reject({ reason: "abort" });
+      xhr.onerror = () => reject({ reason: "network error" });
+      xhr.ontimeout = () => reject({ reason: "timeout" });
 
       xhr.timeout = timeout;
-      xhr.onload = function () {
-        if (xhr.status >= 400) {
-          reject(xhr.response);
-        }
-        resolve(xhr.response);
-      };
+      xhr.withCredentials = true;
+      xhr.responseType = "json";
 
-      xhr.onabort = reject;
-      xhr.onerror = reject;
-      xhr.ontimeout = reject;
-      if (isGet || !data) {
+      if (method === METHODS.GET || !data) {
         xhr.send();
+      } else if (data instanceof FormData) {
+        xhr.send(data);
       } else {
         xhr.send(JSON.stringify(data));
       }
     });
-  };
+  }
 }
 
 type FetchWithRetriyOptions = Options & {
@@ -123,20 +117,33 @@ type FetchWithRetriyOptions = Options & {
 };
 
 export function fetchWithRetry(
+  endpoint: string,
   url: string,
   options: FetchWithRetriyOptions
-): Promise<XMLHttpRequest> {
+): Promise<any> {
   const { retries = 5, ...fetchOptions } = options;
 
-  function onError() {
+  function onError(e: any) {
     if (retries === 1) {
-      throw new Error("No retries left");
+      throw new Error("Retries left. Error:", e);
     }
-    return fetchWithRetry(url, {
+    return fetchWithRetry(endpoint, url, {
       ...fetchOptions,
-      ...{ retries: retries - 1 },
+      ...{ retries: retries - 1 }
     });
   }
-
-  return new HTTPTransport().request(url, fetchOptions).catch(onError);
+  const currentMethod = options.method?.toLowerCase() || "get";
+  if (currentMethod === "post") {
+    return new HTTPTransport(endpoint).post(url, fetchOptions.data).catch((e) => onError(e));
+  }
+  if (currentMethod === "delete") {
+    return new HTTPTransport(endpoint).delete(url).catch((e) => onError(e));
+  }
+  if (currentMethod === "put") {
+    return new HTTPTransport(endpoint).put(url, fetchOptions.data).catch((e) => onError(e));
+  }
+  if (currentMethod === "patch") {
+    return new HTTPTransport(endpoint).patch(url, fetchOptions.data).catch((e) => onError(e));
+  }
+  return new HTTPTransport(endpoint).get(url, fetchOptions.id).catch((e) => onError(e));
 }
