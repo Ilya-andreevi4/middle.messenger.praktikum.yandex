@@ -9,6 +9,8 @@ import { ErrorPage } from "./pages/server-error-page";
 import { Routes } from "./utils/Interfaces";
 import Router from "./utils/Router";
 import store from "./utils/Store";
+import "./styles/color-vars.pcss";
+import "./styles/index.pcss";
 
 window.addEventListener("DOMContentLoaded", async () => {
   Router.use(Routes.Index, LoginPage)
@@ -27,6 +29,9 @@ window.addEventListener("DOMContentLoaded", async () => {
     case Routes.Registation:
       isProtectedRoute = false;
       break;
+    default:
+      isProtectedRoute = true;
+      break;
   }
   try {
     await AuthController.fetchUser();
@@ -35,8 +40,9 @@ window.addEventListener("DOMContentLoaded", async () => {
     if (store.getState().user.data) {
       if (!isProtectedRoute) {
         Router.go(Routes.Chats);
+      } else {
+        Router.go(path);
       }
-      Router.go(path);
     } else {
       Router.go(Routes.Index);
     }

@@ -33,7 +33,7 @@ describe("myFetch", () => {
 
     const [request] = requests;
 
-    expect(request.method.toUpperCase).to.eq("GET");
+    expect(request.method.toUpperCase()).to.eq("GET");
   });
 
   it(".put() should send PUT request with proper payload", () => {
@@ -42,7 +42,7 @@ describe("myFetch", () => {
 
     const [request] = requests;
 
-    expect(request.method.toUpperCase).to.eq("PUT");
+    expect(request.method.toUpperCase()).to.eq("PUT");
     expect(request.requestBody).to.eq(JSON.stringify(payload));
   });
 
@@ -52,7 +52,7 @@ describe("myFetch", () => {
 
     const [request] = requests;
 
-    expect(request.method.toUpperCase).to.eq("POST");
+    expect(request.method.toUpperCase()).to.eq("POST");
     expect(request.requestBody).to.eq(JSON.stringify(payload));
   });
 
@@ -62,7 +62,7 @@ describe("myFetch", () => {
 
     const [request] = requests;
 
-    expect(request.method.toUpperCase).to.eq("DELETE");
+    expect(request.method.toUpperCase()).to.eq("DELETE");
     expect(request.requestBody).to.eq(JSON.stringify(payload));
   });
 });

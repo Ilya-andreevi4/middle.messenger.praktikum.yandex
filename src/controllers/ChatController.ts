@@ -1,6 +1,6 @@
-import { AddUserToChat, IChat } from "src/utils/Interfaces";
 import MessagesController from "./MessagesController";
 import API, { ChatsAPI } from "../api/ChatsAPI";
+import { AddUserToChat, IChat } from "../utils/Interfaces";
 import store from "../utils/Store";
 
 class ChatsController {

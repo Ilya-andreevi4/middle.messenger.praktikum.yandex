@@ -1,14 +1,10 @@
 {
-  "ts-node": {
-    "files": true
-  },
   "compilerOptions": {
     "target": "ES2017",
     "module": "commonjs",
     "sourceMap": true,
-    "outDir": "./dist",
-    "baseUrl": ".",
-    "noEmit": true,
+    "outDir": "./dist/",
+    "noEmit": false,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
@@ -18,7 +14,10 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "skipLibCheck": true,
-    "lib": ["ESNext", "DOM"],
-    "declaration": false
+    "declaration": false,
+    "lib": ["ESNext", "DOM"]
+  },
+  "ts-node": {
+    "files": true
   }
 }

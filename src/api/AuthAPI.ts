@@ -1,5 +1,5 @@
-import { SigninData, SignupData, User } from "src/utils/Interfaces";
 import BaseAPI from "./BaseAPI";
+import { SigninData, SignupData, User } from "../utils/Interfaces";
 
 export class AuthAPI extends BaseAPI {
   constructor() {
