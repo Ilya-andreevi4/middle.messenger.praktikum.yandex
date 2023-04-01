@@ -68,7 +68,7 @@ class MessageInputFormBase extends Block<MessageInputFormProps> {
       type: "button",
       events: {
         click: (e) => {
-          e.preventDefault();
+          e!.preventDefault();
           this.setProps({ popIsOpen: !this.props.popIsOpen });
           window.addEventListener("mousedown", handleModalClose);
         }

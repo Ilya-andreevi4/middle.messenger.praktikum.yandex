@@ -1,7 +1,7 @@
 import Block from "./Block";
 
-function isEqual(lhs: string, rhs: string): boolean {
-  return lhs === rhs;
+export interface BlockConstructable<P extends Record<string, any> = any> {
+  new (props: P): Block<P>;
 }
 
 function render(query: string, block: Block) {
@@ -23,7 +23,7 @@ class Route {
 
   constructor(
     private pathname: string,
-    private readonly blockClass: typeof Block,
+    private readonly blockClass: BlockConstructable,
     private readonly query: string
   ) {}
 
@@ -34,7 +34,7 @@ class Route {
   }
 
   match(pathname: string) {
-    return isEqual(pathname, this.pathname);
+    return pathname === this.pathname;
   }
 
   render() {
@@ -63,7 +63,7 @@ class Router {
     return Router.__instance;
   }
 
-  public use(pathname: string, block: typeof Block) {
+  public use(pathname: string, block: BlockConstructable) {
     const route = new Route(pathname, block, this.rootQuery);
     this.routes.push(route);
 
