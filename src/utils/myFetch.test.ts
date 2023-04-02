@@ -47,7 +47,7 @@ describe("myFetch", () => {
   });
 
   it(".post() should send POST request with proper payload", () => {
-    const payload = { title: "title" };
+    const payload = { title: "text" };
     instance.post("/", payload);
 
     const [request] = requests;

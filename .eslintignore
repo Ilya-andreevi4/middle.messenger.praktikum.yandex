@@ -1,6 +1,10 @@
-/build
-/node_modules
-/dist
+build/
+node_modules/
+dist/
 server.js
 mochaSetup.js
 *.d.ts
+.parcel-cache/
+.local/
+.vscode/
+

@@ -6,7 +6,7 @@
     "dev": "node ./node_modules/.bin/webpack serve",
     "build": "rimraf dist && node ./node_modules/.bin/webpack",
     "server": "node server.js",
-    "start": "npm-run-all build:webpack server",
+    "start": "npm-run-all build server",
     "lint:css": "stylelint **/*.css",
     "lint:js": "eslint .",
     "lint": "npm-run-all --parallel lint:*",
