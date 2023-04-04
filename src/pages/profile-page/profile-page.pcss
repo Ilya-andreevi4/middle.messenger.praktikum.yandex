@@ -29,6 +29,7 @@ form.profile-page__form {
 
 .invite-id-box {
   position: absolute;
+  z-index: 3000;
   top: 32px;
   right: 32px;
 
@@ -237,7 +238,7 @@ form.profile-page__form {
   color: $transparent-white;
 }
 
-@media (max-width: 660px) {
+@media (max-width: $mobile-width) {
   main.container {
     height: 100%;
     min-height: 100vh;

@@ -218,6 +218,7 @@ class ProfilePageBase extends Block<ProfileProps> {
       type: "button",
       events: {
         click: (e) => {
+          e?.stopPropagation();
           e!.preventDefault();
           navigator.clipboard
             .writeText(`${this.props.data.id}`)
