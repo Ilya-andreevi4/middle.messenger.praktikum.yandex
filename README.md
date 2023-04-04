@@ -2,7 +2,7 @@
 
 ## Проект размещён на домене: https://bbar0g8873cpkmickstr.containers.yandexcloud.net/
 
-## Ссылка на pull request: https://github.com/Ilya-andreevi4/middle.messenger.praktikum.yandex/pull/7
+## Ссылка на pull request: https://github.com/Ilya-andreevi4/middle.messenger.praktikum.yandex/pull/9
 
 ## О проекте
 
