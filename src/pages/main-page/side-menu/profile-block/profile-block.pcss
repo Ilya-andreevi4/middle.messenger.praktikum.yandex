@@ -1,4 +1,6 @@
 .profile-block {
+  position: relative;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -16,7 +18,10 @@
   height: 64px;
 }
 
-.profile-block__user-info{
+.user-info.profile-block__user-info{
+  display: flex;
+  align-items: center;
+  justify-content: left;
   width: 100%;
 }
 
@@ -73,14 +78,17 @@
 }
 
 .profile-block__icon {
-  justify-self: flex-end;
+  position: absolute;
+  top: 16px;
+  right: 8px;
+
   width: 32px;
   height: 34px;
-  margin-right: 8px;
 }
 
-@media (max-width: 500px) {
+@media (max-width: $mobile-width) {
   .profile-block__arrow{
     display: none;
   }
+
 }
