@@ -5,7 +5,7 @@ import { Field } from "../field";
 import { Icon } from "../icon";
 import { PopupItem } from "../popup-item";
 
-interface PopupFormAddFilesProps {
+interface AddFilesPopupFormProps {
   className: string;
   popItems?: IPopItem[];
   popupListItems?: PopupItem[];
@@ -17,8 +17,8 @@ interface IPopItem {
   title: string;
 }
 
-export class PopupFormAddFiles extends Block<PopupFormAddFilesProps> {
-  constructor(props: PopupFormAddFilesProps) {
+export class AddFilesPopupForm extends Block<AddFilesPopupFormProps> {
+  constructor(props: AddFilesPopupFormProps) {
     super(props);
   }
 
@@ -40,7 +40,7 @@ export class PopupFormAddFiles extends Block<PopupFormAddFilesProps> {
         id: "location"
       }
     ];
-    (this.children.popupListItems as PopupItem[]) = this.props.popItems.map(
+    this.children.popupListItems = this.props.popItems.map(
       (item, i) =>
         new PopupItem({
           className: this.props.className,
@@ -59,6 +59,7 @@ export class PopupFormAddFiles extends Block<PopupFormAddFilesProps> {
           }),
           events: {
             change: (e) => {
+              // TODO add files to sending message
               e.preventDefault();
               (this.children.popupListItems as PopupItem[])[i].logData();
             }

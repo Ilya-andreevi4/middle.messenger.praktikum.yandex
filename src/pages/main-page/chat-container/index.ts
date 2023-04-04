@@ -33,6 +33,20 @@ export class ChatContainerBase extends Block<ChatContainerProps> {
           }
 
           const input = (this.children.messageForm as Block).children.messageInput as Field;
+
+          // TODO add attach files to message
+          // const fileItems = (
+          //   (this.children.messageForm as Block).children.popupFormAddFiles as AddFilesPopupForm
+          // ).children.popupListItems;
+          // if (Array.isArray(fileItems)) {
+          //   const attachfiles = fileItems.map((item) => {
+          //     const value = (item.children.field as Field).getFile();
+          //     return value;
+          //   });
+          // } else {
+          //   const attachfiles= undefined;
+          // }
+
           input.isValid();
           if (input.isValid()) {
             const message = input.getValue();
