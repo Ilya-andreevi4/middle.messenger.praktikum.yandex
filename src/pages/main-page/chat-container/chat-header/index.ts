@@ -183,6 +183,18 @@ export class ChatHeaderBase extends Block<ChatHeaderProps> {
       }
     });
 
+    this.children.backArrow = new Icon({
+      alt: "back",
+      className: "back-arrow",
+      src: IconsExports.ArrowBackIcon,
+      events: {
+        click: (e) => {
+          e.preventDefault();
+          chatController.selectChat(undefined);
+        }
+      }
+    });
+
     this.children.avatar = new Avatar({
       src: this.props.activeChat?.avatar || AvatarsExports.AvatarBox,
       className: "chat-header",

@@ -1,4 +1,5 @@
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const webpack = require("webpack");
@@ -16,7 +17,17 @@ module.exports = {
       template: "static/index.html"
     }),
     new webpack.HotModuleReplacementPlugin(),
-    new MiniCssExtractPlugin()
+    new MiniCssExtractPlugin(),
+    new FaviconsWebpackPlugin({
+      logo: "./static/favicon.svg",
+      mode: "webapp", // optional can be 'webapp', 'light' or 'auto' - 'auto' by default
+      devMode: "webapp",
+      prefix: "assets/favicons/",
+      favicons: {
+        background: "#ddd",
+        theme_color: "#333"
+      }
+    })
   ],
   resolve: {
     extensions: [".ts", ".js", ".json"]

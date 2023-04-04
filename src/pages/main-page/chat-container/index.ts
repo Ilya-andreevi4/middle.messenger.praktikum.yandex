@@ -6,22 +6,18 @@ import { MessageInputForm } from "../../../components/message-input-form";
 import chatController from "../../../controllers/ChatController";
 import MessagesController from "../../../controllers/MessagesController";
 import Block from "../../../utils/Block";
-import { IChat } from "../../../utils/Interfaces";
 import { StateProps, withStore } from "../../../utils/Store";
 
 interface ChatContainerProps extends StateProps {
   isActive: boolean;
-  activeChat?: IChat;
 }
 export class ChatContainerBase extends Block<ChatContainerProps> {
   constructor(props: ChatContainerProps) {
     super(props);
-    this.props = { ...props };
   }
 
   init() {
-    this.props.activeChat = this.props.chats.find((chat) => chat.id === this.props.selectedChatId);
-    this.props.isActive = !!this.props.activeChat;
+    this.props.isActive = !!this.props.selectedChatId;
 
     this.children.chatHeader = new ChatHeader({});
 
@@ -47,6 +43,19 @@ export class ChatContainerBase extends Block<ChatContainerProps> {
         }
       }
     });
+  }
+
+  protected componentDidUpdate(
+    oldProps: ChatContainerProps,
+    newProps: ChatContainerProps
+  ): boolean {
+    if (oldProps.selectedChatId !== newProps.selectedChatId) {
+      this.setProps({
+        isActive: !!newProps.selectedChatId
+      });
+      return true;
+    }
+    return false;
   }
 
   render() {

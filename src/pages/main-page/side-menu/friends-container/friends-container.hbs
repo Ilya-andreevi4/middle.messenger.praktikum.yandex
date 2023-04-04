@@ -13,13 +13,9 @@
   </header>
 
   <ul class="chats-list">
-    {{#if chatsIsLoaded}}
-      {{#each friends}}
-        {{{this}}}
-      {{/each}}
-    {{else}}
-      Loading...
-    {{/if}}
+    {{#each friends}}
+      {{{this}}}
+    {{/each}}
   </ul>
 
   <header class="chats-header chats-header__groups">
@@ -30,13 +26,9 @@
   </header>
 
   <ul class="chats-list">
-    {{#if chatsIsLoaded}}
-      {{#each groups}}
-        {{{this}}}
-      {{/each}}
-    {{else}}
-      Loading...
-    {{/if}}
+    {{#each groups}}
+      {{{this}}}
+    {{/each}}
   </ul>
   {{#if createChatModalIsOpen}}
     {{{createChatModal}}}

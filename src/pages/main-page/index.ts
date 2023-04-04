@@ -4,6 +4,9 @@ import { SideMenu } from "./side-menu";
 import { Loader } from "../../layouts/loader";
 import Block from "../../utils/Block";
 
+// interface MainPageProps {
+//   isMobileVersion: boolean;
+// }
 export class MainPage extends Block {
   init() {
     this.children.loader = new Loader({});
