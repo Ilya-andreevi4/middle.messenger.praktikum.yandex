@@ -7,8 +7,8 @@
     "build": "rimraf dist && node ./node_modules/.bin/webpack",
     "server": "node server.js",
     "start": "npm-run-all build server",
-    "lint:pcss": "stylelint **/*.pcss",
-    "lint:ts": "eslint .",
+    "lint:pcss": "stylelint **/*.pcss --fix",
+    "lint:ts": "eslint ./src --fix",
     "lint": "npm-run-all --parallel lint:*",
     "test": "mocha --require ts-node/register --require ./mochaSetup.js './src/**/*.test.ts'",
     "clear": "rimraf node_modules/ package-lock.json"
@@ -20,10 +20,12 @@
   },
   "lint-staged": {
     "*.ts": [
-      "npm run lint:ts"
+      "npm run lint:ts",
+      "git add"
     ],
     "*.pcss": [
-      "npm run lint:pcss"
+      "npm run lint:pcss",
+      "git add"
     ]
   },
   "author": "Ilya Orekhov",
