@@ -2,13 +2,12 @@ import { FriendsContainer } from "./friends-container";
 import { ProfileBlock } from "./profile-block";
 import template from "./side-menu.hbs";
 import Block from "../../../utils/Block";
-import { isEqual } from "../../../utils/helpers";
-import { AvatarsExports } from "../../../utils/media-exports";
-import { StateProps, withStore } from "../../../utils/Store";
+import { withSelectedChatId } from "../../../utils/Store";
 
-interface SideMenuProps extends StateProps {
+interface SideMenuProps {
   isLoading: boolean;
   isActive: boolean;
+  selectedChatId?: number;
   events: {
     click: (event: Event) => void;
   };
@@ -19,28 +18,12 @@ class SideMenuBase extends Block<SideMenuProps> {
   }
 
   init() {
-    this.children.profileBlock = new ProfileBlock({
-      avatarSrc: this.props.user?.data?.avatar
-        ? this.props.user.data.avatar
-        : AvatarsExports.AvatarBox,
-      userName: `${this.props.user?.data?.first_name} ${this.props.user?.data?.second_name}`,
-      userStatus: "online"
-    });
+    this.children.profileBlock = new ProfileBlock({});
     this.children.friendsContainer = new FriendsContainer({});
     this.props.isActive = !!this.props.selectedChatId;
   }
 
   protected componentDidUpdate(oldProps: SideMenuProps, newProps: SideMenuProps): boolean {
-    if (!isEqual(oldProps.user, newProps.user)) {
-      this.setProps({ user: newProps.user });
-      return true;
-    }
-
-    if (!isEqual(oldProps.chats, newProps.chats)) {
-      this.setProps({ chats: newProps.chats });
-      return true;
-    }
-
     if (oldProps.selectedChatId !== newProps.selectedChatId) {
       this.setProps({
         isActive: !!newProps.selectedChatId
@@ -55,4 +38,4 @@ class SideMenuBase extends Block<SideMenuProps> {
   }
 }
 // @ts-ignore
-export const SideMenu = withStore((state) => ({ ...state }))(SideMenuBase);
+export const SideMenu = withSelectedChatId(SideMenuBase);

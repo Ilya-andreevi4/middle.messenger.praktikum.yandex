@@ -6,7 +6,6 @@ import { Icon } from "../../../../components/icon";
 import chatController from "../../../../controllers/ChatController";
 import { Form } from "../../../../layouts/form";
 import Block from "../../../../utils/Block";
-import { isEqual } from "../../../../utils/helpers";
 import { IChat } from "../../../../utils/Interfaces";
 import { IconsExports } from "../../../../utils/media-exports";
 import PAGE_FIELDS from "../../../../utils/page-fields";
@@ -25,7 +24,7 @@ export class FriendsContainerBase extends Block<FriendsContainerProps> {
     this.children.friends = ([] as Block[]) || [];
     this.children.groups = ([] as Block[]) || [];
 
-    this.handleSortChats(this.props.chats);
+    this.handleSortChats();
 
     this.children.createChatModal = new Form({
       className: "modal",
@@ -132,9 +131,10 @@ export class FriendsContainerBase extends Block<FriendsContainerProps> {
     });
   }
 
-  private handleSortChats(chats: IChat[]) {
-    chats.forEach((chat) => {
-      if (!chat.users || chat.users.length <= 1) {
+  protected handleSortChats() {
+    const { chats } = this.props;
+    chats.forEach((chat: IChat) => {
+      if (!chat.users || chat.users.length <= 2) {
         (this.children.friends as any[]).push(
           new ChatInfo({
             ...chat,
@@ -183,10 +183,10 @@ export class FriendsContainerBase extends Block<FriendsContainerProps> {
       return true;
     }
 
-    if (!isEqual(oldProps.chats, newProps.chats)) {
+    if (oldProps.user.isLoading !== newProps.user.isLoading) {
       this.children.friends = [];
       this.children.groups = [];
-      this.handleSortChats(newProps.chats);
+      this.handleSortChats();
       return true;
     }
     return false;

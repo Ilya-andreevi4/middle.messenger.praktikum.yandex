@@ -319,12 +319,16 @@ class ProfilePageBase extends Block<ProfileProps> {
   protected componentDidUpdate(oldProps: ProfileProps, newProps: ProfileProps): boolean {
     if (!isEqual(oldProps.data, newProps.data)) {
       this.setProps({ data: newProps.data });
-      (this.children.avatar as Avatar).setProps({ src: newProps.data.avatar });
+      (this.children.avatar as Avatar).setProps({
+        src: newProps.data.avatar || AvatarsExports.AvatarBox
+      });
       return true;
     }
     if (oldProps.isChangeAvatar !== newProps.isChangeAvatar) {
       this.setProps({ isChangeAvatar: newProps.isChangeAvatar, data: newProps.data });
-      (this.children.avatar as Avatar).setProps({ src: newProps.data.avatar });
+      (this.children.avatar as Avatar).setProps({
+        src: newProps.data.avatar || AvatarsExports.AvatarBox
+      });
       return true;
     }
     if (

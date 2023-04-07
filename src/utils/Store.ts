@@ -7,7 +7,6 @@ export interface UserStateProps {
   data?: User;
   error?: string;
   isLoading?: boolean;
-  profileMode?: "normal" | "change_profile" | "change_password" | "change_avatar";
 }
 export interface StateProps {
   user: UserStateProps;
