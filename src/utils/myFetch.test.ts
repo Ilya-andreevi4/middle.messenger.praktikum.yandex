@@ -30,39 +30,37 @@ describe("myFetch", () => {
 
   it(".get() should send GET request", () => {
     instance.get("/");
-
     const [request] = requests;
-
-    expect(request.method.toUpperCase()).to.eq("GET");
+    expect(request.method).to.eq("GET");
   });
 
   it(".put() should send PUT request with proper payload", () => {
     const payload = { chatId: 1, users: [] };
-    instance.put("/users", payload);
 
+    instance.put("/users", payload);
     const [request] = requests;
 
-    expect(request.method.toUpperCase()).to.eq("PUT");
+    expect(request.method).to.eq("PUT");
     expect(request.requestBody).to.eq(JSON.stringify(payload));
   });
 
   it(".post() should send POST request with proper payload", () => {
     const payload = { title: "text" };
-    instance.post("/", payload);
 
+    instance.post("/", payload);
     const [request] = requests;
 
-    expect(request.method.toUpperCase()).to.eq("POST");
+    expect(request.method).to.eq("POST");
     expect(request.requestBody).to.eq(JSON.stringify(payload));
   });
 
   it(".delete() should send DELETE request with proper payload", () => {
     const payload = { chatId: 1 };
-    instance.delete("/", payload);
 
+    instance.delete("/", payload);
     const [request] = requests;
 
-    expect(request.method.toUpperCase()).to.eq("DELETE");
+    expect(request.method).to.eq("DELETE");
     expect(request.requestBody).to.eq(JSON.stringify(payload));
   });
 });

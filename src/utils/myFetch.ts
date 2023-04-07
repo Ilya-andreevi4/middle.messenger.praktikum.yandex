@@ -16,23 +16,29 @@ type Options = {
   data?: JsonObject | FormData;
 };
 
-// function queryStringify(data: any, prefix?: string): string {
-//   if (typeof data !== "object") {
-//     throw new Error("Query data must be object");
-//   }
-//   let res: string[] = [];
-//   data.forEach((p: string) => {
-//     const key = prefix ? `${prefix}[${p}]` : p;
-//     const value = data[key] === null || data[key] === undefined
-// || Number.isNaN(data[key]) ? "" : data[key];
-//     res.push(
-//       typeof value === "object"
-//         ? queryStringify(value, key)
-//         : `${encodeURIComponent(key)}=${encodeURIComponent(value)}`,
-//     );
-//   });
-//   return `${!prefix && "?"}${res.join("&")}`;
-// }
+function queryStringify(data: any, prefix?: string): string {
+  if (typeof data !== "object") {
+    throw new Error("Query data must be object");
+  }
+  const res: string[] = [];
+  data.forEach((p: string) => {
+    const key = prefix ? `${prefix}[${p}]` : p;
+    const value =
+      data[key] === null || data[key] === undefined || Number.isNaN(data[key]) ? "" : data[key];
+    res.push(
+      typeof value === "object"
+        ? queryStringify(value, key)
+        : `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
+    );
+  });
+  return `${!prefix && "?"}${res.join("&")}`;
+}
+
+type HTTPMethod<Response = void> = (
+  path: string,
+  data?: JsonObject | FormData,
+  id?: number
+) => Promise<Response>;
 
 export default class HTTPTransport {
   static API_URL = "https://ya-praktikum.tech/api/v2";
@@ -49,21 +55,25 @@ export default class HTTPTransport {
     return this.request(this.endpoint + currentPath, { method: METHODS.GET });
   }
 
-  public post<Response = void>(path: string, data?: JsonObject | FormData): Promise<Response> {
-    return this.request(this.endpoint + path, { method: METHODS.POST, data });
-  }
+  public post: HTTPMethod = (path, data?) => {
+    const currentPath = this.endpoint + path;
+    return this.request(currentPath, { method: METHODS.POST, data });
+  };
 
-  public put<Response = void>(path: string, data?: JsonObject | FormData): Promise<Response> {
-    return this.request(this.endpoint + path, { method: METHODS.PUT, data });
-  }
+  public put: HTTPMethod = (path, data?) => {
+    const currentPath = this.endpoint + path;
+    return this.request(currentPath, { method: METHODS.PUT, data });
+  };
 
-  public patch<Response = void>(path: string, data?: JsonObject | FormData): Promise<Response> {
-    return this.request<Response>(this.endpoint + path, { method: METHODS.PATCH, data });
-  }
+  public patch: HTTPMethod = (path, data?) => {
+    const currentPath = this.endpoint + path;
+    return this.request(currentPath, { method: METHODS.PATCH, data });
+  };
 
-  public delete<Response>(path: string, data?: JsonObject | FormData): Promise<Response> {
-    return this.request(this.endpoint + path, { method: METHODS.DELETE, data });
-  }
+  public delete: HTTPMethod = (path, data?) => {
+    const currentPath = this.endpoint + path;
+    return this.request(currentPath, { method: METHODS.DELETE, data });
+  };
 
   private request<Response>(
     url: string,
@@ -72,7 +82,12 @@ export default class HTTPTransport {
     const { headers, method = METHODS.GET, timeout = 5000, data } = options;
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
-      xhr.open(method || METHODS.GET, url);
+      xhr.open(
+        method,
+        method === METHODS.GET && !!data
+          ? `${this.endpoint}${url}${queryStringify(data)}`
+          : `${this.endpoint}${url}`
+      );
 
       xhr.onreadystatechange = () => {
         if (xhr.readyState === XMLHttpRequest.DONE) {
