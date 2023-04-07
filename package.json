@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "dev": "node ./node_modules/.bin/webpack serve",
-    "build": "rimraf dist && node ./node_modules/.bin/webpack",
+    "dev": "webpack-dev-server --config webpack.dev.js",
+    "build": "rimraf dist && webpack --config webpack.prod.js",
     "server": "node server.js",
     "start": "npm-run-all build server",
     "lint:pcss": "stylelint **/*.pcss --fix",
@@ -19,6 +19,7 @@
     }
   },
   "lint-staged": {
+    "*": "prettier --write",
     "*.ts": [
       "npm run lint:ts",
       "git add"
@@ -67,6 +68,7 @@
     "proxyquire": "2.1.3",
     "rimraf": "4.4.1",
     "sinon": "15.0.3",
+    "style-loader": "3.3.2",
     "stylelint": "15.2.0",
     "stylelint-config-clean-order": "5.0.0",
     "stylelint-config-standard": "30.0.1",
@@ -75,7 +77,8 @@
     "typescript": "4.9.5",
     "webpack": "5.76.3",
     "webpack-cli": "5.0.1",
-    "webpack-dev-server": "4.13.1"
+    "webpack-dev-server": "4.13.1",
+    "webpack-merge": "5.8.0"
   },
   "dependencies": {
     "express": "4.18.2",

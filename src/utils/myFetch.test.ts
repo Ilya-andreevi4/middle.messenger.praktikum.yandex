@@ -34,33 +34,33 @@ describe("myFetch", () => {
     expect(request.method).to.eq("GET");
   });
 
-  it(".put() should send PUT request with proper payload", () => {
-    const payload = { chatId: 1, users: [] };
+  it(".put() should send PUT request with proper data", () => {
+    const data = { chatId: 1, users: [] };
 
-    instance.put("/users", payload);
+    instance.put("/users", { data });
     const [request] = requests;
 
     expect(request.method).to.eq("PUT");
-    expect(request.requestBody).to.eq(JSON.stringify(payload));
+    expect(request.requestBody).to.eq(JSON.stringify(data));
   });
 
-  it(".post() should send POST request with proper payload", () => {
-    const payload = { title: "text" };
+  it(".post() should send POST request with proper data", () => {
+    const data = { title: "text" };
 
-    instance.post("/", payload);
+    instance.post("/", { data });
     const [request] = requests;
 
     expect(request.method).to.eq("POST");
-    expect(request.requestBody).to.eq(JSON.stringify(payload));
+    expect(request.requestBody).to.eq(JSON.stringify(data));
   });
 
-  it(".delete() should send DELETE request with proper payload", () => {
-    const payload = { chatId: 1 };
+  it(".delete() should send DELETE request with proper data", () => {
+    const data = { chatId: 1 };
 
-    instance.delete("/", payload);
+    instance.delete("/", { data });
     const [request] = requests;
 
     expect(request.method).to.eq("DELETE");
-    expect(request.requestBody).to.eq(JSON.stringify(payload));
+    expect(request.requestBody).to.eq(JSON.stringify(data));
   });
 });

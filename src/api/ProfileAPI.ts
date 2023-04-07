@@ -7,19 +7,19 @@ export class ProfileAPI extends BaseAPI {
   }
 
   read(id?: number): Promise<User> {
-    return this.http.get("", id);
+    return this.http.get("", { id }) as Promise<User>;
   }
 
   changeProfile(data: ChangeProfileProps) {
-    return this.http.put("/profile", data);
+    return this.http.put("/profile", { data });
   }
 
   changePassword(data: ChangePasswordProps) {
-    return this.http.put("/password", data);
+    return this.http.put("/password", { data });
   }
 
   changeAvatar(data: FormData) {
-    return this.http.put("/profile/avatar", data);
+    return this.http.put("/profile/avatar", { data });
   }
 
   update = undefined;

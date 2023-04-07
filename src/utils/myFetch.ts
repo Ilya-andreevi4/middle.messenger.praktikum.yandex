@@ -16,32 +16,17 @@ type Options = {
   data?: JsonObject | FormData;
 };
 
-function queryStringify(data: any, prefix?: string): string {
-  if (typeof data !== "object") {
-    throw new Error("Query data must be object");
-  }
-  const res: string[] = [];
-  data.forEach((p: string) => {
-    const key = prefix ? `${prefix}[${p}]` : p;
-    const value =
-      data[key] === null || data[key] === undefined || Number.isNaN(data[key]) ? "" : data[key];
-    res.push(
-      typeof value === "object"
-        ? queryStringify(value, key)
-        : `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
-    );
-  });
-  return `${!prefix && "?"}${res.join("&")}`;
-}
-
-type HTTPMethod<Response = void> = (
-  path: string,
-  data?: JsonObject | FormData,
-  id?: number
-) => Promise<Response>;
+type HTTPMethod = (path: string, options?: Options) => Promise<unknown>;
 
 export default class HTTPTransport {
   static API_URL = "https://ya-praktikum.tech/api/v2";
+
+  public queryStringify(data: Record<string, string>) {
+    const templ = `?${Object.entries(data)
+      .map(([key, value]) => `${key}=${value}`)
+      .join("&")}`;
+    return templ;
+  }
 
   protected endpoint: string;
 
@@ -49,44 +34,46 @@ export default class HTTPTransport {
     this.endpoint = `${HTTPTransport.API_URL}${endpoint}`;
   }
 
-  public get<Response>(path = "/", id?: number): Promise<Response> {
-    const currentPath = id && path !== "/" ? `${path}/${id}` : path;
-
-    return this.request(this.endpoint + currentPath, { method: METHODS.GET });
-  }
-
-  public post: HTTPMethod = (path, data?) => {
-    const currentPath = this.endpoint + path;
-    return this.request(currentPath, { method: METHODS.POST, data });
+  public get: HTTPMethod = (path, options = {}) => {
+    const currentPath = `${this.endpoint}${
+      options.id && path !== "/" ? `${path}/${options.id}` : path
+    }`;
+    return this.request(currentPath, {
+      ...options,
+      method: METHODS.GET,
+      data: options.data
+    });
   };
 
-  public put: HTTPMethod = (path, data?) => {
+  public post: HTTPMethod = (path: string, options = {}) => {
     const currentPath = this.endpoint + path;
-    return this.request(currentPath, { method: METHODS.PUT, data });
+    return this.request(currentPath, { ...options, method: METHODS.POST, data: options.data });
   };
 
-  public patch: HTTPMethod = (path, data?) => {
+  public put: HTTPMethod = (path: string, options = {}) => {
     const currentPath = this.endpoint + path;
-    return this.request(currentPath, { method: METHODS.PATCH, data });
+    return this.request(currentPath, { ...options, method: METHODS.PUT, data: options.data });
   };
 
-  public delete: HTTPMethod = (path, data?) => {
+  public patch: HTTPMethod = (path: string, options = {}) => {
     const currentPath = this.endpoint + path;
-    return this.request(currentPath, { method: METHODS.DELETE, data });
+    return this.request(currentPath, { method: METHODS.PATCH, data: options.data });
   };
 
-  private request<Response>(
-    url: string,
-    options: Options = { method: METHODS.GET }
-  ): Promise<Response> {
+  public delete: HTTPMethod = (path: string, options = {}) => {
+    const currentPath = this.endpoint + path;
+    return this.request(currentPath, { ...options, method: METHODS.DELETE, data: options.data });
+  };
+
+  private request: HTTPMethod = (url: string, options: Options = { method: METHODS.GET }) => {
     const { headers, method = METHODS.GET, timeout = 5000, data } = options;
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       xhr.open(
         method,
         method === METHODS.GET && !!data
-          ? `${this.endpoint}${url}${queryStringify(data)}`
-          : `${this.endpoint}${url}`
+          ? `${url}${this.queryStringify(data as Record<string, string>)}`
+          : `${url}`
       );
 
       xhr.onreadystatechange = () => {
@@ -124,7 +111,7 @@ export default class HTTPTransport {
         xhr.send(JSON.stringify(data));
       }
     });
-  }
+  };
 }
 
 type FetchWithRetriyOptions = Options & {
@@ -149,16 +136,16 @@ export function fetchWithRetry(
   }
   const currentMethod = options.method?.toLowerCase() || "get";
   if (currentMethod === "post") {
-    return new HTTPTransport(endpoint).post(url, fetchOptions.data).catch((e) => onError(e));
+    return new HTTPTransport(endpoint).post(url, fetchOptions).catch((e) => onError(e));
   }
   if (currentMethod === "delete") {
     return new HTTPTransport(endpoint).delete(url).catch((e) => onError(e));
   }
   if (currentMethod === "put") {
-    return new HTTPTransport(endpoint).put(url, fetchOptions.data).catch((e) => onError(e));
+    return new HTTPTransport(endpoint).put(url, fetchOptions).catch((e) => onError(e));
   }
   if (currentMethod === "patch") {
-    return new HTTPTransport(endpoint).patch(url, fetchOptions.data).catch((e) => onError(e));
+    return new HTTPTransport(endpoint).patch(url, fetchOptions).catch((e) => onError(e));
   }
-  return new HTTPTransport(endpoint).get(url, fetchOptions.id).catch((e) => onError(e));
+  return new HTTPTransport(endpoint).get(url, fetchOptions).catch((e) => onError(e));
 }

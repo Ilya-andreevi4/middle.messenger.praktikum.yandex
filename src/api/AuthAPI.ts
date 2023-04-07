@@ -7,15 +7,15 @@ export class AuthAPI extends BaseAPI {
   }
 
   signin(data: SigninData) {
-    return this.http.post("/signin", data);
+    return this.http.post("/signin", { data });
   }
 
   signup(data: SignupData) {
-    return this.http.post("/signup", data);
+    return this.http.post("/signup", { data });
   }
 
   read(id?: number): Promise<User> {
-    return this.http.get("/user", id);
+    return this.http.get("/user", { id }) as Promise<User>;
   }
 
   logout() {

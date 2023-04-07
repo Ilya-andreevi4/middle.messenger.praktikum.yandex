@@ -23,7 +23,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   const path = window.location.pathname;
 
   let isProtectedRoute = true;
-  let testVar;
+
   switch (path) {
     case Routes.Index:
     case Routes.Registation:
