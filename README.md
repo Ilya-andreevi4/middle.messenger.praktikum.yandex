@@ -8,13 +8,12 @@
 
 На данный момент, проект в рабочем состоянии. Можно регаться и чатится. В скоре добавлю возможность отправки файлов. В проекте используется компонентный подход и приложение соответствует шаболну MVC. В этом проекте я первый раз использовал шаблонизатор Handlebars и сборщик Parcel. В проекте реализован работа с real-time сообщениями с помощью подключения через WebSocket.
 
-![Screenshot_1](https://github.com/Ilya-andreevi4/middle.messenger.praktikum.yandex/assets/33191965/e656c28b-9f81-41e5-8ce5-349f6e1e1222)
-![Screenshot_7](https://github.com/Ilya-andreevi4/middle.messenger.praktikum.yandex/assets/33191965/0526fa04-231b-4790-aa0e-332b1821661e)
-
+![Screenshot_1](https://github.com/Ilya-andreevi4/middle.messenger.praktikum.yandex/assets/33191965/d2a86124-bb93-48f8-be6d-de123a4d2fcc)
+![Screenshot_7](https://github.com/Ilya-andreevi4/middle.messenger.praktikum.yandex/assets/33191965/9b6cbd6d-7381-4b88-8b0d-4515799125f7)
 Дизайн мессенджера отличается от остальных в первую очередь аватарами и блоками без скруглённых углов. При создании этого дизайна, я вдохновлялся дизайнами Steam и Discord.
 
-![Screenshot_9](https://github.com/Ilya-andreevi4/middle.messenger.praktikum.yandex/assets/33191965/4d61c4f3-ad60-47ac-a4f7-e7ed7474de0b)
-  ![Screenshot_8](https://github.com/Ilya-andreevi4/middle.messenger.praktikum.yandex/assets/33191965/e1f471c5-d88b-4ab4-b6af-537cc51b6a1a)
+![Screenshot_9](https://github.com/Ilya-andreevi4/middle.messenger.praktikum.yandex/assets/33191965/929f1c1c-64c8-4ea8-a027-3905c3162c2b)
+==>![Screenshot_8](https://github.com/Ilya-andreevi4/middle.messenger.praktikum.yandex/assets/33191965/e1f471c5-d88b-4ab4-b6af-537cc51b6a1a)
 
 Приложение адаптировано под мобильные устройства.
 
