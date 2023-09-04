@@ -1,16 +1,17 @@
 import template from "./chat-info.hbs";
 import chatController from "../../controllers/ChatController";
 import Block from "../../utils/Block";
-import { handleSliceText } from "../../utils/helpers";
-import { ILastMessage } from "../../utils/Interfaces";
+import { handleSliceText, isEqual } from "../../utils/helpers";
+import { ILastMessage, IMessage } from "../../utils/Interfaces";
 import { AvatarsExports } from "../../utils/media-exports";
-import { withSelectedChatId } from "../../utils/Store";
+import { withSelectedChatMessages } from "../../utils/Store";
 import { Avatar } from "../avatar";
 import { Link } from "../link";
 
 interface ChatInfoProps {
   id: number | undefined;
   title: string;
+  messages?: IMessage[];
   last_message?: ILastMessage;
   avatar?: string;
   className: string;
@@ -71,8 +72,85 @@ export class ChatInfoBase extends Block<ChatInfoProps> {
   }
 
   protected componentDidUpdate(oldProps: ChatInfoProps, newProps: ChatInfoProps): boolean {
+    if (oldProps.messages && newProps.messages) {
+      if (!isEqual(oldProps.messages, newProps.messages)) {
+        this.setProps({
+          last_message: newProps.last_message
+            ? {
+                ...newProps.last_message,
+                content: newProps.last_message.content
+                  ? handleSliceText(newProps.last_message.content, 16)
+                  : ""
+              }
+            : undefined,
+          unread_count: newProps.unread_count,
+          avatar: newProps.avatar,
+          title: newProps.title
+        });
+        return true;
+      }
+    }
+    if (oldProps.unread_count !== newProps.unread_count) {
+      this.setProps({
+        last_message: newProps.last_message
+          ? {
+              ...newProps.last_message,
+              content: newProps.last_message.content
+                ? handleSliceText(newProps.last_message.content, 16)
+                : ""
+            }
+          : undefined,
+        unread_count: newProps.unread_count,
+        avatar: newProps.avatar,
+        title: newProps.title
+      });
+      return true;
+    }
+    if (oldProps.avatar !== newProps.avatar) {
+      this.setProps({
+        last_message: newProps.last_message
+          ? {
+              ...newProps.last_message,
+              content: newProps.last_message.content
+                ? handleSliceText(newProps.last_message.content, 16)
+                : ""
+            }
+          : undefined,
+        unread_count: newProps.unread_count,
+        avatar: newProps.avatar,
+        title: newProps.title
+      });
+      return true;
+    }
+    if (oldProps.title !== newProps.title) {
+      this.setProps({
+        last_message: newProps.last_message
+          ? {
+              ...newProps.last_message,
+              content: newProps.last_message.content
+                ? handleSliceText(newProps.last_message.content, 16)
+                : ""
+            }
+          : undefined,
+        unread_count: newProps.unread_count,
+        avatar: newProps.avatar,
+        title: newProps.title
+      });
+      return true;
+    }
     if (oldProps.selectedChatId !== newProps.selectedChatId) {
       this.setProps({
+        last_message: newProps.last_message
+          ? {
+              ...newProps.last_message,
+              content: newProps.last_message.content
+                ? handleSliceText(newProps.last_message.content, 16)
+                : ""
+            }
+          : undefined,
+        unread_count: newProps.unread_count,
+        avatar: newProps.avatar,
+        title: newProps.title,
         isActive: this.props.id === newProps.selectedChatId,
         deleteLink: newProps.deleteLink
       });
@@ -87,4 +165,4 @@ export class ChatInfoBase extends Block<ChatInfoProps> {
 }
 
 // @ts-ignore
-export const ChatInfo = withSelectedChatId(ChatInfoBase);
+export const ChatInfo = withSelectedChatMessages(ChatInfoBase);

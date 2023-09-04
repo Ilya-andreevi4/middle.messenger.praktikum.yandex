@@ -10,5 +10,8 @@
   "stylelint.autoFixOnSave": true,
 
   // Использование одной темы в проекте)
-  "workbench.colorTheme": "Default Dark+"
+  "workbench.colorTheme": "Default Dark+",
+  "[postcss]": {
+    "editor.defaultFormatter": "stylelint.vscode-stylelint"
+  }
 }

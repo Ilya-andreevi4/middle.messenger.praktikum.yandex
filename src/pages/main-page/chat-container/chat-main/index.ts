@@ -3,7 +3,7 @@ import { Message } from "../../../../components/message";
 import Block from "../../../../utils/Block";
 import { isEqual } from "../../../../utils/helpers";
 import { IChat, IMessage } from "../../../../utils/Interfaces";
-import { withStore } from "../../../../utils/Store";
+import { withSelectedChatMessages } from "../../../../utils/Store";
 
 interface ChatMainProps {
   selectedChatId: number | undefined;
@@ -77,7 +77,7 @@ export class ChatMainBase extends Block<ChatMainProps> {
             file: message.file ? message.file.path : undefined,
             my: message.user_id === this.props.userId,
             events: {
-              click: () => {}
+              click: () => {} // TODO сделать действие по нажатию на сообщение
             }
           });
         });
@@ -131,28 +131,6 @@ export class ChatMainBase extends Block<ChatMainProps> {
     return this.compile(template, this.props);
   }
 }
-
-const withSelectedChatMessages = withStore((state) => {
-  const chatId = state.selectedChatId;
-
-  if (!chatId) {
-    return {
-      messages: [],
-      selectedChatId: undefined,
-      userId: state.user.data?.id,
-      selectedChat: undefined,
-      chats: state.chats
-    };
-  }
-
-  return {
-    messages: (state.messages || {})[chatId] || [],
-    selectedChatId: state.selectedChatId,
-    userId: state.user.data?.id,
-    selectedChat: state.chats.find((chat) => chat.id === chatId),
-    chats: state.chats
-  };
-});
 
 // @ts-ignore
 export const ChatMain = withSelectedChatMessages(ChatMainBase);
