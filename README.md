@@ -1,24 +1,26 @@
 # Проект мессенджера для курса "Мидлфронтенд разработчик" от Яндекс Практикум.
 
-## Проект размещён на домене: https://bbar0g8873cpkmickstr.containers.yandexcloud.net/
-
-## Ссылка на pull request: https://github.com/Ilya-andreevi4/middle.messenger.praktikum.yandex/pull/9
+## Посмотреть Демо: https://messenger-by-orekhov-ilya.netlify.app/
 
 ## О проекте
 
-Проект представляет из себя мессенджер с возможностью создания чатов и добавления в чаты других юзеров по их ID. Вскоре добавлю возможность отправки изображений в чат.
+Проект представляет из себя мессенджер с редактированием профиля, созданием и редактированием чатов, добавлением в чаты других юзеров по ID. Вскоре добавлю возможность отправки изображений в чат.
 
-В процессе разработки я придерживался компонентного подхода и создания приложения, которое соответствует шаболну MVC.
+В процессе разработки придерживался компонентного подхода и шаблона MVC.
 
 Используется шаблонизатор Handlebars и сборщик Webpack.
-
-Проект собирается с помощью Docker и размещается на Yandex cloud.
 
 Добавлены тесты с использованием Mocha и Chai, а также библиотека sinon.
 
 В проекте реализован работа с real-time сообщениями с помощью подключения через WebSocket.
 
+![Screenshot_1](https://github.com/Ilya-andreevi4/middle.messenger.praktikum.yandex/assets/33191965/d2a86124-bb93-48f8-be6d-de123a4d2fcc)
+![Screenshot_7](https://github.com/Ilya-andreevi4/middle.messenger.praktikum.yandex/assets/33191965/9b6cbd6d-7381-4b88-8b0d-4515799125f7)
+
 Дизайн мессенджера отличается от остальных в первую очередь аватарами и блоками без скруглённых углов. При создании этого дизайна, я вдохновлялся дизайнами Steam и Discord.
+
+![Screenshot_9](https://github.com/Ilya-andreevi4/middle.messenger.praktikum.yandex/assets/33191965/929f1c1c-64c8-4ea8-a027-3905c3162c2b)
+==>![Screenshot_8](https://github.com/Ilya-andreevi4/middle.messenger.praktikum.yandex/assets/33191965/e1f471c5-d88b-4ab4-b6af-537cc51b6a1a)
 
 Проект адаптирован под мобильные устройства.
 
