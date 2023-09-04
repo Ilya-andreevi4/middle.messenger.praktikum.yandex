@@ -14,18 +14,15 @@ import { StateProps, withStore } from "../../../../utils/Store";
 
 interface FriendsContainerProps extends StateProps {
   createChatModalIsOpen?: boolean;
-  chatsIsLoaded: boolean;
 }
 export class FriendsContainerBase extends Block<FriendsContainerProps> {
   constructor(props: FriendsContainerProps) {
     super(props);
     this.props.createChatModalIsOpen = false;
-    this.props.chatsIsLoaded = false;
   }
 
   init() {
-    this.children.friends = ([] as Block[]) || [];
-    this.children.groups = ([] as Block[]) || [];
+    this.handleSortChats();
 
     this.children.createChatModal = new Form({
       className: "modal",
@@ -61,14 +58,6 @@ export class FriendsContainerBase extends Block<FriendsContainerProps> {
         })
       }
     });
-
-    chatController.fetchChats().finally(() => {
-      this.setProps({
-        chatsIsLoaded: true
-      });
-    });
-
-    this.generateChats(this.props.chats);
 
     this.children.searchInput = PAGE_FIELDS.main.map(
       (field) =>
@@ -140,30 +129,12 @@ export class FriendsContainerBase extends Block<FriendsContainerProps> {
     });
   }
 
-  protected componentDidUpdate(
-    oldProps: FriendsContainerProps,
-    newProps: FriendsContainerProps
-  ): boolean {
-    if (oldProps.createChatModalIsOpen !== newProps.createChatModalIsOpen) {
-      this.setProps({ createChatModalIsOpen: newProps.createChatModalIsOpen });
-      return true;
-    }
-
-    if (!isEqual(oldProps.chats, newProps.chats)) {
-      this.children.friends = [];
-      this.children.groups = [];
-      this.generateChats(newProps.chats);
-      return true;
-    }
-    if (oldProps.chatsIsLoaded !== newProps.chatsIsLoaded) {
-      return true;
-    }
-    return false;
-  }
-
-  generateChats(chats: IChat[]) {
-    chats.forEach((chat) => {
-      if (!chat.users || chat.users.length <= 1) {
+  protected handleSortChats() {
+    this.children.friends = [];
+    this.children.groups = [];
+    const { chats } = this.props;
+    chats.forEach((chat: IChat) => {
+      if (!chat.users || chat.users.length <= 2) {
         (this.children.friends as any[]).push(
           new ChatInfo({
             ...chat,
@@ -201,6 +172,27 @@ export class FriendsContainerBase extends Block<FriendsContainerProps> {
         );
       }
     });
+  }
+
+  protected componentDidUpdate(
+    oldProps: FriendsContainerProps,
+    newProps: FriendsContainerProps
+  ): boolean {
+    if (oldProps.createChatModalIsOpen !== newProps.createChatModalIsOpen) {
+      this.setProps({ createChatModalIsOpen: newProps.createChatModalIsOpen });
+      return true;
+    }
+
+    if (oldProps.user.isLoading !== newProps.user.isLoading) {
+      this.handleSortChats();
+      return true;
+    }
+
+    if (!isEqual(oldProps.chats, newProps.chats)) {
+      this.handleSortChats();
+      return true;
+    }
+    return false;
   }
 
   render() {

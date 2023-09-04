@@ -1,3 +1,4 @@
+import chatController from "./ChatController";
 import MessagesController from "./MessagesController";
 import API, { AuthAPI } from "../api/AuthAPI";
 import { Routes, SigninData, SignupData } from "../utils/Interfaces";
@@ -16,6 +17,7 @@ export class AuthController {
     try {
       await this.api.signin(data);
       await this.fetchUser();
+      await chatController.fetchChats();
       router.go(Routes.Chats);
     } catch (e: any) {
       store.set(
@@ -32,6 +34,7 @@ export class AuthController {
     try {
       await this.api.signup(data);
       await this.fetchUser();
+      await chatController.fetchChats();
       router.go(Routes.Chats);
     } catch (e) {
       store.set("user.isLoading", false);

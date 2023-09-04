@@ -1,6 +1,6 @@
-import { AddUserToChat, IChat } from "src/utils/Interfaces";
 import MessagesController from "./MessagesController";
 import API, { ChatsAPI } from "../api/ChatsAPI";
+import { AddUserToChat, IChat } from "../utils/Interfaces";
 import store from "../utils/Store";
 
 class ChatsController {
@@ -25,7 +25,9 @@ class ChatsController {
           chat.avatar = `https://ya-praktikum.tech/api/v2/resources${chat.avatar}`;
         }
         const token = await this.getToken(chat.id);
-        await MessagesController.connect(chat.id, token);
+        if (token) {
+          await MessagesController.connect(chat.id, token);
+        }
       });
       store.set("chats", chats);
       await Promise.all(
@@ -36,7 +38,7 @@ class ChatsController {
       store.set("user.isLoading", false);
     } catch (err) {
       store.set("user.isLoading", false);
-      throw new Error(`Ошибка при запросе к чатам ${err}`);
+      throw new Error(`error with fetchChats ${err}`);
     }
   }
 
@@ -55,7 +57,7 @@ class ChatsController {
       });
     } catch (err) {
       store.set("user.isLoading", false);
-      throw new Error(`error with add user ${err}`);
+      throw new Error(`error with fetchChatUsers ${err}`);
     }
   }
 
@@ -66,7 +68,7 @@ class ChatsController {
       await this.fetchChatUsers(data.chatId);
     } catch (err) {
       store.set("user.isLoading", false);
-      throw new Error(`error with add user ${err}`);
+      throw new Error(`error with addUserToChat ${err}`);
     }
     store.set("user.isLoading", false);
   }
@@ -81,7 +83,7 @@ class ChatsController {
       await this.fetchChats();
     } catch (err) {
       store.set("user.isLoading", false);
-      throw new Error(`error with add user ${err}`);
+      throw new Error(`error with changeChatAvatar ${err}`);
     }
     store.set("user.isLoading", false);
   }
@@ -100,16 +102,27 @@ class ChatsController {
       store.set("user.isLoading", false);
     } catch (err) {
       store.set("user.isLoading", false);
-      throw new Error(`error with add user ${err}`);
+      throw new Error(`error with deleteUserFromChat ${err}`);
     }
   }
 
   getToken(id: number) {
-    return this.api.getToken(id);
+    let token;
+    store.set("user.isLoading", true);
+    try {
+      token = this.api.getToken(id);
+    } catch (err) {
+      throw new Error(`error with getToken ${err}`);
+    }
+    store.set("user.isLoading", false);
+    return token;
   }
 
-  selectChat(id: number | undefined) {
+  async selectChat(id: number | undefined) {
     store.set("selectedChatId", id);
+    if (id) {
+      await MessagesController.getSocket(id);
+    }
   }
 }
 

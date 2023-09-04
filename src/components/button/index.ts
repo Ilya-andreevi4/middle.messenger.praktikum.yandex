@@ -1,13 +1,13 @@
 import template from "./button.hbs";
 import Block from "../../utils/Block";
 import Router from "../../utils/Router";
-
+// create index.test.ts for this file with mocha and chai
 interface ButtonProps {
   label: string;
   to?: string;
   type?: "submit" | "reset" | "button" | "menu";
   events?: {
-    click: (e: Event) => void;
+    click: (e?: Event) => void;
   };
   className: string;
 }

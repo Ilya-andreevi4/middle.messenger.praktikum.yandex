@@ -19,6 +19,7 @@
 
 .chat-header__avatar {
   width: 64px;
+  height: 64px;
 }
 
 .chat-header__icon {
@@ -42,4 +43,31 @@
 
 .user-info {
   width: auto;
+}
+
+.back-arrow__icon{
+  display: none;
+}
+
+@media (max-width: $mobile-width) {
+  .chat-header{
+    width: 100%;
+    padding-left: 40px;
+  }
+
+  .back-arrow__icon{
+    cursor: pointer;
+
+    position: absolute;
+    top: 24px;
+    left: 12px;
+    transform: scale(2);
+
+    display: block;
+
+    width: 16px;
+    height: 16px;
+
+    text-align: center;
+  }
 }

@@ -7,7 +7,6 @@ export interface UserStateProps {
   data?: User;
   error?: string;
   isLoading?: boolean;
-  profileMode?: "normal" | "change_profile" | "change_password" | "change_avatar";
 }
 export interface StateProps {
   user: UserStateProps;
@@ -63,5 +62,26 @@ export function withStore(mapStateToProps: (state: StateProps) => any) {
 
 export const withUser = withStore((state) => ({ ...state.user }));
 export const withSelectedChatId = withStore((state) => ({ selectedChatId: state.selectedChatId }));
+export const withSelectedChatMessages = withStore((state) => {
+  const chatId = state.selectedChatId;
+
+  if (!chatId) {
+    return {
+      messages: [],
+      selectedChatId: undefined,
+      userId: state.user.data?.id,
+      selectedChat: undefined,
+      chats: state.chats
+    };
+  }
+
+  return {
+    messages: (state.messages || {})[chatId] || [],
+    selectedChatId: state.selectedChatId,
+    userId: state.user.data?.id,
+    selectedChat: state.chats.find((chat) => chat.id === chatId),
+    chats: state.chats
+  };
+});
 
 export default store;

@@ -2,7 +2,45 @@ export type Indexed<T = any> = {
   [key in string]: T;
 };
 
+export function isPlainObject(value: unknown): value is Indexed {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    value.constructor === Object &&
+    Object.prototype.toString.call(value) === "[object Object]"
+  );
+}
+
+function isArray(value: unknown): value is [] {
+  return Array.isArray(value);
+}
+
+export function isArrayOrObject(value: unknown): value is [] | Indexed {
+  return isPlainObject(value) || isArray(value);
+}
+
+export function isEqual(lhs: Indexed, rhs: Indexed) {
+  if (Object.keys(lhs).length !== Object.keys(rhs).length) {
+    return false;
+  }
+  for (const [key, value] of Object.entries(lhs)) {
+    const rightValue = rhs[key];
+    if (isArrayOrObject(value) && isArrayOrObject(rightValue)) {
+      if (!isEqual(value, rightValue)) {
+        return false;
+      }
+    }
+    if (value !== rightValue) {
+      return false;
+    }
+  }
+  return true;
+}
+
 export function merge(lhs: Indexed, rhs: Indexed): Indexed {
+  if (!isPlainObject(lhs) || !isPlainObject(rhs)) {
+    throw new Error("arguments must be objects");
+  }
   for (const p in rhs) {
     if (!rhs.hasOwnProperty(p)) {
       continue;
@@ -36,42 +74,14 @@ export function set(object: Indexed | unknown, path: string, value: unknown): In
   return merge(object as Indexed, result);
 }
 
-function isPlainObject(value: unknown): value is Indexed {
-  return (
-    typeof value === "object" &&
-    value !== null &&
-    value.constructor === Object &&
-    Object.prototype.toString.call(value) === "[object Object]"
-  );
-}
-
-function isArray(value: unknown): value is [] {
-  return Array.isArray(value);
-}
-
-function isArrayOrObject(value: unknown): value is [] | Indexed {
-  return isPlainObject(value) || isArray(value);
-}
-
-export function isEqual(lhs: Indexed, rhs: Indexed) {
-  if (Object.keys(lhs).length !== Object.keys(rhs).length) {
-    return false;
+export const handleSliceText = (content: string, maxSize: number = 20): string => {
+  if (typeof content !== "string") {
+    throw new Error("content must be string");
   }
-  for (const [key, value] of Object.entries(lhs)) {
-    const rightValue = rhs[key];
-    if (isArrayOrObject(value) && isArrayOrObject(rightValue)) {
-      if (!isEqual(value, rightValue)) {
-        return false;
-      }
-    }
-    if (value !== rightValue) {
-      return false;
-    }
+  if (typeof maxSize !== "number") {
+    throw new Error("maxSize must be number");
   }
-  return true;
-}
 
-export const handleSliceText = (content: string, maxSize: number): string => {
   let sliced = content.slice(0, maxSize);
   if (sliced.length < content.length) {
     sliced += "...";

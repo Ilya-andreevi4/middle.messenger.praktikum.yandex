@@ -1,7 +1,7 @@
 import template from "./message-input-form.hbs";
 import Block from "../../utils/Block";
 import { withSelectedChatId } from "../../utils/Store";
-import { PopupFormAddFiles } from "../add-files-popup";
+import { AddFilesPopupForm } from "../add-files-popup";
 import { Button } from "../button";
 import { Field } from "../field";
 
@@ -45,7 +45,7 @@ class MessageInputFormBase extends Block<MessageInputFormProps> {
       label: ""
     });
 
-    this.children.popupFormAddFiles = new PopupFormAddFiles({
+    this.children.popupFormAddFiles = new AddFilesPopupForm({
       className: "popper-add-files"
     });
 
@@ -56,7 +56,7 @@ class MessageInputFormBase extends Block<MessageInputFormProps> {
       return window.removeEventListener("mousedown", handleModalClose);
     };
 
-    (this.children.popupFormAddFiles as PopupFormAddFiles)
+    (this.children.popupFormAddFiles as AddFilesPopupForm)
       .getContent()
       ?.addEventListener("mousedown", (e) => {
         e.stopPropagation();
@@ -68,7 +68,7 @@ class MessageInputFormBase extends Block<MessageInputFormProps> {
       type: "button",
       events: {
         click: (e) => {
-          e.preventDefault();
+          e!.preventDefault();
           this.setProps({ popIsOpen: !this.props.popIsOpen });
           window.addEventListener("mousedown", handleModalClose);
         }

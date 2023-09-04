@@ -6,22 +6,18 @@ import { MessageInputForm } from "../../../components/message-input-form";
 import chatController from "../../../controllers/ChatController";
 import MessagesController from "../../../controllers/MessagesController";
 import Block from "../../../utils/Block";
-import { IChat } from "../../../utils/Interfaces";
 import { StateProps, withStore } from "../../../utils/Store";
 
 interface ChatContainerProps extends StateProps {
   isActive: boolean;
-  activeChat?: IChat;
 }
 export class ChatContainerBase extends Block<ChatContainerProps> {
   constructor(props: ChatContainerProps) {
     super(props);
-    this.props = { ...props };
   }
 
   init() {
-    this.props.activeChat = this.props.chats.find((chat) => chat.id === this.props.selectedChatId);
-    this.props.isActive = !!this.props.activeChat;
+    this.props.isActive = !!this.props.selectedChatId;
 
     this.children.chatHeader = new ChatHeader({});
 
@@ -37,6 +33,20 @@ export class ChatContainerBase extends Block<ChatContainerProps> {
           }
 
           const input = (this.children.messageForm as Block).children.messageInput as Field;
+
+          // TODO add attach files to message
+          // const fileItems = (
+          //   (this.children.messageForm as Block).children.popupFormAddFiles as AddFilesPopupForm
+          // ).children.popupListItems;
+          // if (Array.isArray(fileItems)) {
+          //   const attachfiles = fileItems.map((item) => {
+          //     const value = (item.children.field as Field).getFile();
+          //     return value;
+          //   });
+          // } else {
+          //   const attachfiles= undefined;
+          // }
+
           input.isValid();
           if (input.isValid()) {
             const message = input.getValue();
@@ -47,6 +57,19 @@ export class ChatContainerBase extends Block<ChatContainerProps> {
         }
       }
     });
+  }
+
+  protected componentDidUpdate(
+    oldProps: ChatContainerProps,
+    newProps: ChatContainerProps
+  ): boolean {
+    if (oldProps.selectedChatId !== newProps.selectedChatId) {
+      this.setProps({
+        isActive: !!newProps.selectedChatId
+      });
+      return true;
+    }
+    return false;
   }
 
   render() {

@@ -27,7 +27,8 @@ form.profile-page__form {
 
 .invite-id-box {
   position: absolute;
-  top: 64px;
+  z-index: 3000;
+  top: 32px;
   right: 32px;
 
   display: flex;
@@ -181,8 +182,10 @@ form.profile-page__form {
   border-bottom: none;
 }
 
+/* Side Panel Button: */
+
 .side-panel {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
 
@@ -233,4 +236,42 @@ form.profile-page__form {
 
 .input.modal__input#input-file:active + .placeholder.input-file.modal__placeholder {
   color: $transparent-white;
+}
+
+@media (max-width: $mobile-width) {
+  main.container {
+    height: 100%;
+    min-height: 100vh;
+    padding-top: 16px;
+  }
+
+  .profile-page__container .profile-page__modal  {
+    left: 0;
+    width: 90%;
+    height: 100%;
+  }
+
+  .side-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    height: 64px;
+
+    background: none;
+  }
+
+  .side-panel .side-panel__button {
+    background-size: 32px;
+    box-shadow: none;
+  }
+
+  .invite-id-box {
+    position: fixed;
+    top:auto;
+    right: 4px;
+    bottom: 8px;
+
+    padding: 2px 8px;
+  }
 }

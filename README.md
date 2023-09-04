@@ -1,21 +1,28 @@
 # Проект мессенджера для курса "Мидлфронтенд разработчик" от Яндекс Практикум.
 
-## Проект размещён на домене: https://messenger-by-orekhov-ilya.netlify.app/
-
-## Ссылка на pull request: https://github.com/Ilya-andreevi4/middle.messenger.praktikum.yandex/pull/7
+## Посмотреть Демо: https://messenger-by-orekhov-ilya.netlify.app/
 
 ## О проекте
 
-На данный момент, проект в рабочем состоянии. Можно регаться и чатится. В скоре добавлю возможность отправки файлов. В проекте используется компонентный подход и приложение соответствует шаболну MVC. В этом проекте я первый раз использовал шаблонизатор Handlebars и сборщик Parcel. В проекте реализован работа с real-time сообщениями с помощью подключения через WebSocket.
+Проект представляет из себя мессенджер с редактированием профиля, созданием и редактированием чатов, добавлением в чаты других юзеров по ID. Вскоре добавлю возможность отправки изображений в чат.
+
+В процессе разработки придерживался компонентного подхода и шаблона MVC.
+
+Используется шаблонизатор Handlebars и сборщик Webpack.
+
+Добавлены тесты с использованием Mocha и Chai, а также библиотека sinon.
+
+В проекте реализован работа с real-time сообщениями с помощью подключения через WebSocket.
 
 ![Screenshot_1](https://github.com/Ilya-andreevi4/middle.messenger.praktikum.yandex/assets/33191965/d2a86124-bb93-48f8-be6d-de123a4d2fcc)
 ![Screenshot_7](https://github.com/Ilya-andreevi4/middle.messenger.praktikum.yandex/assets/33191965/9b6cbd6d-7381-4b88-8b0d-4515799125f7)
+
 Дизайн мессенджера отличается от остальных в первую очередь аватарами и блоками без скруглённых углов. При создании этого дизайна, я вдохновлялся дизайнами Steam и Discord.
 
 ![Screenshot_9](https://github.com/Ilya-andreevi4/middle.messenger.praktikum.yandex/assets/33191965/929f1c1c-64c8-4ea8-a027-3905c3162c2b)
 ==>![Screenshot_8](https://github.com/Ilya-andreevi4/middle.messenger.praktikum.yandex/assets/33191965/e1f471c5-d88b-4ab4-b6af-537cc51b6a1a)
 
-Приложение адаптировано под мобильные устройства.
+Проект адаптирован под мобильные устройства.
 
 ## Скрипты для локальной работы с проектом:
 
@@ -30,6 +37,14 @@
 ### `npm run start`
 
 Проект запуститься на Express, localhost:3000.
+
+### `npm run dev`
+
+Проект запуститься с помощью Webpack dev server, на localhost:8080.
+
+### `npm run clear`
+
+очищает node_modules и удаляет package-lock.json.
 
 ## Как пользоваться:
 

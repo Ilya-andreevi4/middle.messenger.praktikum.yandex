@@ -95,6 +95,16 @@ class Block<P extends Record<string, any> = any> {
 
   public dispatchComponentDidMount() {
     this.eventBus().emit(Block.EVENTS.FLOW_CDM);
+
+    Object.values(this.children).forEach((child: Block | Block[]) => {
+      if (Array.isArray(child)) {
+        child.forEach((childEl) => {
+          childEl.dispatchComponentDidMount();
+        });
+      } else {
+        child.dispatchComponentDidMount();
+      }
+    });
   }
 
   private _componentDidUpdate(oldProps: Props<P>, newProps: Props<P>) {
