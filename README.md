@@ -20,7 +20,7 @@
 Дизайн мессенджера отличается от остальных в первую очередь аватарами и блоками без скруглённых углов. При создании этого дизайна, я вдохновлялся дизайнами Steam и Discord.
 
 ![Screenshot_9](https://github.com/Ilya-andreevi4/middle.messenger.praktikum.yandex/assets/33191965/929f1c1c-64c8-4ea8-a027-3905c3162c2b)
-==>![Screenshot_8](https://github.com/Ilya-andreevi4/middle.messenger.praktikum.yandex/assets/33191965/e1f471c5-d88b-4ab4-b6af-537cc51b6a1a)
+=>![Screenshot_8](https://github.com/Ilya-andreevi4/middle.messenger.praktikum.yandex/assets/33191965/e1f471c5-d88b-4ab4-b6af-537cc51b6a1a)
 
 Проект адаптирован под мобильные устройства.
 
